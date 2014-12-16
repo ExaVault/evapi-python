@@ -35,14 +35,20 @@ to upload/download files, and also to manage your users.
 
 Before you can make valid API requests, you will need to import the
 API client libraries, the [requests]
-(https://github.com/kennethreitz/requests) library, as well as `json` and `os` libraries for decoding JSON responses and working with the file system (respectively). Here you will also want to set your API key and instantiate the `V1Api` object.
+(https://github.com/kennethreitz/requests) library, as well as `json`
+and `os` libraries for decoding JSON responses and working with the
+file system (respectively). Here you will also want to set your API
+key and instantiate the `V1Api` object.
 
 ```python
+# Import the evapi-python API client libs
+import V1Api
+import ApiClient
+
+# Additionally, the following libraries are needed:
 import os
 import json
-import V1Api
 import requests
-import ApiClient
 
 apiKey = "yourappname-XXXXXXXXXXXXXXXX"
 apiServer = "https://api.exavault.com"
