@@ -154,3 +154,14 @@ if response.success:
             # Whoopsie, there was an error
 else:
     # Whoopsie, there was an error. Please verify the remote path is correct.
+```    
+
+##### Logging out #####
+
+To logout the current user, simply check the `loginSuccess` flag that
+was stored earlier and then call the `logoutUser` method:
+
+```python
+if loginSuccess:
+    api.logoutUser(accessToken)
+```
