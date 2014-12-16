@@ -17,6 +17,14 @@ evapi-python makes use of the [requests]
 (https://github.com/kennethreitz/requests) library. Please ensure that
 this library is installed before proceeding to use evapi-python.
 
+**Note:** Some users have reported issues authenticating over SSL with
+Python versions <= 2.7.2 (see [this
+issue](https://github.com/kennethreitz/requests/issues/1847)). This
+problem appears to be due to Python's SSL library automatically
+choosing SSLv2/3 during SSL handshake, which will result in failure as
+ExaVault has disabled both of these protocols due to the POODLE
+exploit. As of this writing, testing the evapi-python client using
+Python 2.7.8 does not reproduce this issue.
 
 ## Usage ##
 
