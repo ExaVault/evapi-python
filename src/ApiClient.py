@@ -114,7 +114,8 @@ class ApiClient:
         elif type(postData) not in safeToDump:
             data = json.dumps(postData.__dict__)
 
-    def deserialize(self, obj, objClass):
+    def deserialize(self, obj, objClass):        
+        
         """Derialize a JSON string into an object.
 
         Args:
@@ -133,12 +134,15 @@ class ApiClient:
                 subClass = match.group(1)
                 return [self.deserialize(subObj, subClass) for subObj in obj]
 
-            if (objClass in ['int', 'float', 'long', 'dict', 'list', 'str', 'bool', 'datetime']):
+            # EV NOTE: add 'unicode' as valid type for Python -
+            # unicode and ascii encoded 'str' type are different
+            if (objClass in ['int', 'float', 'long', 'dict', 'list', 'str', 'bool', 'datetime', 'unicode']):
                 objClass = eval(objClass)
             else:  # not a native type, must be model class
                 objClass = eval(objClass + '.' + objClass)
 
-        if objClass in [int, long, float, dict, list, str, bool]:
+        # EV NOTE: add 'unicode' as valid type
+        if objClass in [int, long, float, dict, list, str, bool, unicode]:
             return objClass(obj)
         elif objClass == datetime:
             # Server will always return a time stamp in UTC, but with
@@ -161,6 +165,7 @@ class ApiClient:
                     except TypeError:
                         value = value
                     setattr(instance, attr, value)
+                    
                 elif (attrType == 'datetime'):
                     setattr(instance, attr, datetime.datetime.strptime(value[:-5],
                                               "%Y-%m-%dT%H:%M:%S.%f"))
@@ -172,8 +177,23 @@ class ApiClient:
                         setattr(instance, attr, None)
                     else:
                         for subValue in value:
+
+                            # EV NOTE - This is a hack, but no way
+                            # around it. 'str' is an ascii encoded
+                            # string, while 'unicode' is for unicode
+                            # strings. Since our API resource
+                            # specifies the paths parameter as a
+                            # string (other languages don't have a
+                            # 'unicode' type), we need to force the
+                            # class type here so that the
+                            # deserialization process won't break
+
+                            if attr == 'paths':
+                                subClass = unicode
+
                             subValues.append(self.deserialize(subValue,
                                                               subClass))
+                            
                     setattr(instance, attr, subValues)
                 else:
                     setattr(instance, attr, self.deserialize(value,
