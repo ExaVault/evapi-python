@@ -50,9 +50,9 @@ import os
 import json
 import requests
 
-apiKey = "yourappname-XXXXXXXXXXXXXXXX"
+apiKey    = "yourappname-XXXXXXXXXXXXXXXX"
 apiServer = "https://api.exavault.com"
-api = V1Api.V1Api(ApiClient.ApiClient(apiKey, apiServer))
+api       = V1Api.V1Api(ApiClient.ApiClient(apiKey, apiServer))
 ```
 
 ##### Authenticating #####
