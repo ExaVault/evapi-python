@@ -13,25 +13,25 @@ class Account:
             'username': 'str',
             'maxUsers': 'int',
             'userCount': 'int',
-            'masterAccount': 'Account',
+            'masterAccount': 'User',
             'status': 'int',
             'branding': 'bool',
             'customDomain': 'bool',
             'planCode': 'str',
-            'diskQuotaLimit': 'str',
-            'bandwidthQuotaLimit': 'str',
-            'diskQuotaUsed': 'str',
-            'bandwidthQuotaUsed': 'str',
-            'quotaNoticeEnabled': 'str',
-            'quotaNoticeThreshold': 'str',
+            'diskQuotaLimit': 'long',
+            'bandwidthQuotaLimit': 'long',
+            'diskQuotaUsed': 'long',
+            'bandwidthQuotaUsed': 'long',
+            'quotaNoticeEnabled': 'int',
+            'quotaNoticeThreshold': 'int',
             'redirect': 'str',
             'secureOnly': 'bool',
             'complexPasswords': 'bool',
             'showReferralLinks': 'bool',
             'externalDomains': 'str',
             'freeTrial': 'bool',
-            'appliedPromotion': 'str',
-            'clientId': 'str',
+            'appliedTrial': 'str',
+            'clientId': 'int',
             'created': 'str',
             'modified': 'str'
 
@@ -42,25 +42,25 @@ class Account:
         self.username = None # str
         self.maxUsers = None # int
         self.userCount = None # int
-        self.masterAccount = None # Account
+        self.masterAccount = None # User
         self.status = None # int
         self.branding = None # bool
         self.customDomain = None # bool
         self.planCode = None # str
-        self.diskQuotaLimit = None # str
-        self.bandwidthQuotaLimit = None # str
-        self.diskQuotaUsed = None # str
-        self.bandwidthQuotaUsed = None # str
-        self.quotaNoticeEnabled = None # str
-        self.quotaNoticeThreshold = None # str
+        self.diskQuotaLimit = None # long
+        self.bandwidthQuotaLimit = None # long
+        self.diskQuotaUsed = None # long
+        self.bandwidthQuotaUsed = None # long
+        self.quotaNoticeEnabled = None # int
+        self.quotaNoticeThreshold = None # int
         self.redirect = None # str
         self.secureOnly = None # bool
         self.complexPasswords = None # bool
         self.showReferralLinks = None # bool
         self.externalDomains = None # str
         self.freeTrial = None # bool
-        self.appliedPromotion = None # str
-        self.clientId = None # str
+        self.appliedTrial = None # str
+        self.clientId = None # int
         self.created = None # str
         self.modified = None # str
         

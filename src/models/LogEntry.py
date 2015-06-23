@@ -13,8 +13,8 @@ class LogEntry:
             'fileSource': 'str',
             'operation': 'str',
             'duration': 'str',
-            'bytesTransferred': 'str',
-            'id': 'str',
+            'bytesTransferred': 'long',
+            'id': 'int',
             'created': 'str',
             'username': 'str',
             'sessionId': 'str',
@@ -29,8 +29,8 @@ class LogEntry:
         self.fileSource = None # str
         self.operation = None # str
         self.duration = None # str
-        self.bytesTransferred = None # str
-        self.id = None # str
+        self.bytesTransferred = None # long
+        self.id = None # int
         self.created = None # str
         self.username = None # str
         self.sessionId = None # str

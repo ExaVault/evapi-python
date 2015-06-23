@@ -9,8 +9,8 @@ class Message:
 
     def __init__(self):
         self.swaggerTypes = {
-            'id': 'str',
-            'userId': 'str',
+            'id': 'int',
+            'userId': 'int',
             'shareId': 'str',
             'subject': 'str',
             'body': 'str',
@@ -20,8 +20,8 @@ class Message:
         }
 
 
-        self.id = None # str
-        self.userId = None # str
+        self.id = None # int
+        self.userId = None # int
         self.shareId = None # str
         self.subject = None # str
         self.body = None # str

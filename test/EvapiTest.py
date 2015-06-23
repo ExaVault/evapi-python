@@ -20,42 +20,126 @@ import ApiClient
 import unittest
 import traceback
 
+from models import *
+from var_dump import var_dump
+
 class EvapiTest(unittest.TestCase):
 
     # NOTE: the below variables are needed for successful completion
     # of tests. Be sure to populate each with your actual account
     # information, where relevant
 
-    USERNAME      = 'yourusername'                      # replace with our username
-    PASSWORD      = 'yourpassword'                      # replace with your password
-    API_KEY       = 'yourappname-XXXXXXXXXXXXXXXXXXXX'  # replace with your API key
+    USERNAME      = 'yourusername'
+    PASSWORD      = 'yourpassword'
+    API_KEY       = 'yourapp-XXXXXXXXXXXXXXXXXXXX'
     API_SERVER    = 'https://api.exavault.com'
     ROOT_DIR      = '/'
     FOLDER        = 'unit-tests'
     SUBFOLDER     = 'subfolder'
     TEST_USER     = 'unit-tests'
-    TEST_EMAIL    = 'youremail@yourdomain.com'          # replace with your email address
-    PREVIEW       = '/path/to/preview_file.jpg'         # replace with actual file path
+    TEST_EMAIL    = 'youremail@yourdomain.com'
+    PREVIEW       = '/test-files/preview/images.jpg'
     RENAME_FOLDER = 'test-rename-folder'
-    DOWNLOAD_FILE = '/path/of/file/to/download'         # replace with actual file path
+    DOWNLOAD_FILE = '/test-files/file-tree.txt'
+    UPLOAD_FILE   = 'test-filename.txt'
     TIMEZONE      = 'America/Los_Angeles'
     USER_TYPE     = 'user'
-    PERMISSIONS   = '"upload":true,"download":true'     # NOTE: server not decoding, fix
+    PERMISSIONS   = 'upload,download,modify,delete'
 
-    ### setUp and tearDown methods ###
+    api = None
+    accessToken = None
 
-    def setUp(self):
-        """Initialize the API client"""
-        self.api = V1Api.V1Api( ApiClient.ApiClient(self.API_KEY, self.API_SERVER) )
+    ### Setup and teardown methods ###
 
-    def tearDown(self):
-        """Logout the current user if an access token was set"""
-        if hasattr(self, 'accessToken'):
-            self.api.logoutUser(self.accessToken)
+    @classmethod
+    def setUpClass(cls):
+        cls.api = V1Api.V1Api( ApiClient.ApiClient(cls.API_KEY, cls.API_SERVER) )
+
+    @classmethod
+    def tearDownClass(cls):
+        if cls.accessToken is not None:
+            cls.api.logoutUser(cls.accessToken)
+
+    ### Private Methods ###
+
+    def __authenticateUser(self):
+        """Authenticates the test user"""
+        response = self.api.authenticateUser(self.USERNAME, self.PASSWORD)
+        if response.success:
+            self.accessToken = response.results.accessToken
+            return response
+        else:
+            raise Exception(response.error.message)
+
+    def __createUser(self):
+        """Creates a test user"""
+        return self.api.createUser(self.accessToken, self.TEST_USER, self.ROOT_DIR, self.TEST_EMAIL, self.PASSWORD, self.USER_TYPE, self.PERMISSIONS, self.TIMEZONE)
+
+    def __deleteUser(self):
+        """Deletes a test user"""
+        return self.api.deleteUser(self.accessToken, self.TEST_USER)
+
+    def __checkResponseStatus(self, response):
+        """Checks for a valid API response"""
+        if not response.success:
+            raise Exception(response.error.message)
+
+    def __runResponseAssertions(self, response, apiError):
+        """Run the standard response assertions"""
+        self.assertFalse(apiError)
+        self.assertIsNotNone(response)
+        self.assertEquals(response.success, 1)
+
+    def __runErrorAssertions(self, error):
+        """Run the standard error assertions"""
+        self.assertIsNotNone(error)
+        self.assertEqual(error.__class__.__name__, "Error")
+        self.assertIsNone(error.code)
+        self.assertIsNone(error.message)
+
+    def __runUserAssertions(self, user):
+        self.assertIsNotNone(user)
+        self.assertEquals(user.__class__.__name__, "User")
+        self.assertIsInstance(user.id, int)
+        self.assertIsInstance(user.gid, int)
+        self.assertIsInstance(user.owningAccountId, int)
+        self.assertIsInstance(user.role, str)
+        self.assertIsInstance(user.email, str)
+        self.assertIsInstance(user.status, int)
+        self.assertIsInstance(user.username, str)
+        self.assertIsInstance(user.nickname, str)
+        self.assertIsInstance(user.accessTimestamp, str)
+        self.assertIsInstance(user.homeDir, str)
+        self.assertIsInstance(user.share, bool)
+        self.assertIsInstance(user.upload, bool)
+        self.assertIsInstance(user.changePassword, bool)
+        self.assertIsInstance(user.download, bool)
+        self.assertIsInstance(user.modify, bool)
+        self.assertIsInstance(user.notification, bool)
+        self.assertIsInstance(user.list, bool)
+        self.assertIsInstance(user.delete, bool)
+        self.assertIsInstance(user.expiration, str)
+        self.assertIsInstance(user.timeZone, str)
+        self.assertIsInstance(user.created, str)
+        self.assertIsInstance(user.modified, str)
+
+    def __runResourcePropertyAssertions(self, resourceProp):
+        self.assertIsNotNone(resourceProp)
+        self.assertEquals(resourceProp.__class__.__name__, "ResourceProperty")
+        self.assertIsInstance(resourceProp.parent, str)
+        self.assertIsInstance(resourceProp.type, str)
+        self.assertIsInstance(resourceProp.shares, list)
+        self.assertIsInstance(resourceProp.uploadDate, str)
+        self.assertIsInstance(resourceProp.createdBy, str)
+        self.assertIsInstance(resourceProp.path, str)
+        self.assertIsInstance(resourceProp.size, int)
+        self.assertIsInstance(resourceProp.previewable, bool)
+        self.assertIsInstance(resourceProp.fileCount, int)
+        self.assertIsInstance(resourceProp.name, str)
 
     ### Test Cases ###
 
-    def testAuthenticateUser(self):
+    def testAuthenticateUser(self):                
         """Test authenticating a user"""
 
         # attempt to authenticate the user
@@ -64,31 +148,51 @@ class EvapiTest(unittest.TestCase):
             response = self.__authenticateUser()
             results = response.results
         except Exception as e:
-            print 'Error on authenticateUser: ', e
             apiError = True
 
-        # test all assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
-        self.assertEquals(results.username, self.USERNAME)
-        self.assertIsNotNone(self.accessToken)
-        self.assertIsNotNone(results.clientIp)
+        # run assertions
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "AuthResponse")
 
-    def testCheckFileExists(self):
+        results = response.results;
+        self.assertIsNotNone(results)
+        self.assertEquals(results.__class__.__name__, "Auth")
+        self.assertEquals(results.username, self.USERNAME)
+        self.assertIsNotNone(results.accessToken)
+        self.assertIsNotNone(results.clientIp)
+        self.assertIsInstance(results.accessToken, str)
+        self.assertIsInstance(results.clientIp, str)
+
+    def testCheckFilesExist(self):
         """Test to see if file exists"""
 
         # authenticate and check if file exists
         apiError = False
         try:
             self.__authenticateUser()
-            response = self.api.checkFilesExist(self.accessToken, self.ROOT_DIR)
+            response = self.api.checkFilesExist(self.accessToken, [self.ROOT_DIR])
         except Exception as e:
-            print 'Error on checkFileExists: ', e
             apiError = True
 
-        # test all assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
+        # run assertions
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "ExistingResourcesResponse")
+
+        results = response.results;
+        self.assertIsNotNone(results)
+        self.assertIsInstance(results, list)
+        self.assertGreater(len(results), 0)
+
+        firstResult = response.results[0];
+        self.assertIsNotNone(firstResult)
+        self.assertEquals(firstResult.__class__.__name__, "ExistingResource")
+        self.assertTrue(firstResult.exists)
+
+        resource = firstResult.resource;
+        self.assertIsNotNone(resource)
+        self.assertEquals(resource.__class__.__name__, "ResourceProperty")
 
     def testCopyResources(self):
         """Test copying a resource from one location to another"""
@@ -108,26 +212,28 @@ class EvapiTest(unittest.TestCase):
             # copy the subfolder to the folder
             response = self.api.copyResources(self.accessToken, [self.SUBFOLDER], self.FOLDER)
             self.__checkResponseStatus(response)
-            firstResult = response.results[0]
 
             # setup expected values
-            folder = self.ROOT_DIR + self.FOLDER
-            subFolder = self.ROOT_DIR + self.SUBFOLDER
-            copiedFolder = folder + subFolder
+            copiedFolder = self.FOLDER + "/" + self.SUBFOLDER
 
             # cleanup directories we just created
-            self.api.deleteResources(self.accessToken, folder)
-            self.api.deleteResources(self.accessToken, subFolder)
+            self.api.deleteResources(self.accessToken, [self.FOLDER, self.SUBFOLDER])
 
         except Exception as e:
-            print 'Error on copyResources: ', e
             apiError = True
 
-        # test all assertions
-        self.assertFalse(apiError)
+        # run assertions
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "ModifiedResourcesResponse")
+
+        firstResult = response.results[0]
         self.assertIsNotNone(firstResult)
-        self.assertEquals(subFolder, firstResult.file)
-        self.assertEquals(copiedFolder, firstResult.destination)
+        self.assertEqual(firstResult.__class__.__name__, "ModifiedResource")
+        self.assertEquals(firstResult.success, 1)
+        self.assertGreater(firstResult.size, 0)
+        self.assertEquals(self.ROOT_DIR + self.SUBFOLDER, firstResult.file)
+        self.assertEquals(self.ROOT_DIR + copiedFolder, firstResult.destination)
 
     def testCreateFolder(self):
         """Test creating a folder on the remote host"""
@@ -138,13 +244,20 @@ class EvapiTest(unittest.TestCase):
             self.__authenticateUser()
             response = self.api.createFolder(self.accessToken, self.FOLDER, self.ROOT_DIR)
         except Exception as e:
-            print 'Error on createFolder: ', e
             apiError = True
 
-        # test all assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
-        self.assertEquals(1, response.success)
+        # run assertions
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "Response")        
+
+        results = response.results
+        self.assertIsNotNone(results)
+        self.assertIsInstance(results, list)
+        self.assertEquals(len(results), 0)
+
+        # cleanup
+        self.api.deleteResources(self.accessToken, self.FOLDER)
 
     def testCreateUser(self):
         """Test creating a new subaccount user"""
@@ -155,13 +268,17 @@ class EvapiTest(unittest.TestCase):
             self.__authenticateUser()
             response = self.__createUser()
         except Exception as e:
-            print 'Error on createUser: ', e
             apiError = True
 
-        # test all assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
-        self.assertEquals(1, response.success)
+        # run assertions
+        self.__runResponseAssertions(response, apiError)        
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "Response")
+
+        results = response.results
+        self.assertIsNotNone(results)
+        self.assertIsInstance(results, list)
+        self.assertEquals(len(results), 0)
 
         # delete the user
         self.__deleteUser()
@@ -176,17 +293,25 @@ class EvapiTest(unittest.TestCase):
 
             # create a test folder, then attempt to delete it
             self.api.createFolder(self.accessToken, self.FOLDER, self.ROOT_DIR)
-            response = self.api.deleteResources(self.accessToken, self.ROOT_DIR + self.FOLDER)
-            firstResult = response.results[0]
+            response = self.api.deleteResources(self.accessToken, [self.FOLDER])
 
         except Exception as e:
-            print 'Error on deleteResources: ', e
             apiError = True
 
         # test all assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "DeletedResourcesResponse")
+
+        firstResult = response.results[0]
         self.assertIsNotNone(firstResult)
+        self.assertEqual(firstResult.__class__.__name__, "DeletedResource")
+
+        self.assertIsInstance(firstResult.success, int)
+        self.assertIsInstance(firstResult.size, int)
+        self.assertIsInstance(firstResult.file, str)
+
+        self.assertEquals(firstResult.success, 1)
         self.assertEquals(self.ROOT_DIR + self.FOLDER, firstResult.file)
 
     def testDeleteUser(self):
@@ -199,13 +324,17 @@ class EvapiTest(unittest.TestCase):
             self.__createUser()
             response = self.__deleteUser()
         except Exception as e:
-            print 'Error on deleteUser: ', e
             apiError = True
 
         # test all assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
-        self.assertEquals(1, response.success)
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "Response")
+
+        results = response.results
+        self.assertIsNotNone(results)
+        self.assertIsInstance(results, list)
+        self.assertEquals(len(results), 0)
 
     def testGetAccount(self):
         """Test getting the account for the currently logged in user"""
@@ -215,12 +344,46 @@ class EvapiTest(unittest.TestCase):
             self.__authenticateUser()
             response = self.api.getAccount(self.accessToken)
         except Exception as e:
-            print 'Error on getAccount: ', e
             apiError = True
 
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
-        self.assertEquals(self.USERNAME, response.results.username)
+        # run assertions
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "AccountResponse")
+
+        results = response.results
+        self.assertIsNotNone(results)
+        self.assertEquals(results.__class__.__name__, "Account")
+
+        self.assertIsInstance(results.id, int)
+        self.assertIsInstance(results.clientId, int)        
+        self.assertIsInstance(results.userCount, int)
+        self.assertIsInstance(results.redirect, str)
+        self.assertIsInstance(results.bandwidthQuotaUsed, long)
+        self.assertIsInstance(results.bandwidthQuotaLimit, long)
+        self.assertIsInstance(results.diskQuotaUsed, long)
+        self.assertIsInstance(results.diskQuotaLimit, long)
+        self.assertIsInstance(results.showReferralLinks, bool)
+        self.assertIsInstance(results.customDomain, bool)
+        self.assertIsInstance(results.secureOnly, bool)
+        self.assertIsInstance(results.username, str)
+        self.assertIsInstance(results.status, int)
+        self.assertIsInstance(results.maxUsers, int)
+        self.assertIsInstance(results.planCode, str)
+        self.assertIsInstance(results.appliedTrial, str)
+        self.assertIsInstance(results.externalDomains, str)
+        self.assertIsInstance(results.branding, bool)
+        self.assertIsInstance(results.freeTrial, bool)
+        self.assertIsInstance(results.quotaNoticeEnabled, int)
+        self.assertIsInstance(results.quotaNoticeThreshold, int)
+        self.assertIsInstance(results.complexPasswords, bool)
+        self.assertIsInstance(results.created, str)        
+        self.assertIsInstance(results.modified, str)
+
+        self.assertEquals(self.USERNAME, results.username)
+
+        masterAccount = results.masterAccount
+        self.__runUserAssertions(masterAccount)
 
     def testGetCurrentUser(self):
         """Test getting the currently logged in user"""
@@ -229,18 +392,17 @@ class EvapiTest(unittest.TestCase):
         apiError = False
         try:
             self.__authenticateUser()
-            response = self.api.getCurrentUser(self.accessToken)
-            results = response.results
+            response = self.api.getCurrentUser(self.accessToken)            
         except Exception as e:
-            print 'Error on getCurrentUser: ', e
             apiError = True
 
-        # test all assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(results)
-        self.assertEquals(self.USERNAME, results.username)
-        self.assertEquals(self.USERNAME, results.nickname)
-        self.assertEquals('master', results.role)
+        # run assertions
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "UserResponse")
+
+        results = response.results
+        self.__runUserAssertions(results)
 
     def testGetDownloadFileUrl(self):
         """Test getting a URL for the specified file to download"""
@@ -250,16 +412,16 @@ class EvapiTest(unittest.TestCase):
         try:
             self.__authenticateUser()
             response = self.api.getDownloadFileUrl(self.accessToken, self.DOWNLOAD_FILE)
-            results = response.results
         except Exception as e:
-            print 'Error on getDownloadFileUrl: ', e
             apiError = True
 
         # test all assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
-        self.assertIsNotNone(results)
-        self.assertTrue(results.url)
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "UrlResponse")
+
+        results = response.results
+        self.assertIsInstance(results.url, str)        
 
     def testGetFileActivityLogs(self):
         """Test retrieving the file activity logs for the given account"""
@@ -270,14 +432,28 @@ class EvapiTest(unittest.TestCase):
             self.__authenticateUser()
             response = self.api.getFileActivityLogs(self.accessToken, **{'offset':0})
         except Exception as e:
-            print 'Error on getFileActivityLogs: ', e
             apiError = True
 
         # test all assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
-        self.assertTrue(response.success)
-        self.assertIsInstance(response.results, list)
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "LogResponse")
+
+        results = response.results
+        self.assertIsInstance(results, list)
+
+        for log in results:
+            self.assertIsInstance(log.fileName, str)
+            self.assertIsInstance(log.fileSource, str)
+            self.assertIsInstance(log.operation, str)
+            self.assertIsInstance(log.duration, str)
+            self.assertIsInstance(log.id, int)
+            self.assertIsInstance(log.created, str)
+            self.assertIsInstance(log.username, str)
+            self.assertIsInstance(log.sessionId, str)
+            self.assertIsInstance(log.ipAddress, str)
+            self.assertIsInstance(log.protocol, str)
+            self.assertIsInstance(log.status, str)
 
     def testGetFolders(self):
         """Test retrieving folders for a specified root path"""
@@ -287,16 +463,16 @@ class EvapiTest(unittest.TestCase):
         try:
             self.__authenticateUser()
             response = self.api.getFolders(self.accessToken, self.ROOT_DIR)
-            firstResult = response.results[0]
         except Exception as e:
-            print 'Error on getFolders: ', e
             apiError = True
 
         # test all assertions
-        self.assertIsNotNone(response)
-        self.assertTrue(response.success)
-        self.assertIsNotNone(firstResult)
-        self.assertIsInstance(response.results, list)
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "ResourcePropertiesResponse")
+
+        firstResult = response.results[0]
+        self.__runResourcePropertyAssertions(firstResult)
 
     def testGetResourceList(self):
         """Test retrieving all resources for a specified root path"""
@@ -305,19 +481,23 @@ class EvapiTest(unittest.TestCase):
         apiError = False
         try:
             self.__authenticateUser()
-            response = self.api.getResourceList(
-                self.accessToken, self.ROOT_DIR, 'sort_files_type', 'asc', 1, 25
-                )
-            results = response.results
+            response = self.api.getResourceList(self.accessToken, self.ROOT_DIR, 'sort_files_type', 'asc', 1, 25)
         except Exception as e:
-            print 'Error on getResourcesList: ', e
             apiError = True
 
         # test all assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "ResourceResponse")
+
+        results = response.results
         self.assertIsNotNone(results)
+        self.assertEquals(results.__class__.__name__, "Resource")
+        self.assertIsInstance(results.totalFiles, int)
         self.assertIsInstance(results.resources, list)
+
+        for resource in results.resources:
+            self.__runResourcePropertyAssertions(resource)
 
     def testGetResourceProperties(self):
         """Test retrieving all resource properties for a specified root path"""
@@ -328,13 +508,37 @@ class EvapiTest(unittest.TestCase):
             self.__authenticateUser()
             response = self.api.getResourceProperties(self.accessToken, [self.ROOT_DIR])
         except Exception as e:
-            print 'Error on getResourceProperties: ', e
+            apiError = True
+
+        # run assertions
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "ResourcePropertiesResponse")
+
+        results = response.results
+        self.assertIsInstance(results, list)
+
+        for resourceProperty in results:
+            self.__runResourcePropertyAssertions(resourceProperty)
+
+    def testGetUploadFileUrl(self):
+        """Test getting a URL for the specified file to upload"""
+
+        # authenticate the user and get the upload file URL
+        apiError = False
+        try:
+            self.__authenticateUser()
+            response = self.api.getUploadFileUrl(self.accessToken, 1024, self.ROOT_DIR + self.UPLOAD_FILE)
+        except Exception as e:
             apiError = True
 
         # test all assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response.results, list)
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "UrlResponse")
+
+        results = response.results
+        self.assertIsInstance(results.url, str)
 
     def testGetUser(self):
         """Test retrieving a specified subaccount user"""
@@ -345,13 +549,15 @@ class EvapiTest(unittest.TestCase):
             self.__authenticateUser()
             response = self.api.getUser(self.accessToken, self.USERNAME)
         except Exception as e:
-            print 'Error on getUser: ', e
             apiError = True
 
-        # test assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
-        self.assertIsNotNone(response.results)
+        # run assertions
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "UserResponse")
+
+        results = response.results
+        self.__runUserAssertions(results)
 
     def testGetUsers(self):
         """Test getting all users for the current account"""
@@ -363,13 +569,18 @@ class EvapiTest(unittest.TestCase):
             self.__authenticateUser()
             response = self.api.getUsers(self.accessToken, "sort_users_username", "asc")
         except Exception as e:
-            print 'Error on getUsers: ', e
             apiError = True
 
-        # test assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
-        self.assertIsNotNone(response.results[0])
+        # run assertions
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "UsersResponse")
+
+        results = response.results
+        self.assertIsInstance(results, list)
+
+        for user in results:
+            self.__runUserAssertions(user)
 
     def testMoveResources(self):
         """Test moving the specified resource to another path"""
@@ -389,26 +600,23 @@ class EvapiTest(unittest.TestCase):
 
             # make the call to moveResources
             response = self.api.moveResources(self.accessToken, [self.SUBFOLDER], self.FOLDER)
-            self.__checkResponseStatus(response)
-            firstResult = response.results[0]
+            self.__checkResponseStatus(response)            
 
             # setup the expected values
-            folder      = self.ROOT_DIR + self.FOLDER
-            subFolder   = self.ROOT_DIR + self.SUBFOLDER
-            movedFolder = folder + subFolder
+            movedFolder = self.FOLDER + "/" + self.SUBFOLDER
 
-            # cleanup test folders
-            self.api.deleteResources(self.accessToken, folder)
-            self.api.deleteResources(self.accessToken, movedFolder)
+            # cleanup test folder
+            self.api.deleteResources(self.accessToken, [self.FOLDER, movedFolder])
 
         except Exception as e:
-            print 'Error on moveResources: ', e
             apiError = True
 
         # test assertions
         self.assertFalse(apiError)
+
+        firstResult = response.results[0]
         self.assertIsNotNone(firstResult)
-        self.assertEquals(subFolder, firstResult.file)
+        self.assertEquals(self.ROOT_DIR + self.SUBFOLDER, firstResult.file)
 
     def testPreviewFile(self):
         """Test retrieving a preview image for a previewable file"""
@@ -418,15 +626,20 @@ class EvapiTest(unittest.TestCase):
         try:
             self.__authenticateUser()
             response = self.api.previewFile(self.accessToken, self.PREVIEW, "small")
-            results = response.results
+            
         except Exception as e:
-            print 'Error on previewFile: ', e
             apiError = True
 
-        # test assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
+        # run assertions
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "PreviewFileResponse")
+
+        results = response.results
         self.assertIsNotNone(results)
+        self.assertIsInstance(results.size, int)
+        self.assertIsInstance(results.image, str)
+        self.assertIsInstance(results.imageId, str)
 
     def testRenameResource(self):
         """Test renaming a file or folder"""
@@ -450,13 +663,17 @@ class EvapiTest(unittest.TestCase):
             self.api.deleteResources(self.accessToken, newFolderName)
 
         except Exception as e:
-            print 'Error on renameResource: ', e
             apiError = True
 
-        # test assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
-        self.assertEquals(1, response.success)
+        # run assertions
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "Response")
+
+        results = response.results
+        self.assertIsNotNone(results)
+        self.assertIsInstance(results, list)
+        self.assertEquals(len(results), 0)
 
     def testUpdateUser(self):
         """Test updating the settings for a user"""
@@ -473,20 +690,25 @@ class EvapiTest(unittest.TestCase):
             # make call to update the user's username
             response = self.api.getUser(self.accessToken, self.TEST_USER)
             userId   = response.results.id
-            response = self.api.updateUser(self.accessToken, userId, self.TEST_USER + "-CHANGED")
+            username = self.TEST_USER + "-CHANGED"
+            response = self.api.updateUser(self.accessToken, userId, **{'username':username})
             self.__checkResponseStatus(response)
 
             # delete the user
             self.api.deleteUser(self.accessToken, self.TEST_USER + "-CHANGED")
 
         except Exception as e:
-            print 'Error on updateUser: ', e
             apiError = True
 
-        # test assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
-        self.assertEquals(1, response.success)
+        # run assertions
+        self.__runResponseAssertions(response, apiError)        
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "Response")
+            
+        results = response.results
+        self.assertIsNotNone(results)
+        self.assertIsInstance(results, list)
+        self.assertEquals(len(results), 0)
 
     def testUserAvailable(self):
         """Test to verify that a given username is available"""
@@ -495,52 +717,21 @@ class EvapiTest(unittest.TestCase):
         apiError = False
         try:
             self.__authenticateUser()
-            response = self.api.userAvailable(self.accessToken, self.USERNAME)
+            response = self.api.userAvailable(self.accessToken, self.TEST_USER)
             results = response.results
         except Exception as e:
-            print 'Error on userAvailable: ', e
             apiError = True
 
         # test assertions
-        self.assertFalse(apiError)
-        self.assertIsNotNone(response)
+        self.__runResponseAssertions(response, apiError)
+        self.__runErrorAssertions(response.error)
+        self.assertEqual(response.__class__.__name__, "AvailableUserResponse")
+
+        results = response.results
         self.assertIsNotNone(results)
-        self.assertFalse(results.available)
-
-    ### Private Methods ###
-
-    def __authenticateUser(self):
-        """Authenticates the test user"""
-        response = self.api.authenticateUser(self.USERNAME, self.PASSWORD)
-        if response.success:
-            self.accessToken = response.results.accessToken
-            return response
-        else:
-            raise Exception(response.error.message)
-
-    def __createUser(self):
-        """Creates a test user"""
-        return self.api.createUser(
-            self.accessToken,
-            self.TEST_USER,
-            self.ROOT_DIR,
-            self.TEST_EMAIL,
-            self.PASSWORD,
-            self.USER_TYPE,
-            self.PERMISSIONS,
-            self.TIMEZONE            
-            )
-
-    def __deleteUser(self):
-        """Deletes a test user"""
-        return self.api.deleteUser(self.accessToken, self.TEST_USER)
-
-    def __checkResponseStatus(self, response):
-        """Checks for a valid API response"""
-        if not response.success:
-            raise Exception(response.error.message)        
+        self.assertIsInstance(results.available, bool)
+        self.assertTrue(results.available)        
 
 # Execute the unit tests        
 if __name__ == '__main__':
     unittest.main()
-

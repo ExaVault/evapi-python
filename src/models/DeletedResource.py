@@ -5,16 +5,18 @@ Copyright 2014 ExaVault, Inc.
 NOTE: This file was generated automatically. Do not modify by hand.
 """
 
-class ExistingResource:
+class DeletedResource:
 
     def __init__(self):
         self.swaggerTypes = {
-            'exists': 'bool',
-            'resource': 'ResourceProperty'
+            'file': 'str',
+            'size': 'int',
+            'success': 'int'
 
         }
 
 
-        self.exists = None # bool
-        self.resource = None # ResourceProperty
+        self.file = None # str
+        self.size = None # int
+        self.success = None # int
         
