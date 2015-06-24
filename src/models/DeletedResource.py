@@ -10,13 +10,13 @@ class DeletedResource:
     def __init__(self):
         self.swaggerTypes = {
             'file': 'str',
-            'size': 'int',
+            'size': 'long',
             'success': 'int'
 
         }
 
 
         self.file = None # str
-        self.size = None # int
+        self.size = None # long
         self.success = None # int
         

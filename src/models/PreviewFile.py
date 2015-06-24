@@ -10,13 +10,13 @@ class PreviewFile:
     def __init__(self):
         self.swaggerTypes = {
             'image': 'str',
-            'size': 'int',
+            'size': 'long',
             'imageId': 'str'
 
         }
 
 
         self.image = None # str
-        self.size = None # int
+        self.size = None # long
         self.imageId = None # str
         

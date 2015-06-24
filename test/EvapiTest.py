@@ -21,7 +21,6 @@ import unittest
 import traceback
 
 from models import *
-from var_dump import var_dump
 
 class EvapiTest(unittest.TestCase):
 
@@ -34,9 +33,9 @@ class EvapiTest(unittest.TestCase):
     API_KEY       = 'yourapp-XXXXXXXXXXXXXXXXXXXX'
     API_SERVER    = 'https://api.exavault.com'
     ROOT_DIR      = '/'
-    FOLDER        = 'unit-tests'
+    FOLDER        = 'evapi-python-tests'
     SUBFOLDER     = 'subfolder'
-    TEST_USER     = 'unit-tests'
+    TEST_USER     = 'evapi-python-tests'
     TEST_EMAIL    = 'youremail@yourdomain.com'
     PREVIEW       = '/test-files/preview/images.jpg'
     RENAME_FOLDER = 'test-rename-folder'
@@ -49,31 +48,41 @@ class EvapiTest(unittest.TestCase):
     api = None
     accessToken = None
 
-    ### Setup and teardown methods ###
+    ### static class methods for setup and teardown ###
 
     @classmethod
     def setUpClass(cls):
         cls.api = V1Api.V1Api( ApiClient.ApiClient(cls.API_KEY, cls.API_SERVER) )
+        cls.__authenticateUser()
 
     @classmethod
     def tearDownClass(cls):
         if cls.accessToken is not None:
             cls.api.logoutUser(cls.accessToken)
 
-    ### Private Methods ###
-
-    def __authenticateUser(self):
+    @classmethod
+    def __authenticateUser(cls):
         """Authenticates the test user"""
-        response = self.api.authenticateUser(self.USERNAME, self.PASSWORD)
+        response = cls.api.authenticateUser(cls.USERNAME, cls.PASSWORD)
         if response.success:
-            self.accessToken = response.results.accessToken
-            return response
+            cls.accessToken = response.results.accessToken
         else:
             raise Exception(response.error.message)
 
+    ### helper methods ###
+
     def __createUser(self):
         """Creates a test user"""
-        return self.api.createUser(self.accessToken, self.TEST_USER, self.ROOT_DIR, self.TEST_EMAIL, self.PASSWORD, self.USER_TYPE, self.PERMISSIONS, self.TIMEZONE)
+        return self.api.createUser(
+            self.accessToken,
+            self.TEST_USER,
+            self.ROOT_DIR,
+            self.TEST_EMAIL,
+            self.PASSWORD,
+            self.USER_TYPE,
+            self.PERMISSIONS,
+            self.TIMEZONE
+            )
 
     def __deleteUser(self):
         """Deletes a test user"""
@@ -132,33 +141,37 @@ class EvapiTest(unittest.TestCase):
         self.assertIsInstance(resourceProp.uploadDate, str)
         self.assertIsInstance(resourceProp.createdBy, str)
         self.assertIsInstance(resourceProp.path, str)
-        self.assertIsInstance(resourceProp.size, int)
+        self.assertIsInstance(resourceProp.size, long)
         self.assertIsInstance(resourceProp.previewable, bool)
         self.assertIsInstance(resourceProp.fileCount, int)
         self.assertIsInstance(resourceProp.name, str)
 
     ### Test Cases ###
 
-    def testAuthenticateUser(self):                
-        """Test authenticating a user"""
+    def testAuthenticateAndLogoutUser(self):                
+        """Test authenticating and logging out a user"""
 
-        # attempt to authenticate the user
         apiError = False
         try:
-            response = self.__authenticateUser()
-            results = response.results
+            self.__createUser()
+            authResponse = self.api.authenticateUser(self.TEST_USER, self.PASSWORD)
+            logoutResponse = self.api.logoutUser(authResponse.results.accessToken)
+            self.__deleteUser()
         except Exception as e:
             apiError = True
 
         # run assertions
-        self.__runResponseAssertions(response, apiError)
-        self.__runErrorAssertions(response.error)
-        self.assertEqual(response.__class__.__name__, "AuthResponse")
+        self.__runResponseAssertions(authResponse, apiError)
+        self.__runErrorAssertions(authResponse.error)
+        self.__runResponseAssertions(logoutResponse, apiError)
+        self.__runErrorAssertions(logoutResponse.error)
+        self.assertEqual(authResponse.__class__.__name__, "AuthResponse")
+        self.assertEqual(logoutResponse.__class__.__name__, "Response")
 
-        results = response.results;
+        results = authResponse.results;
         self.assertIsNotNone(results)
         self.assertEquals(results.__class__.__name__, "Auth")
-        self.assertEquals(results.username, self.USERNAME)
+        self.assertEquals(results.username, self.TEST_USER)
         self.assertIsNotNone(results.accessToken)
         self.assertIsNotNone(results.clientIp)
         self.assertIsInstance(results.accessToken, str)
@@ -167,10 +180,8 @@ class EvapiTest(unittest.TestCase):
     def testCheckFilesExist(self):
         """Test to see if file exists"""
 
-        # authenticate and check if file exists
         apiError = False
         try:
-            self.__authenticateUser()
             response = self.api.checkFilesExist(self.accessToken, [self.ROOT_DIR])
         except Exception as e:
             apiError = True
@@ -197,11 +208,8 @@ class EvapiTest(unittest.TestCase):
     def testCopyResources(self):
         """Test copying a resource from one location to another"""
 
-        # authenticate and copy resource
         apiError = False
         try:
-            self.__authenticateUser()
-
             # create two folders, both in the root directory
             folder1 = self.api.createFolder(self.accessToken, self.FOLDER, self.ROOT_DIR)
             folder2 = self.api.createFolder(self.accessToken, self.SUBFOLDER, self.ROOT_DIR)
@@ -238,10 +246,8 @@ class EvapiTest(unittest.TestCase):
     def testCreateFolder(self):
         """Test creating a folder on the remote host"""
 
-        # authenticate and create a folder
         apiError = False
         try:
-            self.__authenticateUser()
             response = self.api.createFolder(self.accessToken, self.FOLDER, self.ROOT_DIR)
         except Exception as e:
             apiError = True
@@ -262,10 +268,8 @@ class EvapiTest(unittest.TestCase):
     def testCreateUser(self):
         """Test creating a new subaccount user"""
 
-        # authenticate and create the user
         apiError = False
         try:
-            self.__authenticateUser()
             response = self.__createUser()
         except Exception as e:
             apiError = True
@@ -288,9 +292,6 @@ class EvapiTest(unittest.TestCase):
 
         apiError = False
         try:
-            # authenticate the user first
-            self.__authenticateUser()
-
             # create a test folder, then attempt to delete it
             self.api.createFolder(self.accessToken, self.FOLDER, self.ROOT_DIR)
             response = self.api.deleteResources(self.accessToken, [self.FOLDER])
@@ -308,7 +309,7 @@ class EvapiTest(unittest.TestCase):
         self.assertEqual(firstResult.__class__.__name__, "DeletedResource")
 
         self.assertIsInstance(firstResult.success, int)
-        self.assertIsInstance(firstResult.size, int)
+        self.assertIsInstance(firstResult.size, long)
         self.assertIsInstance(firstResult.file, str)
 
         self.assertEquals(firstResult.success, 1)
@@ -320,7 +321,6 @@ class EvapiTest(unittest.TestCase):
         # create then delete the test user
         apiError = False
         try:
-            self.__authenticateUser()
             self.__createUser()
             response = self.__deleteUser()
         except Exception as e:
@@ -341,7 +341,6 @@ class EvapiTest(unittest.TestCase):
 
         apiError = False
         try:
-            self.__authenticateUser()
             response = self.api.getAccount(self.accessToken)
         except Exception as e:
             apiError = True
@@ -388,10 +387,8 @@ class EvapiTest(unittest.TestCase):
     def testGetCurrentUser(self):
         """Test getting the currently logged in user"""
 
-        # authenticate and get the current user
         apiError = False
         try:
-            self.__authenticateUser()
             response = self.api.getCurrentUser(self.accessToken)            
         except Exception as e:
             apiError = True
@@ -407,10 +404,8 @@ class EvapiTest(unittest.TestCase):
     def testGetDownloadFileUrl(self):
         """Test getting a URL for the specified file to download"""
 
-        # authenticate the user and get the download file URL
         apiError = False
         try:
-            self.__authenticateUser()
             response = self.api.getDownloadFileUrl(self.accessToken, self.DOWNLOAD_FILE)
         except Exception as e:
             apiError = True
@@ -426,10 +421,8 @@ class EvapiTest(unittest.TestCase):
     def testGetFileActivityLogs(self):
         """Test retrieving the file activity logs for the given account"""
 
-        # authenticate and get the file activity logs for the account
         apiError = False
         try:
-            self.__authenticateUser()
             response = self.api.getFileActivityLogs(self.accessToken, **{'offset':0})
         except Exception as e:
             apiError = True
@@ -458,10 +451,8 @@ class EvapiTest(unittest.TestCase):
     def testGetFolders(self):
         """Test retrieving folders for a specified root path"""
 
-        # authenticate and get the folders at the root path
         apiError = False
         try:
-            self.__authenticateUser()
             response = self.api.getFolders(self.accessToken, self.ROOT_DIR)
         except Exception as e:
             apiError = True
@@ -477,10 +468,8 @@ class EvapiTest(unittest.TestCase):
     def testGetResourceList(self):
         """Test retrieving all resources for a specified root path"""
 
-        # authenticate user and get the resource list
         apiError = False
         try:
-            self.__authenticateUser()
             response = self.api.getResourceList(self.accessToken, self.ROOT_DIR, 'sort_files_type', 'asc', 1, 25)
         except Exception as e:
             apiError = True
@@ -502,10 +491,8 @@ class EvapiTest(unittest.TestCase):
     def testGetResourceProperties(self):
         """Test retrieving all resource properties for a specified root path"""
 
-        # authenticate user and get the resource properties
         apiError = False
         try:
-            self.__authenticateUser()
             response = self.api.getResourceProperties(self.accessToken, [self.ROOT_DIR])
         except Exception as e:
             apiError = True
@@ -524,10 +511,8 @@ class EvapiTest(unittest.TestCase):
     def testGetUploadFileUrl(self):
         """Test getting a URL for the specified file to upload"""
 
-        # authenticate the user and get the upload file URL
         apiError = False
         try:
-            self.__authenticateUser()
             response = self.api.getUploadFileUrl(self.accessToken, 1024, self.ROOT_DIR + self.UPLOAD_FILE)
         except Exception as e:
             apiError = True
@@ -543,10 +528,8 @@ class EvapiTest(unittest.TestCase):
     def testGetUser(self):
         """Test retrieving a specified subaccount user"""
 
-        # authenticate user and get the specified user
         apiError = False
         try:
-            self.__authenticateUser()
             response = self.api.getUser(self.accessToken, self.USERNAME)
         except Exception as e:
             apiError = True
@@ -562,11 +545,8 @@ class EvapiTest(unittest.TestCase):
     def testGetUsers(self):
         """Test getting all users for the current account"""
 
-        # authenticate user and get the users associated with this
-        # account
         apiError = False
         try:
-            self.__authenticateUser()
             response = self.api.getUsers(self.accessToken, "sort_users_username", "asc")
         except Exception as e:
             apiError = True
@@ -585,12 +565,8 @@ class EvapiTest(unittest.TestCase):
     def testMoveResources(self):
         """Test moving the specified resource to another path"""
 
-        # authenticate the user and move test resource from one
-        # location to another
         apiError = False
         try:
-            self.__authenticateUser()
-
             # create bunch of test folders
             folder1 = self.api.createFolder(self.accessToken, self.FOLDER, self.ROOT_DIR)
             folder2 = self.api.createFolder(self.accessToken, self.SUBFOLDER, self.ROOT_DIR)
@@ -621,12 +597,9 @@ class EvapiTest(unittest.TestCase):
     def testPreviewFile(self):
         """Test retrieving a preview image for a previewable file"""
 
-        # authenticate the user and retrieve the preview image
         apiError = False
         try:
-            self.__authenticateUser()
             response = self.api.previewFile(self.accessToken, self.PREVIEW, "small")
-            
         except Exception as e:
             apiError = True
 
@@ -637,18 +610,15 @@ class EvapiTest(unittest.TestCase):
 
         results = response.results
         self.assertIsNotNone(results)
-        self.assertIsInstance(results.size, int)
+        self.assertIsInstance(results.size, long)
         self.assertIsInstance(results.image, str)
         self.assertIsInstance(results.imageId, str)
 
     def testRenameResource(self):
         """Test renaming a file or folder"""
 
-        # authenticate and rename the test resource
         apiError = False
         try:
-            self.__authenticateUser()
-
             # create the test folder
             response = self.api.createFolder(self.accessToken, self.RENAME_FOLDER, self.ROOT_DIR)
             self.__checkResponseStatus(response)
@@ -678,11 +648,8 @@ class EvapiTest(unittest.TestCase):
     def testUpdateUser(self):
         """Test updating the settings for a user"""
 
-        # authenticate, create a temp user and update its details
         apiError = False
         try:
-            self.__authenticateUser()
-
             # create a temporary user
             response = self.__createUser()
             self.__checkResponseStatus(response)
@@ -713,12 +680,9 @@ class EvapiTest(unittest.TestCase):
     def testUserAvailable(self):
         """Test to verify that a given username is available"""
 
-        # authenticate and test if the given username is available
         apiError = False
         try:
-            self.__authenticateUser()
             response = self.api.userAvailable(self.accessToken, self.TEST_USER)
-            results = response.results
         except Exception as e:
             apiError = True
 

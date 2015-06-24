@@ -18,7 +18,7 @@ class ResourceProperty:
             'path': 'str',
             'shares': 'list[Share]',
             'notificationSettings': 'str',
-            'size': 'int',
+            'size': 'long',
             'previewable': 'bool',
             'type': 'str'
 
@@ -34,7 +34,7 @@ class ResourceProperty:
         self.path = None # str
         self.shares = None # list[Share]
         self.notificationSettings = None # str
-        self.size = None # int
+        self.size = None # long
         self.previewable = None # bool
         self.type = None # str
         

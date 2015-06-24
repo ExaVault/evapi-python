@@ -16,8 +16,8 @@ class V1Api(object):
 
     def __init__(self, apiClient):
       self.apiClient = apiClient
-
         
+    
     def authenticateUser(self, username, password, **kwargs):
         """Authenticates a user into the API
 
@@ -1274,7 +1274,7 @@ class V1Api(object):
 
         Args:
             access_token, str: Access token required to make the API call (required)
-            fileSize, int: Size of the file to upload, in bytes (required)
+            fileSize, long: Size of the file to upload, in bytes (required)
             destinationPath, str: Path relative to account's home directory, including file name (required)
             allowOverwrite, bool: True if the file should be overwritten, false if different file names should be generated (optional)
             resume, bool: True if upload resume is supported, false if it isn't (optional)
@@ -1889,3 +1889,6 @@ class V1Api(object):
         return responseObject
         
         
+    
+
+
