@@ -5,17 +5,16 @@ Copyright 2014 ExaVault, Inc.
 NOTE: This file was generated automatically. Do not modify by hand.
 """
 
-class Recipient:
+class ShareLogEntry:
 
     def __init__(self):
         self.swaggerTypes = {
             'id': 'int',
             'shareId': 'str',
-            'type': 'str',
-            'hash': 'str',
-            'email': 'str',
-            'sent': 'bool',
-            'received': 'bool',
+            'username': 'str',
+            'action': 'str',
+            'actionObjectId': 'str',
+            'detail': 'str',
             'created': 'str'
 
         }
@@ -23,10 +22,9 @@ class Recipient:
 
         self.id = None # int
         self.shareId = None # str
-        self.type = None # str
-        self.hash = None # str
-        self.email = None # str
-        self.sent = None # bool
-        self.received = None # bool
+        self.username = None # str
+        self.action = None # str
+        self.actionObjectId = None # str
+        self.detail = None # str
         self.created = None # str
         

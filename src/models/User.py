@@ -19,6 +19,7 @@ class User:
             'username': 'str',
             'nickname': 'str',
             'email': 'str',
+            'expiration': 'str',
             'homeDir': 'str',
             'download': 'bool',
             'upload': 'bool',
@@ -44,6 +45,7 @@ class User:
         self.username = None # str
         self.nickname = None # str
         self.email = None # str
+        self.expiration = None # str
         self.homeDir = None # str
         self.download = None # bool
         self.upload = None # bool

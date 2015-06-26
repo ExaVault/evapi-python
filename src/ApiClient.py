@@ -28,6 +28,23 @@ class ApiClient:
         self.apiServer = apiServer
         self.cookie = None
 
+    # EV NOTE: we need to seralize this data as x-www-form-urlencoded
+    # data (minus the URL encoding, since this is sent via the POST
+    # body)
+    def __serializeAsFormData (self, dict):
+
+        formData = "";
+
+        for key in dict :
+            value = dict[key]
+            if type(value) is list :
+                for item in value :
+                    formData += (key + "[]=" + str(item) + "&")
+            else :
+                formData += (key + "=" + str(value) + "&")
+
+        return formData[:-1]    
+
     def callAPI(self, resourcePath, method, queryParams, postData, headerParams=None):
 
         url = self.apiServer + resourcePath
@@ -46,17 +63,19 @@ class ApiClient:
             pass
         elif method in ['POST', 'PUT', 'DELETE']:
             if postData:
+                """ EV NOTE: POST requests are specified differently for our API
                 headers['Content-type'] = 'application/json'
                 data = self.sanitizeForSerialization(postData)
                 data = json.dumps(data)
+                """
+                headers['Content-Type'] = 'application/x-www-form-urlencoded'
+                data = self.__serializeAsFormData(postData)
         else:
             raise Exception('Method ' + method + ' is not recognized.')
 
         # create and prepare the request
         session = Session()
-        request = Request(
-            method, url = url, params = queryParams, headers = headers
-        )
+        request = Request(method, url = url, data = data, headers = headers)
 
         prepared = session.prepare_request(request)
 
@@ -200,3 +219,4 @@ class ApiClient:
                                                              attrType)) # EV NOTE - this was 'objClass' (bug)
 
         return instance
+

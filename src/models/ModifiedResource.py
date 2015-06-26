@@ -11,7 +11,7 @@ class ModifiedResource:
         self.swaggerTypes = {
             'file': 'str',
             'destination': 'str',
-            'size': 'int',
+            'size': 'long',
             'success': 'int'
 
         }
@@ -19,6 +19,6 @@ class ModifiedResource:
 
         self.file = None # str
         self.destination = None # str
-        self.size = None # int
+        self.size = None # long
         self.success = None # int
         

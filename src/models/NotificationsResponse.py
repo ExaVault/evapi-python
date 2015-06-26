@@ -5,18 +5,18 @@ Copyright 2014 ExaVault, Inc.
 NOTE: This file was generated automatically. Do not modify by hand.
 """
 
-class File:
+class NotificationsResponse:
 
     def __init__(self):
         self.swaggerTypes = {
-            'file': 'str',
-            'size': 'str',
-            'success': 'int'
+            'success': 'int',
+            'error': 'Error',
+            'results': 'list[Notification]'
 
         }
 
 
-        self.file = None # str
-        self.size = None # str
         self.success = None # int
+        self.error = None # Error
+        self.results = None # list[Notification]
         

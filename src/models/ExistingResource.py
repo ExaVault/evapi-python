@@ -10,11 +10,11 @@ class ExistingResource:
     def __init__(self):
         self.swaggerTypes = {
             'exists': 'bool',
-            'resource': 'Resource'
+            'resource': 'ResourceProperty'
 
         }
 
 
         self.exists = None # bool
-        self.resource = None # Resource
+        self.resource = None # ResourceProperty
         

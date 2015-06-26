@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 """
 Copyright 2014 ExaVault, Inc.
@@ -15,7 +16,7 @@ class V1Api(object):
 
     def __init__(self, apiClient):
       self.apiClient = apiClient
-
+        
     
     def authenticateUser(self, username, password, **kwargs):
         """Authenticates a user into the API
@@ -43,19 +44,23 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('username' in params):
-            queryParams['username'] = self.apiClient.toPathValue(params['username'])
-        if ('password' in params):
-            queryParams['password'] = self.apiClient.toPathValue(params['password'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('username' in params):
+            postData['username'] = params['username']
+        if ('password' in params):
+            postData['password'] = params['password']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'AuthResponse')
+
         return responseObject
         
         
@@ -85,19 +90,23 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('filePaths' in params):
-            queryParams['filePaths'] = self.apiClient.toPathValue(params['filePaths'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('filePaths' in params):
+            postData['filePaths'] = params['filePaths']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'ExistingResourcesResponse')
+
         return responseObject
         
         
@@ -128,21 +137,25 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('filePaths' in params):
-            queryParams['filePaths'] = self.apiClient.toPathValue(params['filePaths'])
-        if ('destinationPath' in params):
-            queryParams['destinationPath'] = self.apiClient.toPathValue(params['destinationPath'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('filePaths' in params):
+            postData['filePaths'] = params['filePaths']
+        if ('destinationPath' in params):
+            postData['destinationPath'] = params['destinationPath']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'ModifiedResourcesResponse')
+
         return responseObject
         
         
@@ -173,21 +186,174 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('folderName' in params):
-            queryParams['folderName'] = self.apiClient.toPathValue(params['folderName'])
-        if ('path' in params):
-            queryParams['path'] = self.apiClient.toPathValue(params['path'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('folderName' in params):
+            postData['folderName'] = params['folderName']
+        if ('path' in params):
+            postData['path'] = params['path']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'Response')
+
+        return responseObject
+        
+        
+    def createNotification(self, access_token, path, action, usernames, sendEmail, **kwargs):
+        """Creates a new Notification object
+
+        Args:
+            access_token, str: Access token required to make the API call (required)
+            path, str: Full path of file/folder where notification is set. (required)
+            action, str: Type of action to filter on: 'upload', 'download', 'delete', 'all' (required)
+            usernames, str: User type to filter on: 'notice_user_all', 'notice_user_all_recipients', 'notice_user_all_users' (required)
+            sendEmail, bool: Set to true if the user should be notified by email when the notification is triggered. (required)
+            emails, list[str]: Email addresses to send notification to. If not specified, sends to owner by default. (optional)
+            
+        Returns: Response
+        """
+
+        allParams = ['access_token', 'path', 'action', 'usernames', 'sendEmail', 'emails']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method createNotification" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/v1/createNotification'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'POST'
+
+        queryParams = {}
+        headerParams = {}
+
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
+
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('path' in params):
+            postData['path'] = params['path']
+        if ('action' in params):
+            postData['action'] = params['action']
+        if ('usernames' in params):
+            postData['usernames'] = params['usernames']
+        if ('sendEmail' in params):
+            postData['sendEmail'] = params['sendEmail']
+        if ('emails' in params):
+            postData['emails'] = params['emails']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
+
+        if not response:
+            return None
+
+        responseObject = self.apiClient.deserialize(response, 'Response')
+
+        return responseObject
+        
+        
+    def createShare(self, access_token, type, name, filePaths, **kwargs):
+        """Create a new Share object
+
+        Args:
+            access_token, str: Access token required to make the API call (required)
+            type, str: The type of share to create: shared_folder, send, receive. (required)
+            name, str: Name of the Share. (required)
+            filePaths, list[str]: Array of strings containing the file paths to share. (required)
+            subject, str: Share message subject (for email invitations). (optional)
+            message, str: Share message contents (for email invitations). (optional)
+            emails, list[str]: Array of strings for email recipients (for email invitations). (optional)
+            ccEmail, str: Specifies a CC email recipient. (optional)
+            requireEmail, bool: Requires a user's email to access (defaults to false if not specified). (optional)
+            accessMode, str: Type of permissions share recipients have (upload, download, modify). Defaults to download if no option specified. (optional)
+            embed, bool: Allows user to embed a widget with the share. Defaults to false if not specified. (optional)
+            isPublic, bool: True if share has a public URL, otherwise defaults to false (optional)
+            password, str: If not null, value of password is required to access this Share (optional)
+            expiration, str: The date the current Share should expire, formatted YYYY-mm-dd (optional)
+            hasNotification, bool: True if the user should be notified about activity on this Share. (optional)
+            notificationEmails, list[str]: An array of recipients who should receive notification emails. (optional)
+            fileDropCreateFolders, bool: If true, all receive folder submissions will be uploaded separate folders (only applicable for Receive folder types) (optional)
+            
+        Returns: Response
+        """
+
+        allParams = ['access_token', 'type', 'name', 'filePaths', 'subject', 'message', 'emails', 'ccEmail', 'requireEmail', 'accessMode', 'embed', 'isPublic', 'password', 'expiration', 'hasNotification', 'notificationEmails', 'fileDropCreateFolders']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method createShare" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/v1/createShare'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'POST'
+
+        queryParams = {}
+        headerParams = {}
+
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
+
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('type' in params):
+            postData['type'] = params['type']
+        if ('name' in params):
+            postData['name'] = params['name']
+        if ('filePaths' in params):
+            postData['filePaths'] = params['filePaths']
+        if ('subject' in params):
+            postData['subject'] = params['subject']
+        if ('message' in params):
+            postData['message'] = params['message']
+        if ('emails' in params):
+            postData['emails'] = params['emails']
+        if ('ccEmail' in params):
+            postData['ccEmail'] = params['ccEmail']
+        if ('requireEmail' in params):
+            postData['requireEmail'] = params['requireEmail']
+        if ('accessMode' in params):
+            postData['accessMode'] = params['accessMode']
+        if ('embed' in params):
+            postData['embed'] = params['embed']
+        if ('isPublic' in params):
+            postData['isPublic'] = params['isPublic']
+        if ('password' in params):
+            postData['password'] = params['password']
+        if ('expiration' in params):
+            postData['expiration'] = params['expiration']
+        if ('hasNotification' in params):
+            postData['hasNotification'] = params['hasNotification']
+        if ('notificationEmails' in params):
+            postData['notificationEmails'] = params['notificationEmails']
+        if ('fileDropCreateFolders' in params):
+            postData['fileDropCreateFolders'] = params['fileDropCreateFolders']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
+
+        if not response:
+            return None
+
+        responseObject = self.apiClient.deserialize(response, 'Response')
+
         return responseObject
         
         
@@ -201,8 +367,9 @@ class V1Api(object):
             email, str: The user's email address (required)
             password, str: The user's password (required)
             role, str: The user's role, i.e: 'user' or 'admin' (required)
-            permissions, list[str]: An array of permissions for the user. The following values are supported: upload, download, delete, modify, list, changePassword, share, notification (required)
+            permissions, str: A CSV string of user permissions. The following values are supported: upload, download, delete, modify, list, changePassword, share, notification. (required)
             nickname, str: The user's nickname (optional)
+            expiration, str: The date when the user should expire, formatted YYYY-mm-dd (optional)
             locked, bool: If true, the user's account is locked by default (optional)
             welcomeEmail, bool: If true, send a user email upon creation (optional)
             timeZone, str: The user's timezone, used for accurate time display within SWFT. See &lt;a href='https://php.net/manual/en/timezones.php' target='blank'&gt;this page&lt;/a&gt; for allowed values (required)
@@ -210,7 +377,7 @@ class V1Api(object):
         Returns: Response
         """
 
-        allParams = ['access_token', 'username', 'destinationFolder', 'email', 'password', 'role', 'permissions', 'nickname', 'locked', 'welcomeEmail', 'timeZone']
+        allParams = ['access_token', 'username', 'destinationFolder', 'email', 'password', 'role', 'permissions', 'nickname', 'expiration', 'locked', 'welcomeEmail', 'timeZone']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
@@ -226,37 +393,89 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('username' in params):
-            queryParams['username'] = self.apiClient.toPathValue(params['username'])
-        if ('destinationFolder' in params):
-            queryParams['destinationFolder'] = self.apiClient.toPathValue(params['destinationFolder'])
-        if ('email' in params):
-            queryParams['email'] = self.apiClient.toPathValue(params['email'])
-        if ('password' in params):
-            queryParams['password'] = self.apiClient.toPathValue(params['password'])
-        if ('role' in params):
-            queryParams['role'] = self.apiClient.toPathValue(params['role'])
-        if ('permissions' in params):
-            queryParams['permissions'] = self.apiClient.toPathValue(params['permissions'])
-        if ('timeZone' in params):
-            queryParams['timeZone'] = self.apiClient.toPathValue(params['timeZone'])
-        if ('nickname' in params):
-            queryParams['nickname'] = self.apiClient.toPathValue(params['nickname'])
-        if ('locked' in params):
-            queryParams['locked'] = self.apiClient.toPathValue(params['locked'])
-        if ('welcomeEmail' in params):
-            queryParams['welcomeEmail'] = self.apiClient.toPathValue(params['welcomeEmail'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('username' in params):
+            postData['username'] = params['username']
+        if ('destinationFolder' in params):
+            postData['destinationFolder'] = params['destinationFolder']
+        if ('email' in params):
+            postData['email'] = params['email']
+        if ('password' in params):
+            postData['password'] = params['password']
+        if ('role' in params):
+            postData['role'] = params['role']
+        if ('permissions' in params):
+            postData['permissions'] = params['permissions']
+        if ('nickname' in params):
+            postData['nickname'] = params['nickname']
+        if ('expiration' in params):
+            postData['expiration'] = params['expiration']
+        if ('locked' in params):
+            postData['locked'] = params['locked']
+        if ('welcomeEmail' in params):
+            postData['welcomeEmail'] = params['welcomeEmail']
+        if ('timeZone' in params):
+            postData['timeZone'] = params['timeZone']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'Response')
+
+        return responseObject
+        
+        
+    def deleteNotification(self, access_token, id, **kwargs):
+        """Deletes a Notification by ID
+
+        Args:
+            access_token, str: Access token required to make the API call (required)
+            id, int: ID of the Notification to delete. (required)
+            
+        Returns: Response
+        """
+
+        allParams = ['access_token', 'id']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method deleteNotification" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/v1/deleteNotification'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'POST'
+
+        queryParams = {}
+        headerParams = {}
+
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
+
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('id' in params):
+            postData['id'] = params['id']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
+
+        if not response:
+            return None
+
+        responseObject = self.apiClient.deserialize(response, 'Response')
+
         return responseObject
         
         
@@ -267,7 +486,7 @@ class V1Api(object):
             access_token, str: Access token required to make the API call (required)
             filePaths, list[str]: Array containing paths of the files or folder to delete (required)
             
-        Returns: FilesResponse
+        Returns: DeletedResourcesResponse
         """
 
         allParams = ['access_token', 'filePaths']
@@ -286,19 +505,69 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('filePaths' in params):
-            queryParams['filePaths'] = self.apiClient.toPathValue(params['filePaths'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('filePaths' in params):
+            postData['filePaths'] = params['filePaths']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
-        responseObject = self.apiClient.deserialize(response, 'FilesResponse')
+        responseObject = self.apiClient.deserialize(response, 'DeletedResourcesResponse')
+
+        return responseObject
+        
+        
+    def deleteShare(self, access_token, id, **kwargs):
+        """Deletes a Share by ID
+
+        Args:
+            access_token, str: Access token required to make the API call (required)
+            id, int: ID of the Share to delete. (required)
+            
+        Returns: Response
+        """
+
+        allParams = ['access_token', 'id']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method deleteShare" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/v1/deleteShare'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'POST'
+
+        queryParams = {}
+        headerParams = {}
+
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
+
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('id' in params):
+            postData['id'] = params['id']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
+
+        if not response:
+            return None
+
+        responseObject = self.apiClient.deserialize(response, 'Response')
+
         return responseObject
         
         
@@ -328,19 +597,23 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('username' in params):
-            queryParams['username'] = self.apiClient.toPathValue(params['username'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('username' in params):
+            postData['username'] = params['username']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'Response')
+
         return responseObject
         
         
@@ -369,17 +642,21 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'AccountResponse')
+
         return responseObject
         
         
@@ -408,17 +685,21 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'UserResponse')
+
         return responseObject
         
         
@@ -449,21 +730,25 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('filePaths' in params):
-            queryParams['filePaths'] = self.apiClient.toPathValue(params['filePaths'])
-        if ('downloadName' in params):
-            queryParams['downloadName'] = self.apiClient.toPathValue(params['downloadName'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('filePaths' in params):
+            postData['filePaths'] = params['filePaths']
+        if ('downloadName' in params):
+            postData['downloadName'] = params['downloadName']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'UrlResponse')
+
         return responseObject
         
         
@@ -498,29 +783,33 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('offset' in params):
-            queryParams['offset'] = self.apiClient.toPathValue(params['offset'])
-        if ('sortBy' in params):
-            queryParams['sortBy'] = self.apiClient.toPathValue(params['sortBy'])
-        if ('sortOrder' in params):
-            queryParams['sortOrder'] = self.apiClient.toPathValue(params['sortOrder'])
-        if ('filterBy' in params):
-            queryParams['filterBy'] = self.apiClient.toPathValue(params['filterBy'])
-        if ('filter' in params):
-            queryParams['filter'] = self.apiClient.toPathValue(params['filter'])
-        if ('itemLimit' in params):
-            queryParams['itemLimit'] = self.apiClient.toPathValue(params['itemLimit'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('filterBy' in params):
+            postData['filterBy'] = params['filterBy']
+        if ('filter' in params):
+            postData['filter'] = params['filter']
+        if ('itemLimit' in params):
+            postData['itemLimit'] = params['itemLimit']
+        if ('offset' in params):
+            postData['offset'] = params['offset']
+        if ('sortBy' in params):
+            postData['sortBy'] = params['sortBy']
+        if ('sortOrder' in params):
+            postData['sortOrder'] = params['sortOrder']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'LogResponse')
+
         return responseObject
         
         
@@ -550,19 +839,167 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('path' in params):
-            queryParams['path'] = self.apiClient.toPathValue(params['path'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('path' in params):
+            postData['path'] = params['path']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'ResourcePropertiesResponse')
+
+        return responseObject
+        
+        
+    def getNotification(self, access_token, id, **kwargs):
+        """Returns a notification based on the given ID
+
+        Args:
+            access_token, str: Access token required to make the API call (required)
+            id, int: ID of the Notification (required)
+            
+        Returns: NotificationResponse
+        """
+
+        allParams = ['access_token', 'id']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method getNotification" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/v1/getNotification'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'POST'
+
+        queryParams = {}
+        headerParams = {}
+
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
+
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('id' in params):
+            postData['id'] = params['id']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
+
+        if not response:
+            return None
+
+        responseObject = self.apiClient.deserialize(response, 'NotificationResponse')
+
+        return responseObject
+        
+        
+    def getNotifications(self, access_token, type, **kwargs):
+        """Returns all notifications for the current user
+
+        Args:
+            access_token, str: Access token required to make the API call (required)
+            type, str: Type of notification to filter on: 'file', 'folder', 'shared_folder', 'send_receipt', 'share_receipt', 'file_drop' (required)
+            sortBy, str: Sort by one of the following: 'sort_notifications_folder_name', 'sort_notifications_path', 'sort_notifications_date' (optional)
+            sortOrder, str: Sort by 'asc' or 'desc' order. (optional)
+            filter, str: Filter by the provided search terms. (optional)
+            
+        Returns: NotificationsResponse
+        """
+
+        allParams = ['access_token', 'type', 'sortBy', 'sortOrder', 'filter']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method getNotifications" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/v1/getNotifications'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'POST'
+
+        queryParams = {}
+        headerParams = {}
+
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
+
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('type' in params):
+            postData['type'] = params['type']
+        if ('sortBy' in params):
+            postData['sortBy'] = params['sortBy']
+        if ('sortOrder' in params):
+            postData['sortOrder'] = params['sortOrder']
+        if ('filter' in params):
+            postData['filter'] = params['filter']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
+
+        if not response:
+            return None
+
+        responseObject = self.apiClient.deserialize(response, 'NotificationsResponse')
+
+        return responseObject
+        
+        
+    def getNotificationActivity(self, access_token, **kwargs):
+        """Returns all notification activity for the current user
+
+        Args:
+            access_token, str: Access token required to make the API call (required)
+            
+        Returns: NotificationActivityResponse
+        """
+
+        allParams = ['access_token']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method getNotificationActivity" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/v1/getNotificationActivity'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'POST'
+
+        queryParams = {}
+        headerParams = {}
+
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
+
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
+
+        if not response:
+            return None
+
+        responseObject = self.apiClient.deserialize(response, 'NotificationActivityResponse')
+
         return responseObject
         
         
@@ -598,36 +1035,40 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('path' in params):
-            queryParams['path'] = self.apiClient.toPathValue(params['path'])
-        if ('sortBy' in params):
-            queryParams['sortBy'] = self.apiClient.toPathValue(params['sortBy'])
-        if ('sortOrder' in params):
-            queryParams['sortOrder'] = self.apiClient.toPathValue(params['sortOrder'])
-        if ('offset' in params):
-            queryParams['offset'] = self.apiClient.toPathValue(params['offset'])
-        if ('limit' in params):
-            queryParams['limit'] = self.apiClient.toPathValue(params['limit'])
-        if ('detailed' in params):
-            queryParams['detailed'] = self.apiClient.toPathValue(params['detailed'])
-        if ('pattern' in params):
-            queryParams['pattern'] = self.apiClient.toPathValue(params['pattern'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('path' in params):
+            postData['path'] = params['path']
+        if ('sortBy' in params):
+            postData['sortBy'] = params['sortBy']
+        if ('sortOrder' in params):
+            postData['sortOrder'] = params['sortOrder']
+        if ('offset' in params):
+            postData['offset'] = params['offset']
+        if ('limit' in params):
+            postData['limit'] = params['limit']
+        if ('detailed' in params):
+            postData['detailed'] = params['detailed']
+        if ('pattern' in params):
+            postData['pattern'] = params['pattern']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'ResourceResponse')
+
         return responseObject
         
         
     def getResourceProperties(self, access_token, filePaths, **kwargs):
-        """Get the properties for each of the specified files/folders.
+        """Get the properties for each of the specified files/folders
 
         Args:
             access_token, str: Access token required to make the API call (required)
@@ -652,19 +1093,179 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('filePaths' in params):
-            queryParams['filePaths'] = self.apiClient.toPathValue(params['filePaths'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('filePaths' in params):
+            postData['filePaths'] = params['filePaths']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'ResourcePropertiesResponse')
+
+        return responseObject
+        
+        
+    def getShare(self, access_token, id, **kwargs):
+        """Returns a share by the specified ID
+
+        Args:
+            access_token, str: Access token required to make the API call (required)
+            id, int: ID of the requested Share (required)
+            
+        Returns: ShareResponse
+        """
+
+        allParams = ['access_token', 'id']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method getShare" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/v1/getShare'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'POST'
+
+        queryParams = {}
+        headerParams = {}
+
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
+
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('id' in params):
+            postData['id'] = params['id']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
+
+        if not response:
+            return None
+
+        responseObject = self.apiClient.deserialize(response, 'ShareResponse')
+
+        return responseObject
+        
+        
+    def getShares(self, access_token, **kwargs):
+        """Returns all Shares for the current user
+
+        Args:
+            access_token, str: Access token required to make the API call (required)
+            type, str: The type of share to return: 'shared_folder', 'send', or 'receive'. If no argument specified, will return all Shares types. (optional)
+            sortBy, str: Sort by one of the following: 'sort_shares_name', 'sort_shares_date', 'sort_shares_user', 'sort_shares_access_mode'. (optional)
+            sortOrder, str: Sort by 'asc' or 'desc' order. (optional)
+            filter, str: Filter by the provided search terms. (optional)
+            include, str: Filter by all, active-only, or current user's only. (optional)
+            offset, int: Start position of results to return, for pagination. (optional)
+            limit, int: Maximum number of elements to return or 0 if no limit. (optional)
+            
+        Returns: SharesResponse
+        """
+
+        allParams = ['access_token', 'type', 'sortBy', 'sortOrder', 'filter', 'include', 'offset', 'limit']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method getShares" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/v1/getShares'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'POST'
+
+        queryParams = {}
+        headerParams = {}
+
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
+
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('type' in params):
+            postData['type'] = params['type']
+        if ('sortBy' in params):
+            postData['sortBy'] = params['sortBy']
+        if ('sortOrder' in params):
+            postData['sortOrder'] = params['sortOrder']
+        if ('filter' in params):
+            postData['filter'] = params['filter']
+        if ('include' in params):
+            postData['include'] = params['include']
+        if ('offset' in params):
+            postData['offset'] = params['offset']
+        if ('limit' in params):
+            postData['limit'] = params['limit']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
+
+        if not response:
+            return None
+
+        responseObject = self.apiClient.deserialize(response, 'SharesResponse')
+
+        return responseObject
+        
+        
+    def getShareActivity(self, access_token, id, **kwargs):
+        """Return activity log entries for the specified Share ID
+
+        Args:
+            access_token, str: Access token required to make the API call (required)
+            id, int: ID of the Share (required)
+            
+        Returns: ShareActivityResponse
+        """
+
+        allParams = ['access_token', 'id']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method getShareActivity" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/v1/getShareActivity'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'POST'
+
+        queryParams = {}
+        headerParams = {}
+
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
+
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('id' in params):
+            postData['id'] = params['id']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
+
+        if not response:
+            return None
+
+        responseObject = self.apiClient.deserialize(response, 'ShareActivityResponse')
+
         return responseObject
         
         
@@ -673,7 +1274,7 @@ class V1Api(object):
 
         Args:
             access_token, str: Access token required to make the API call (required)
-            fileSize, int: Size of the file to upload, in bytes (required)
+            fileSize, long: Size of the file to upload, in bytes (required)
             destinationPath, str: Path relative to account's home directory, including file name (required)
             allowOverwrite, bool: True if the file should be overwritten, false if different file names should be generated (optional)
             resume, bool: True if upload resume is supported, false if it isn't (optional)
@@ -697,25 +1298,29 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('fileSize' in params):
-            queryParams['fileSize'] = self.apiClient.toPathValue(params['fileSize'])
-        if ('destinationPath' in params):
-            queryParams['destinationPath'] = self.apiClient.toPathValue(params['destinationPath'])
-        if ('allowOverwrite' in params):
-            queryParams['allowOverwrite'] = self.apiClient.toPathValue(params['allowOverwrite'])
-        if ('resume' in params):
-            queryParams['resume'] = self.apiClient.toPathValue(params['resume'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('fileSize' in params):
+            postData['fileSize'] = params['fileSize']
+        if ('destinationPath' in params):
+            postData['destinationPath'] = params['destinationPath']
+        if ('allowOverwrite' in params):
+            postData['allowOverwrite'] = params['allowOverwrite']
+        if ('resume' in params):
+            postData['resume'] = params['resume']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'UrlResponse')
+
         return responseObject
         
         
@@ -745,19 +1350,23 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('username' in params):
-            queryParams['username'] = self.apiClient.toPathValue(params['username'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('username' in params):
+            postData['username'] = params['username']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'UserResponse')
+
         return responseObject
         
         
@@ -788,21 +1397,25 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('sortBy' in params):
-            queryParams['sortBy'] = self.apiClient.toPathValue(params['sortBy'])
-        if ('sortOrder' in params):
-            queryParams['sortOrder'] = self.apiClient.toPathValue(params['sortOrder'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('sortBy' in params):
+            postData['sortBy'] = params['sortBy']
+        if ('sortOrder' in params):
+            postData['sortOrder'] = params['sortOrder']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'UsersResponse')
+
         return responseObject
         
         
@@ -831,17 +1444,21 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'Response')
+
         return responseObject
         
         
@@ -872,21 +1489,25 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('filePaths' in params):
-            queryParams['filePaths'] = self.apiClient.toPathValue(params['filePaths'])
-        if ('destinationPath' in params):
-            queryParams['destinationPath'] = self.apiClient.toPathValue(params['destinationPath'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('filePaths' in params):
+            postData['filePaths'] = params['filePaths']
+        if ('destinationPath' in params):
+            postData['destinationPath'] = params['destinationPath']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'ModifiedResourcesResponse')
+
         return responseObject
         
         
@@ -920,27 +1541,31 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('path' in params):
-            queryParams['path'] = self.apiClient.toPathValue(params['path'])
-        if ('size' in params):
-            queryParams['size'] = self.apiClient.toPathValue(params['size'])
-        if ('width' in params):
-            queryParams['width'] = self.apiClient.toPathValue(params['width'])
-        if ('height' in params):
-            queryParams['height'] = self.apiClient.toPathValue(params['height'])
-        if ('page' in params):
-            queryParams['page'] = self.apiClient.toPathValue(params['page'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('path' in params):
+            postData['path'] = params['path']
+        if ('size' in params):
+            postData['size'] = params['size']
+        if ('width' in params):
+            postData['width'] = params['width']
+        if ('height' in params):
+            postData['height'] = params['height']
+        if ('page' in params):
+            postData['page'] = params['page']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'PreviewFileResponse')
+
         return responseObject
         
         
@@ -971,21 +1596,177 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('filePath' in params):
-            queryParams['filePath'] = self.apiClient.toPathValue(params['filePath'])
-        if ('newName' in params):
-            queryParams['newName'] = self.apiClient.toPathValue(params['newName'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('filePath' in params):
+            postData['filePath'] = params['filePath']
+        if ('newName' in params):
+            postData['newName'] = params['newName']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'Response')
+
+        return responseObject
+        
+        
+    def updateNotification(self, access_token, id, **kwargs):
+        """Updates an existing notification by ID
+
+        Args:
+            access_token, str: Access token required to make the API call (required)
+            id, int: The notification ID (required)
+            path, str: Full path of file/folder where notification is set. (optional)
+            action, str: Type of action to filter on: 'upload', 'download', 'delete', 'all' (optional)
+            usernames, str: User type to filter on: 'notice_user_all', 'notice_user_all_recipients', 'notice_user_all_users' (optional)
+            emails, list[str]: Email addresses to send notification to. If not specified, sends to owner by default. (optional)
+            sendEmail, bool: Set to true if the user should be notified by email when the notification is triggered. (optional)
+            
+        Returns: Response
+        """
+
+        allParams = ['access_token', 'id', 'path', 'action', 'usernames', 'emails', 'sendEmail']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method updateNotification" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/v1/updateNotification'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'POST'
+
+        queryParams = {}
+        headerParams = {}
+
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
+
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('id' in params):
+            postData['id'] = params['id']
+        if ('path' in params):
+            postData['path'] = params['path']
+        if ('action' in params):
+            postData['action'] = params['action']
+        if ('usernames' in params):
+            postData['usernames'] = params['usernames']
+        if ('emails' in params):
+            postData['emails'] = params['emails']
+        if ('sendEmail' in params):
+            postData['sendEmail'] = params['sendEmail']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
+
+        if not response:
+            return None
+
+        responseObject = self.apiClient.deserialize(response, 'Response')
+
+        return responseObject
+        
+        
+    def updateShare(self, access_token, id, **kwargs):
+        """Update an existing Share by ID
+
+        Args:
+            access_token, str: Access token required to make the API call (required)
+            id, int: The ID of the Share to update. (required)
+            name, str: Name of the Share. (optional)
+            filePaths, list[str]: Array of strings containing the file paths to share. (optional)
+            subject, str: Share message subject (for email invitations). (optional)
+            message, str: Share message contents (for email invitations). (optional)
+            emails, list[str]: Array of strings for email recipients (for email invitations). (optional)
+            ccEmail, str: Specifies a CC email recipient. (optional)
+            requireEmail, bool: Requires a user's email to access (defaults to false if not specified). (optional)
+            accessMode, str: Type of permissions share recipients have (upload, download, modify). Defaults to download if no option specified. (optional)
+            embed, bool: Allows user to embed a widget with the share. Defaults to false if not specified. (optional)
+            isPublic, bool: True if share has a public URL, otherwise defaults to false (optional)
+            password, str: If not null, value of password is required to access this Share (optional)
+            expiration, str: The date the current Share should expire, formatted YYYY-mm-dd (optional)
+            hasNotification, bool: True if the user should be notified about activity on this Share. (optional)
+            notificationEmails, list[str]: An array of recipients who should receive notification emails. (optional)
+            fileDropCreateFolders, bool: If true, all receive folder submissions will be uploaded separate folders (only applicable for Receive folder types) (optional)
+            
+        Returns: Response
+        """
+
+        allParams = ['access_token', 'id', 'name', 'filePaths', 'subject', 'message', 'emails', 'ccEmail', 'requireEmail', 'accessMode', 'embed', 'isPublic', 'password', 'expiration', 'hasNotification', 'notificationEmails', 'fileDropCreateFolders']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method updateShare" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/v1/updateShare'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'POST'
+
+        queryParams = {}
+        headerParams = {}
+
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
+
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('id' in params):
+            postData['id'] = params['id']
+        if ('name' in params):
+            postData['name'] = params['name']
+        if ('filePaths' in params):
+            postData['filePaths'] = params['filePaths']
+        if ('subject' in params):
+            postData['subject'] = params['subject']
+        if ('message' in params):
+            postData['message'] = params['message']
+        if ('emails' in params):
+            postData['emails'] = params['emails']
+        if ('ccEmail' in params):
+            postData['ccEmail'] = params['ccEmail']
+        if ('requireEmail' in params):
+            postData['requireEmail'] = params['requireEmail']
+        if ('accessMode' in params):
+            postData['accessMode'] = params['accessMode']
+        if ('embed' in params):
+            postData['embed'] = params['embed']
+        if ('isPublic' in params):
+            postData['isPublic'] = params['isPublic']
+        if ('password' in params):
+            postData['password'] = params['password']
+        if ('expiration' in params):
+            postData['expiration'] = params['expiration']
+        if ('hasNotification' in params):
+            postData['hasNotification'] = params['hasNotification']
+        if ('notificationEmails' in params):
+            postData['notificationEmails'] = params['notificationEmails']
+        if ('fileDropCreateFolders' in params):
+            postData['fileDropCreateFolders'] = params['fileDropCreateFolders']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
+
+        if not response:
+            return None
+
+        responseObject = self.apiClient.deserialize(response, 'Response')
+
         return responseObject
         
         
@@ -997,17 +1778,18 @@ class V1Api(object):
             userId, int: The user ID, must be obtained from getUser method first (required)
             username, str: Name of the subaccount user to modify (optional)
             nickname, str: The user's nickname (optional)
+            expiration, str: The date when use should expire in format: YYYY-MM-DD (optional)
             email, str: The user's email (optional)
             destinationFolder, str: The user's home folder (optional)
             password, str: The user's password (optional)
             locked, bool: If true, the user's account is locked by default (optional)
             role, str: The user's role, i.e: 'user', 'admin', 'master' (optional)
-            permissions, list[str]: An array of permissions for the user (optional)
+            permissions, str: A CSV string of user permissions. (optional)
             
         Returns: Response
         """
 
-        allParams = ['access_token', 'userId', 'username', 'nickname', 'email', 'destinationFolder', 'password', 'locked', 'role', 'permissions']
+        allParams = ['access_token', 'userId', 'username', 'nickname', 'expiration', 'email', 'destinationFolder', 'password', 'locked', 'role', 'permissions']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
@@ -1023,35 +1805,41 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('userId' in params):
-            queryParams['userId'] = self.apiClient.toPathValue(params['userId'])
-        if ('username' in params):
-            queryParams['username'] = self.apiClient.toPathValue(params['username'])
-        if ('nickname' in params):
-            queryParams['nickname'] = self.apiClient.toPathValue(params['nickname'])
-        if ('email' in params):
-            queryParams['email'] = self.apiClient.toPathValue(params['email'])
-        if ('destinationFolder' in params):
-            queryParams['destinationFolder'] = self.apiClient.toPathValue(params['destinationFolder'])
-        if ('password' in params):
-            queryParams['password'] = self.apiClient.toPathValue(params['password'])
-        if ('locked' in params):
-            queryParams['locked'] = self.apiClient.toPathValue(params['locked'])
-        if ('role' in params):
-            queryParams['role'] = self.apiClient.toPathValue(params['role'])
-        if ('permissions' in params):
-            queryParams['permissions'] = self.apiClient.toPathValue(params['permissions'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('userId' in params):
+            postData['userId'] = params['userId']
+        if ('username' in params):
+            postData['username'] = params['username']
+        if ('nickname' in params):
+            postData['nickname'] = params['nickname']
+        if ('expiration' in params):
+            postData['expiration'] = params['expiration']
+        if ('email' in params):
+            postData['email'] = params['email']
+        if ('destinationFolder' in params):
+            postData['destinationFolder'] = params['destinationFolder']
+        if ('password' in params):
+            postData['password'] = params['password']
+        if ('locked' in params):
+            postData['locked'] = params['locked']
+        if ('role' in params):
+            postData['role'] = params['role']
+        if ('permissions' in params):
+            postData['permissions'] = params['permissions']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'Response')
+
         return responseObject
         
         
@@ -1081,19 +1869,23 @@ class V1Api(object):
         queryParams = {}
         headerParams = {}
 
-        if ('access_token' in params):
-            queryParams['access_token'] = self.apiClient.toPathValue(params['access_token'])
-        if ('username' in params):
-            queryParams['username'] = self.apiClient.toPathValue(params['username'])
-        postData = (params['body'] if 'body' in params else None)
+        # EV NOTE: instead of a "body", we want to process the
+        # argument list as a dictionary type and set it to the body
+        # field of the POST request in the apiClient
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams)
+        #postData = (params['body'] if 'body' in params else None)
+        postData = {}
+        if ('access_token' in params):
+            postData['access_token'] = params['access_token']
+        if ('username' in params):
+            postData['username'] = params['username']
+        response = self.apiClient.callAPI(resourcePath, method, queryParams, postData, headerParams)
 
         if not response:
             return None
 
         responseObject = self.apiClient.deserialize(response, 'AvailableUserResponse')
+
         return responseObject
         
         
