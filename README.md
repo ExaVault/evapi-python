@@ -8,160 +8,104 @@ requests.
 
 To get started using ExaVault's API, you first must have an ExaVault
 account and obtain an API key. For more information, please refer to
-our [Developer page](https://www.exavault.com/developer) or contact
+our [Developer page](https://www.exavault.com/developer/) or contact
 support@exavault.com for details.
 
-## Prerequisites ##
+## Prerequisites 
 
-evapi-python makes use of the [requests]
-(https://github.com/kennethreitz/requests) library. Please ensure that
-this library is installed before proceeding to use evapi-python.
+Python 2.7 and 3.4+
 
-**Note:** Some users have reported issues authenticating over SSL with
-Python versions <= 2.7.2 (see [this
-issue](https://github.com/kennethreitz/requests/issues/1847)). This
-problem appears to be due to Python's SSL library automatically
-choosing SSLv2/3 during SSL handshake, which will result in failure as
-ExaVault has disabled both of these protocols due to the POODLE
-exploit. As of this writing, testing the evapi-python client using
-Python 2.7.8 does not reproduce this issue.
+## Installation
 
-## Usage ##
+1. Clone the repo `git clone https://github.com/ExaVault/evapi-python.git evapi-python` or manually download the library.
+2. Run setup script `python setup.py install`
 
-Once you have obtained your API key, you can begin making API requests
-to upload/download files, and also to manage your users.
+*Note: For macOS better to use Brew to setup Python - [Installing Python on Mac OS](http://docs.python-guide.org/en/latest/starting/install/osx/)*
 
-##### Setting the API key #####
+## Getting started
 
-Before you can make valid API requests, you will need to import the
-API client libraries, the [requests]
-(https://github.com/kennethreitz/requests) library, as well as `json`
-and `os` libraries for decoding JSON responses and working with the
-file system (respectively). Here you will also want to set your API
-key and instantiate the `V1Api` object.
+First you need to obtain an API key for your application from the [Client Area](https://clients.exavault.com/clientarea.php?action=products) of your account.  To
+obtain an API key, please follow the instructions below.
+
+ + Login to the [Accounts](https://clients.exavault.com/clientarea.php?action=products) section of the Client Area.
+ + Use the drop down next to your desired account, and select *Manage API Keys*.
+ + You will be brought to the API Key management screen. Fill out the form and save to generate a new key for your app.
+
+Once you obtain your API you can use the following snippet. It will allow you to authenticate into API, create folder, get activity logs and log out user from the API.
 
 ```python
-# Import the evapi-python API client libs
-import V1Api
-import ApiClient
+from __future__ import print_function
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
 
-# Additionally, the following libraries are needed:
-import os
-import json
-import requests
+# create an instance of the API class
+authentication_api_instance = swagger_client.AuthenticationApi()
+api_key = 'your_api_key_goe_here' 
+username = 'existing_username_goes_here' 
+password = 'user_password_goes_here' 
 
-apiKey    = "yourappname-XXXXXXXXXXXXXXXX"
-apiServer = "https://api.exavault.com"
-api       = V1Api.V1Api(ApiClient.ApiClient(apiKey, apiServer))
-```
+# authenticate_user
+try:
 
-##### Authenticating #####
+  api_response = authentication_api_instance.authenticate_user(api_key, authenticate_user={'username': username, 'password': password})
+  loginSuccess = api_response.success
 
-Once your API key is in place, you will likely want to authenticate so
-that you can begin uploading and downloading files, creating users,
-and all that other fun stuff
+  if loginSuccess:
+    accessToken = api_response.results.access_token
+  else
+    # something went wrong check api_response.error for more details
 
-```python
-username = "yourusername"
-password = "yourpassword"
+except ApiException as e:
+  # server error occured
+  print("Exception when calling AuthenticationApi->authenticate_user: %s\n" % e)
 
-# authenticate the user
-response = api.authenticateUser(username, password)
-loginSuccess = response.success
+# create an instance of the API class
+files_folders_api_instance = swagger_client.FilesAndFoldersApi()
+folder_name = 'desire_folder_name_goes_here'
+path = '/'
 
-# if login was successful, save the access token for later
-# use, otherwise report an error
+# create_folder
+try:
+  
+  api_response = files_folders_api_instance.create_folder(api_key, create_folder={'access_token': accessToken, 'folder_name':  folder_name, 'path': path'})
+  createSuccess = api_response.success
 
+  if createSuccess:
+    # Folder created successfully
+  else
+    # something went wrong check api_response.error for more details
+
+except ApiException as e:
+  # server error occured
+  print("Exception when calling FilesAndFoldersApi->create_folder: %s\n" % e)
+
+# create an instance of the API class
+activity_api_instance = swagger_client.ActivityApi()
+offset = 0 
+sort_by = 'sort_logs_date' 
+sort_order = 'desc' 
+
+# get_file_activity_logs
+try:
+
+  api_response = activity_api_instance.get_file_activity_logs(api_key, accessToken, offset=offset, sort_by=sort_by, sort_order=sort_order)
+  success = api_response.success
+
+  if success:
+    # get array with logs from the response
+    logs = api_response.results
+  else
+    # something went wrong check api_response.error for more details
+
+except ApiException as e:
+  # server error occured
+  print("Exception when calling ActivityApi->get_file_activity_logs: %s\n" % e)
+
+# To logout the current user, simply check the loginSuccess flag that was stored earlier and then call the `logout_user` method
 if loginSuccess:
-    accessToken = response.results.accessToken
-else
-    # Whoopsie! There was an error. Check your credentials.
+  authentication_api_instance.logout_user(api_key, logout_user={'access_token': accessToken})
 ```
 
-##### Uploading a file #####
-
-Uploading is a bit more complicated, as it first requires obtaining an
-appropriate upload URL from the API and then making a separate HTTP
-request to upload the file to your account's storage server at the
-correct path.
-
-```python
-localFile  = "/path/to/your/local/file"
-remoteFile = "/path/on/remote/host"
-fileInfo   = os.stat(localFile)
-fileSize   = fileInfo.st_size
-
-# obtain the upload file URL from the API
-response = api.getUploadFileUrl(accessToken, fileSize, remoteFile)
-
-# if the response was successful, send another request to
-# actually upload the file to the storage server
-
-if response.success:
-    url = response.results.url
-
-    with open(localFile, 'rb') as payload:
-    
-        # set the request headers by specifying the file_size, 
-        # content_type and content_length
-        
-        headers = {
-            "X_File_Size": str(fileSize),
-            "Content-Type": "multipart/form-data",
-            "Content-Length":  str(fileSize)
-        }
-
-        # POST the request
-        result = requests.post(url, data=payload, verify=True, headers=headers)
-
-        # decode the response
-        result = json.loads(result.text)
-        success = result['success']
-
-        # return the success code
-        if not success
-            # Whoopsie, there was an error uploading the file
-else:
-    # Whoopsie, there was an error from the API
-```
-
-##### Downloading a file #####
-
-Downloading, like the upload process, first requires obtaining an
-appropriate download URL and then making a separate HTTP request to
-your account's storage server.
-
-```python
-remoteFile = "/path/to/file/on/remote/host"
-
-# send the API request with the accessToken and the file to download
-response = api.getDownloadFileUrl(accessToken, remoteFile)
-
-if response.success:
-    url = response.results.url
-
-    with open(localFile, 'wb') as f:
-    
-        # initiate the file transfer
-        result = requests.get(url, stream=True)
-
-        # iterate over each block and write to file
-        if result.ok:
-            for block in result.iter_content(1024):
-                if not block: break
-                f.write(block)
-        else:
-            # Whoopsie, there was an error
-else:
-    # Whoopsie, there was an error. Please verify the remote path is correct.
-```    
-
-##### Logging out #####
-
-To logout the current user, simply check the `loginSuccess` flag that
-was stored earlier and then call the `logoutUser` method:
-
-```python
-if loginSuccess:
-    api.logoutUser(accessToken)
-```
+You can find list of all API requets here - [ExaVault API Docs](https://www.exavault.com/developer/api-docs/)
