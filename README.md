@@ -13,23 +13,16 @@ support@exavault.com for details.
 
 ## Prerequisites 
 
-Python 2.7 and 3.4+
+Python 2.7+ and 3.4+
 
 ## Installation
 
 1. Clone the repo `git clone https://github.com/ExaVault/evapi-python.git evapi-python` or manually download the library.
-2. Run setup script `python setup.py install`
-
-*Note: For macOS better to use Brew to setup Python - [Installing Python on Mac OS](http://docs.python-guide.org/en/latest/starting/install/osx/)*
+2. Run setup script `python setup.py install` Depending on your python setup, you may need to run the script as root; e.g. `sudo python setup.py install`
 
 ## Getting started
 
-First you need to obtain an API key for your application from the [Client Area](https://clients.exavault.com/clientarea.php?action=products) of your account.  To
-obtain an API key, please follow the instructions below.
-
- + Login to the [Accounts](https://clients.exavault.com/clientarea.php?action=products) section of the Client Area.
- + Use the drop down next to your desired account, and select *Manage API Keys*.
- + You will be brought to the API Key management screen. Fill out the form and save to generate a new key for your app.
+First you need to obtain an API key for your application from your account.  To do so, please refer to the [API key setup instructions](https://www-dev.exavault.com/developer/api-docs/#section/Code-Libraries-and-Sample-PHP-Code/Obtain-your-API-key) in our documentation.
 
 Once you obtain your API you can use the following snippet. It will allow you to authenticate into API, create folder, get activity logs and log out user from the API.
 
