@@ -28,6 +28,7 @@ Once you obtain your API you can use the following snippet. It will allow you to
 
 ```python
 from __future__ import print_function
+from random import randint
 import time
 import swagger_client
 from swagger_client.rest import ApiException
@@ -47,8 +48,9 @@ try:
 
   if loginSuccess:
     accessToken = api_response.results.access_token
-  else
+  else:
     # something went wrong check api_response.error for more details
+    raise Exception(api_response.error);
 
 except ApiException as e:
   # server error occured
@@ -56,19 +58,21 @@ except ApiException as e:
 
 # create an instance of the API class
 files_folders_api_instance = swagger_client.FilesAndFoldersApi()
-folder_name = 'desire_folder_name_goes_here'
+folder_name = 'api_test_folder%d' % randint(0, 400)
 path = '/'
 
 # create_folder
 try:
   
-  api_response = files_folders_api_instance.create_folder(api_key, create_folder={'access_token': accessToken, 'folder_name':  folder_name, 'path': path'})
+  api_response = files_folders_api_instance.create_folder(api_key, create_folder={'access_token': accessToken, 'folderName':  folder_name, 'path': path })
   createSuccess = api_response.success
 
   if createSuccess:
     # Folder created successfully
-  else
+    print('Folder created successfully');
+  else:
     # something went wrong check api_response.error for more details
+    raise Exception(api_response.error);
 
 except ApiException as e:
   # server error occured
@@ -89,8 +93,10 @@ try:
   if success:
     # get array with logs from the response
     logs = api_response.results
-  else
+    print(logs)
+  else:
     # something went wrong check api_response.error for more details
+    raise Exception(api_response.error);
 
 except ApiException as e:
   # server error occured
