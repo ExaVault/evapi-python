@@ -404,7 +404,7 @@ class ResourceProperty(object):
         :param type: The type of this ResourceProperty.
         :type: str
         """
-        allowed_values = ["file", "folder"]
+        allowed_values = ["file", "folder", "dir"]
         if type not in allowed_values:
             raise ValueError(
                 "Invalid value for `type` ({0}), must be one of {1}"
