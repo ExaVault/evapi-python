@@ -1,74 +1,164 @@
 # coding: utf-8
 
+# flake8: noqa
+
 """
     ExaVault API
 
-    # Introduction  Welcome to the ExaVault API documentation. Our API lets you control nearly all aspects of your ExaVault account programatically, from uploading and downloading files to creating and managing shares and notifications. Our API supports both GET and POST operations.  Capabilities of the API include:  - Uploading and downloading files. - Managing files and folders; including standard operations like move, copy and delete. - Getting information about activity occuring in your account. - Creating, updating and deleting users. - Creating and managing shares, including download-only shares and recieve folders.  - Setting up and managing notifications.  ## The API Endpoint  The ExaVault API is located at: https://api.exavault.com/v1.2/  # Testing w/ Postman  We've made it easy for you to test our API before you start full-scale development. Download [Postman](https://www.getpostman.com/) or the [Postman Chrome Extension](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en), and then download our Postman collection, below. [Obtain your API key](#section/Code-Libraries-and-Sample-PHP-Code/Obtain-your-API-key) and you'll be able to interact with your ExaVault account immediately, so you can better understand what the capabilities of the API are.  <div class=\"postman-run-button\" data-postman-action=\"collection/import\" data-postman-var-1=\"e13395afc6278ce1555f\"></div>  ![ExaVault API Postman Colletion Usage](/images/postman.png)  If you'd prefer to skip Postman and start working with code directly, take a look at the sample code below.    # Code Libraries & Sample PHP Code  Once you're ready for full-scale development, we recommend looking at our code libraries available on [GitHub](https://github.com/ExaVault). We offer code libraries for [Python](https://github.com/ExaVault/evapi-python), [PHP](https://github.com/ExaVault/evapi-php) and [JavaScript](https://github.com/ExaVault/evapi-javascript).  While we recommend using our libraries, you're welcome to interact directly with our API via HTTP GET and POST requests -- a great option particularly if you're developing in a language for which we don't yet have sample code.     - [Download Python Library &amp; Sample Code &raquo;](https://github.com/ExaVault/evapi-python) - [Download PHP Library &amp; Sample Code &raquo;](https://github.com/ExaVault/evapi-php) - [Download JavaScript Library &amp; Sample Code &raquo;](https://github.com/ExaVault/evapi-javascript)  *Note: You can generate client libraries for any language using [Swagger Editor](http://editor2.swagger.io/). Just download our documentation file, past it into editor and use 'Generate Client' dropdown.*  ## Obtain Your API Key  You will need to obtain an API key for your application from the [Client Area](https://clients.exavault.com/clientarea.php?action=products) of your account.  To obtain an API key, please follow the instructions below.   + Login to the [Accounts](https://clients.exavault.com/clientarea.php?action=products) section of the Client Area.  + Use the drop down next to your desired account, and select *Manage API Keys*.  + You will be brought to the API Key management screen. Fill out the form and save to generate a new key for your app.  *NOTE: As of Oct 2017, we are in the progress of migrating customers to our next generation platform. If your account is already on our new platform, you should log into your File Manager and create your API key under Account->Developer->Manage API Keys*.  # Status Codes  The ExaVault API returns only two HTTP status codes for its responses: 200 and 500.  When the request could be successfully processed by the endpoint, the response status code will be 200, regardless of whether the requested action could be taken.  For example, the response to a getUser request for a username that does not exist in your account would have the status of 200,  indicating that the response was received and processed, but the error member of the returned response object would contain object with `message` and `code` properties.  **Result Format:**  |Success   | Error     | Results   | | ---      | :---:       |  :---:      | | 0        |  `Object` |   Empty   | | 1        |   Empty       |    `Object` or `Array`        |     When a malformed request is received, a 500 HTTP status code will be returned, indicating that the request could not be processed.  ExaVault's API does not currently support traditional REST response codes such as '201 Created' or '405 Method Not Allowed', although we intend to support such codes a future version of the API.   # File Paths  Many API calls require you to provide one or more file paths. For example, the <a href=\"#operation/moveResources\">moveResources</a> call requires both an array of source paths, **filePaths**, and a destination path, **destinationPath**. Here's a few tips for working with paths:   - File paths should always be specified as a string, using the standard Unix format: e.g. `/path/to/a/file.txt`  - File paths are always absolute _from the home directory of the logged in user_. For example, if the user **bob** had a home directory restriction of `/bob_home`, then an API call made using his login would specify a file as `/myfile.txt`, whereas an API call made using the master user ( no home directory restriction ) would specify the same file as `/bob_home/myfile.txt`.  # API Rate Limits  We rate limit the number of API calls you can make to help prevent abuse and protect system stablity. Each API key will support 500 requests per rolling five minutes. If you make more than 500 requests in a five minute period, you will receive a response with an error object for fifteen minutes.  # Webhooks  A webhook is an HTTP callback: a simple event-notification via HTTP POST. If you define webhooks for Exavault, ExaVault will POST a  message to a URL when certain things happen.     Webhooks can be used to receive a JSON object to your endpoint URL. You choose what events will trigger webhook messages to your endpoint URL.     Webhooks will attempt to send a message up to 8 times with increasing timeouts between each attempt. All webhook requests are tracked in the webhooks log.  ## Getting Started  1. Go to the Account tab inside SWFT.  2. Choose the Developer tab.  3. Configure your endpoint URL and select the events you want to trigger webhook messages.  4. Save settings.    You are all set to receive webhook callbacks on the events you selected.  ## Verification Signature  ExaVault includes a custom HTTP header, X-Exavault-Signature, with webhooks POST requests which will contain the signature for the request.  You can use the signature to verify the request for an additional level of security.  ## Generating the Signature  1. Go to Account tab inside SWFT.  2. Choose the Developer tab.  3. Obtain the verification token. This field will only be shown if you've configured your endpoint URL.  4. In your code that receives or processes the webhooks, you should concatenate the verification token with the JSON object that we sent in our      POST request and hash it with md5.     ```     md5($verificationToken.$webhooksObject);     ```  5. Compare signature that you generated to the signature provided in the X-Exavault-Signature HTTP header  ## Example JSON Response Object  ```json   {     \"accountname\": \"mycompanyname\",     \"username\": \"john\"     \"operation\": \"Upload\",     \"protocol\": \"https\",     \"path\": \"/testfolder/filename.jpg\"     \"attempt\": 1   } ```  ## Webhooks Logs  Keep track of all your webhooks requests in the Activity section of your account. You can find the following info for each request:    1. date and time - timestamp of the request.    2. endpoint url - where the webhook was sent.    3. event - what triggered the webhook.    4. status - HTTP status or curl error code.    5. attempt - how many times we tried to send this request.    6. response size - size of the response from your server.    7. details - you can check the response body if it was sent. 
+    See our API reference documentation at https://www.exavault.com/developer/api-docs/  # noqa: E501
 
-    OpenAPI spec version: 1.0.1
-    
+    OpenAPI spec version: 2.0
+    Contact: support@exavault.com
     Generated by: https://github.com/swagger-api/swagger-codegen.git
 """
 
-
 from __future__ import absolute_import
 
-# import models into sdk package
-from .models.account import Account
-from .models.account_response import AccountResponse
-from .models.auth import Auth
-from .models.auth_response import AuthResponse
-from .models.available_user import AvailableUser
-from .models.available_user_response import AvailableUserResponse
-from .models.callback_settings import CallbackSettings
-from .models.deleted_resource import DeletedResource
-from .models.deleted_resources_response import DeletedResourcesResponse
-from .models.direct_file import DirectFile
-from .models.error import Error
-from .models.existing_resource import ExistingResource
-from .models.existing_resources_response import ExistingResourcesResponse
-from .models.log_entry import LogEntry
-from .models.log_response import LogResponse
-from .models.message import Message
-from .models.modified_resource import ModifiedResource
-from .models.modified_resources_response import ModifiedResourcesResponse
-from .models.notification import Notification
-from .models.notification_activity_response import NotificationActivityResponse
-from .models.notification_message import NotificationMessage
-from .models.notification_recipient import NotificationRecipient
-from .models.notification_response import NotificationResponse
-from .models.notifications_response import NotificationsResponse
-from .models.preview_file import PreviewFile
-from .models.preview_file_response import PreviewFileResponse
-from .models.resource import Resource
-from .models.resource_properties_response import ResourcePropertiesResponse
-from .models.resource_property import ResourceProperty
-from .models.resource_response import ResourceResponse
-from .models.response import Response
-from .models.share import Share
-from .models.share_activity_response import ShareActivityResponse
-from .models.share_log_entry import ShareLogEntry
-from .models.share_recipient import ShareRecipient
-from .models.share_response import ShareResponse
-from .models.shares_response import SharesResponse
-from .models.update_notification import UpdateNotification
-from .models.url import Url
-from .models.url_response import UrlResponse
-from .models.user import User
-from .models.user_response import UserResponse
-from .models.users_response import UsersResponse
-
 # import apis into sdk package
-from .apis.activity_api import ActivityApi
-from .apis.authentication_api import AuthenticationApi
-from .apis.files_and_folders_api import FilesAndFoldersApi
-from .apis.notification_api import NotificationApi
-from .apis.share_api import ShareApi
-from .apis.user_api import UserApi
-
+from swagger_client.api.account_api import AccountApi
+from swagger_client.api.activity_api import ActivityApi
+from swagger_client.api.email_api import EmailApi
+from swagger_client.api.email_lists_api import EmailListsApi
+from swagger_client.api.form_api import FormApi
+from swagger_client.api.notifications_api import NotificationsApi
+from swagger_client.api.recipients_api import RecipientsApi
+from swagger_client.api.resources_api import ResourcesApi
+from swagger_client.api.shares_api import SharesApi
+from swagger_client.api.users_api import UsersApi
 # import ApiClient
-from .api_client import ApiClient
-
-from .configuration import Configuration
-
-configuration = Configuration()
+from swagger_client.api_client import ApiClient
+from swagger_client.configuration import Configuration
+# import models into sdk package
+from swagger_client.models.account import Account
+from swagger_client.models.account_allowed_ip_ranges import AccountAllowedIpRanges
+from swagger_client.models.account_attributes import AccountAttributes
+from swagger_client.models.account_attributes_allowed_ip import AccountAttributesAllowedIp
+from swagger_client.models.account_response import AccountResponse
+from swagger_client.models.body import Body
+from swagger_client.models.body1 import Body1
+from swagger_client.models.body10 import Body10
+from swagger_client.models.body11 import Body11
+from swagger_client.models.body12 import Body12
+from swagger_client.models.body13 import Body13
+from swagger_client.models.body14 import Body14
+from swagger_client.models.body15 import Body15
+from swagger_client.models.body16 import Body16
+from swagger_client.models.body17 import Body17
+from swagger_client.models.body18 import Body18
+from swagger_client.models.body2 import Body2
+from swagger_client.models.body3 import Body3
+from swagger_client.models.body4 import Body4
+from swagger_client.models.body5 import Body5
+from swagger_client.models.body6 import Body6
+from swagger_client.models.body7 import Body7
+from swagger_client.models.body8 import Body8
+from swagger_client.models.body9 import Body9
+from swagger_client.models.branding_settings import BrandingSettings
+from swagger_client.models.branding_settings1 import BrandingSettings1
+from swagger_client.models.callback_settings import CallbackSettings
+from swagger_client.models.callback_settings1 import CallbackSettings1
+from swagger_client.models.callback_settings1_triggers import CallbackSettings1Triggers
+from swagger_client.models.callback_settings_triggers import CallbackSettingsTriggers
+from swagger_client.models.download_polling import DownloadPolling
+from swagger_client.models.download_polling_response import DownloadPollingResponse
+from swagger_client.models.email_list import EmailList
+from swagger_client.models.email_list_attributes import EmailListAttributes
+from swagger_client.models.email_list_collection_response import EmailListCollectionResponse
+from swagger_client.models.email_list_owner_user import EmailListOwnerUser
+from swagger_client.models.email_list_relationships import EmailListRelationships
+from swagger_client.models.email_list_response import EmailListResponse
+from swagger_client.models.empty_response import EmptyResponse
+from swagger_client.models.error import Error
+from swagger_client.models.error401 import Error401
+from swagger_client.models.error401_errors import Error401Errors
+from swagger_client.models.error403 import Error403
+from swagger_client.models.error403_errors import Error403Errors
+from swagger_client.models.form import Form
+from swagger_client.models.form_attributes import FormAttributes
+from swagger_client.models.form_entry import FormEntry
+from swagger_client.models.form_entry_attributes import FormEntryAttributes
+from swagger_client.models.form_entry_field import FormEntryField
+from swagger_client.models.form_entry_response import FormEntryResponse
+from swagger_client.models.form_field import FormField
+from swagger_client.models.form_field_settings import FormFieldSettings
+from swagger_client.models.form_field_upload_area import FormFieldUploadArea
+from swagger_client.models.form_field_upload_area_settings import FormFieldUploadAreaSettings
+from swagger_client.models.form_relationships import FormRelationships
+from swagger_client.models.form_relationships_share import FormRelationshipsShare
+from swagger_client.models.form_relationships_share_data import FormRelationshipsShareData
+from swagger_client.models.form_response import FormResponse
+from swagger_client.models.formsid_elements import FormsidElements
+from swagger_client.models.formsid_settings import FormsidSettings
+from swagger_client.models.master_user import MasterUser
+from swagger_client.models.master_user_master_user import MasterUserMasterUser
+from swagger_client.models.master_user_master_user_data import MasterUserMasterUserData
+from swagger_client.models.notification import Notification
+from swagger_client.models.notification_attributes import NotificationAttributes
+from swagger_client.models.notification_collection_response import NotificationCollectionResponse
+from swagger_client.models.notification_recipient import NotificationRecipient
+from swagger_client.models.notification_relationships import NotificationRelationships
+from swagger_client.models.notification_relationships_owner_user import NotificationRelationshipsOwnerUser
+from swagger_client.models.notification_relationships_owner_user_data import NotificationRelationshipsOwnerUserData
+from swagger_client.models.notification_relationships_resource import NotificationRelationshipsResource
+from swagger_client.models.notification_relationships_resource_data import NotificationRelationshipsResourceData
+from swagger_client.models.notification_relationships_share import NotificationRelationshipsShare
+from swagger_client.models.notification_relationships_share_data import NotificationRelationshipsShareData
+from swagger_client.models.notification_response import NotificationResponse
+from swagger_client.models.preview_file import PreviewFile
+from swagger_client.models.preview_file_attributes import PreviewFileAttributes
+from swagger_client.models.preview_file_response import PreviewFileResponse
+from swagger_client.models.quota import Quota
+from swagger_client.models.relationship_data import RelationshipData
+from swagger_client.models.resource import Resource
+from swagger_client.models.resource_attributes import ResourceAttributes
+from swagger_client.models.resource_collection_response import ResourceCollectionResponse
+from swagger_client.models.resource_copy_move import ResourceCopyMove
+from swagger_client.models.resource_delete import ResourceDelete
+from swagger_client.models.resource_multi_response import ResourceMultiResponse
+from swagger_client.models.resource_relationships import ResourceRelationships
+from swagger_client.models.resource_relationships_data import ResourceRelationshipsData
+from swagger_client.models.resource_relationships_direct_file import ResourceRelationshipsDirectFile
+from swagger_client.models.resource_relationships_direct_file_data import ResourceRelationshipsDirectFileData
+from swagger_client.models.resource_relationships_notifications import ResourceRelationshipsNotifications
+from swagger_client.models.resource_relationships_parent_resource import ResourceRelationshipsParentResource
+from swagger_client.models.resource_relationships_parent_resource_data import ResourceRelationshipsParentResourceData
+from swagger_client.models.resource_relationships_share import ResourceRelationshipsShare
+from swagger_client.models.resource_relationships_share_data import ResourceRelationshipsShareData
+from swagger_client.models.resource_response import ResourceResponse
+from swagger_client.models.session_activity_entry import SessionActivityEntry
+from swagger_client.models.session_activity_entry_attributes import SessionActivityEntryAttributes
+from swagger_client.models.session_activity_response import SessionActivityResponse
+from swagger_client.models.share import Share
+from swagger_client.models.share_attributes import ShareAttributes
+from swagger_client.models.share_collection_response import ShareCollectionResponse
+from swagger_client.models.share_message import ShareMessage
+from swagger_client.models.share_message_attributes import ShareMessageAttributes
+from swagger_client.models.share_recipient import ShareRecipient
+from swagger_client.models.share_recipient1 import ShareRecipient1
+from swagger_client.models.share_recipients_response import ShareRecipientsResponse
+from swagger_client.models.share_relationship import ShareRelationship
+from swagger_client.models.share_relationships import ShareRelationships
+from swagger_client.models.share_relationships_data import ShareRelationshipsData
+from swagger_client.models.share_relationships_data1 import ShareRelationshipsData1
+from swagger_client.models.share_relationships_data2 import ShareRelationshipsData2
+from swagger_client.models.share_relationships_messages import ShareRelationshipsMessages
+from swagger_client.models.share_relationships_notifications import ShareRelationshipsNotifications
+from swagger_client.models.share_relationships_owner import ShareRelationshipsOwner
+from swagger_client.models.share_relationships_owner_data import ShareRelationshipsOwnerData
+from swagger_client.models.share_relationships_resources import ShareRelationshipsResources
+from swagger_client.models.share_response import ShareResponse
+from swagger_client.models.shares_recipients import SharesRecipients
+from swagger_client.models.update_account_body import UpdateAccountBody
+from swagger_client.models.user import User
+from swagger_client.models.user_attributes import UserAttributes
+from swagger_client.models.user_collection_response import UserCollectionResponse
+from swagger_client.models.user_permissions import UserPermissions
+from swagger_client.models.user_relationships import UserRelationships
+from swagger_client.models.user_relationships_home_resource import UserRelationshipsHomeResource
+from swagger_client.models.user_relationships_home_resource_data import UserRelationshipsHomeResourceData
+from swagger_client.models.user_relationships_owner_account import UserRelationshipsOwnerAccount
+from swagger_client.models.user_relationships_owner_account_data import UserRelationshipsOwnerAccountData
+from swagger_client.models.user_response import UserResponse
+from swagger_client.models.webhooks_activity_entry import WebhooksActivityEntry
+from swagger_client.models.webhooks_activity_entry_attributes import WebhooksActivityEntryAttributes
+from swagger_client.models.webhooks_activity_response import WebhooksActivityResponse
