@@ -28,14 +28,43 @@ class AnyOfShareResponseIncludedItems(object):
                             and the value is json key in definition.
     """
     swagger_types = {
+        # *EV* Added the id and type 
+        'id': 'int',
+        'type': 'str'
+        # */EV* 
     }
 
-    attribute_map = {
+    attribute_map = { 
+        # *EV* Added the id and type 
+        'id': 'id',
+        'type': 'type'
+        # */EV* 
     }
 
-    def __init__(self):  # noqa: E501
+    def __init__(self, id=None, type=None):  # noqa: E501
         """AnyOfShareResponseIncludedItems - a model defined in Swagger"""  # noqa: E501
-        self.discriminator = None
+        # *EV* Added everything in this method 
+        self._id = None
+        self._type = None
+        if id is not None:
+            self.id = id
+        if type is not None:
+            self.type = type
+        self.discriminator = "type"
+        # */EV*
+
+    # *EV* Added method to indicate what kind of object was returned 
+    def get_real_child_model(self, data):
+        """Returns the type of object for the included object"""
+        if self.type == "user":
+            return "User"
+        elif self.type == "notification":
+            return "Notification"
+        elif self.type == "resource":
+            return "Resource"
+        else:
+            return self.type
+    # */EV*
 
     def to_dict(self):
         """Returns the model properties as a dict"""
