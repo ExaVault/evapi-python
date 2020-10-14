@@ -57,6 +57,7 @@ class ApiClient(object):
         'date': datetime.date,
         'datetime': datetime.datetime,
         'object': object,
+        'bytes': bytes
     }
 
     def __init__(self, configuration=None, header_name=None, header_value=None,
@@ -222,6 +223,15 @@ class ApiClient(object):
         # save response body into a tmp file and return the instance
         if response_type == "file":
             return self.__deserialize_file(response)
+
+        # In the python 3, the response.data is bytes.
+        # we need to decode it to string.
+        if six.PY3  and response.getheader("Content-Type") != "application/octet-stream":
+            response.data = response.data.decode('utf8')
+        
+        # This changes the response type to a byte array if we are downloading an octet-stream
+        if six.PY3  and response.getheader("Content-Type") == "application/octet-stream":
+            response_type = 'bytes'
 
         # fetch data from response object
         try:
