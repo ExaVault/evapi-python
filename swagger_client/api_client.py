@@ -223,18 +223,7 @@ class ApiClient(object):
         # save response body into a tmp file and return the instance
         if response_type == "file":
             return self.__deserialize_file(response)
-
-        # *EV* Customizing decoding the response type so that binary downloads work
-        # In the python 3, the response.data is bytes.
-        # we need to decode it to string.
-        if six.PY3:
-            # We don't want to decode it to a string for a file download
-            if str(response.getheader("Content-Disposition")).startswith("attachment"):
-                response_type = 'bytes'
-            else:
-                response.data = response.data.decode('utf8')
-        # */EV*
-        
+       
         # fetch data from response object
         try:
             data = json.loads(response.data)
