@@ -1,19 +1,16 @@
-evapi-python
+ExaVault Python API SDK - v2.0
 ============
 
-evapi-python is an API client written in Python for connecting to the
-ExaVault API. The ExaVault API is a REST-like API providing operations
-for file and user management, and supports both ``POST`` and ``GET``
-requests.
+Welcome to ExaVault's PHP code library for our v2 API. Use our API to interact with all aspects of the service the same way our web portal would. The library is generated from our API's [public swagger YAML file](https://www.exavault.com/api/docs/evapi_2.0_public.yaml)
 
-To get started using ExaVault's API, you first must have an ExaVault
-account and obtain an API key. For more information, please refer to
-our [Developer page](https://www.exavault.com/developer/) or contact
-support@exavault.com for details.
+## Requirements 
 
-## Prerequisites 
+The SDK supports the following versions of Python:
 
-Python 2.7+ and 3.4+
+-  Python 2 versions 2.7.9 and later
+-  Python 3 versions 3.4 and later
+
+You must also have an ExaVault API key and access token. For more information, please refer to our [API Documentation](https://www.exavault.com/developer/api-docs/#section/Obtaining-Your-API-Key-and-Access-Token) or contact support@exavault.com for details.
 
 ## Installation
 
@@ -21,90 +18,48 @@ Python 2.7+ and 3.4+
 2. Run setup script `python setup.py install` Depending on your python setup, you may need to run the script as root; e.g. `sudo python setup.py install`
 
 ## Getting started
+Install the latest SDK using pip:
 
-First you need to obtain an API key for your application from your account.  To do so, please refer to the [API key setup instructions](https://www-dev.exavault.com/developer/api-docs/#section/Code-Libraries-and-Sample-PHP-Code/Obtain-your-API-key) in our documentation.
-
-Once you obtain your API you can use the following snippet. It will allow you to authenticate into API, create folder, get activity logs and log out user from the API.
-
-```python
-from __future__ import print_function
-from random import randint
-import time
-import swagger_client
-from swagger_client.rest import ApiException
-from pprint import pprint
-
-# create an instance of the API class
-authentication_api_instance = swagger_client.AuthenticationApi()
-api_key = 'your_api_key_goe_here' 
-username = 'existing_username_goes_here' 
-password = 'user_password_goes_here' 
-
-# authenticate_user
-try:
-
-  api_response = authentication_api_instance.authenticate_user(api_key, username, password)
-  loginSuccess = api_response.success
-
-  if loginSuccess:
-    accessToken = api_response.results.access_token
-  else:
-    # something went wrong check api_response.error for more details
-    raise Exception(api_response.error);
-
-except ApiException as e:
-  # server error occured
-  print("Exception when calling AuthenticationApi->authenticate_user: %s\n" % e)
-
-# create an instance of the API class
-files_folders_api_instance = swagger_client.FilesAndFoldersApi()
-folder_name = 'api_test_folder%d' % randint(0, 400)
-path = '/'
-
-# create_folder
-try:
-  
-  api_response = files_folders_api_instance.create_folder(api_key, accessToken, folder_name, path)
-  createSuccess = api_response.success
-
-  if createSuccess:
-    # Folder created successfully
-    print('Folder created successfully');
-  else:
-    # something went wrong check api_response.error for more details
-    raise Exception(api_response.error);
-
-except ApiException as e:
-  # server error occured
-  print("Exception when calling FilesAndFoldersApi->create_folder: %s\n" % e)
-
-# create an instance of the API class
-activity_api_instance = swagger_client.ActivityApi()
-offset = 0 
-sort_by = 'sort_logs_date' 
-sort_order = 'desc' 
-
-# get_file_activity_logs
-try:
-
-  api_response = activity_api_instance.get_file_activity_logs(api_key, accessToken, offset=offset, sort_by=sort_by, sort_order=sort_order)
-  success = api_response.success
-
-  if success:
-    # get array with logs from the response
-    logs = api_response.results
-    print(logs)
-  else:
-    # something went wrong check api_response.error for more details
-    raise Exception(api_response.error);
-
-except ApiException as e:
-  # server error occured
-  print("Exception when calling ActivityApi->get_file_activity_logs: %s\n" % e)
-
-# To logout the current user, simply check the loginSuccess flag that was stored earlier and then call the `logout_user` method
-if loginSuccess:
-  authentication_api_instance.logout_user(api_key, accessToken)
+```sh
+pip install exavault
 ```
 
-You can find list of all API requets here - [ExaVault API Docs](https://www.exavault.com/developer/api-docs/)
+Alternatively, you can download or clone the sdk from [Python SDK] and then install the SDK by running Setuptools in the SDK installation directory:
+
+```sh
+python setup.py install 
+```
+
+## Sample Code
+
+For a gentle introduction to using Python code with ExaVault's API, check out [our code samples](https://github.com/ExaVault/evapi-python-samples). Follow the instructions in that repository's README to run the sample scripts, which will demonstrate how to use several of the APIs to interact with your ExaVault account.
+
+## Writing Your Own Code
+
+When you're ready to write your own code using this library, you'll need to:
+
+1. Install our code library in your project, either with `pip install exavault` or by downloading this repository and importing the package directly
+1. Provide your API key and access token with every function method on the Api classes
+1. Whenever you instantiate an Api object (ResourcesApi, UsersApi, etc.), override the configuration to point the code at the correct API URL:
+```python
+from exavault import AccountApi
+ACCOUNT_URL = "https://YOUR_ACCOUNT_NAME_HERE.exavault.com/api/v2/";
+account_api = AccountApi()
+account_api.api_client.configuration.host = ACCOUNT_URL
+```
+```python
+from exavault import ResourcesApi
+ACCOUNT_URL = "https://YOUR_ACCOUNT_NAME_HERE.exavault.com/api/v2/";
+resources_api = ResourcesApi()
+resources_api.api_client.configuration.host = ACCOUNT_URL
+```
+```python
+from exavault import NotificationsApi
+ACCOUNT_URL = "https://YOUR_ACCOUNT_NAME_HERE.exavault.com/api/v2/";
+notifications_api = NotificationsApi()
+notifications_api.api_client.configuration.host = ACCOUNT_URL
+```
+
+## Author
+
+support@exavault.com
