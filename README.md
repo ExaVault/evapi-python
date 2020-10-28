@@ -1,7 +1,6 @@
-ExaVault Python API SDK - v2.0
-============
+# ExaVault Python API Library - v2 API
 
-Welcome to ExaVault's PHP code library for our v2 API. Use our API to interact with all aspects of the service the same way our web portal would. The library is generated from our API's [public swagger YAML file](https://www.exavault.com/api/docs/evapi_2.0_public.yaml)
+Welcome to ExaVault's Python code library for our v2 API. Use our API to interact with all aspects of the service the same way our web portal would. The library is generated from our API's [public swagger YAML file](https://www.exavault.com/api/docs/evapi_2.0_public.yaml).
 
 ## Requirements 
 
@@ -10,25 +9,22 @@ The SDK supports the following versions of Python:
 -  Python 2 versions 2.7.9 and later
 -  Python 3 versions 3.4 and later
 
-You must also have an ExaVault API key and access token. For more information, please refer to our [API Documentation](https://www.exavault.com/developer/api-docs/#section/Obtaining-Your-API-Key-and-Access-Token) or contact support@exavault.com for details.
+You will also need an ExaVault account, as well as an API key and access token.
 
-## Installation
+## Installing the Code Library
+
+### Option 1 - Using PIP
+You can use pip to add this library to your project by running this command in your project folder:
+
+```bash
+% pip install exavault
+```
+
+### Option 2 - Manual Installation
+Alternatively, you can:
 
 1. Clone the repo `git clone https://github.com/ExaVault/evapi-python.git evapi-python` or manually download the library.
 2. Run setup script `python setup.py install` Depending on your python setup, you may need to run the script as root; e.g. `sudo python setup.py install`
-
-## Getting started
-Install the latest SDK using pip:
-
-```sh
-pip install exavault
-```
-
-Alternatively, you can download or clone the sdk from [Python SDK] and then install the SDK by running Setuptools in the SDK installation directory:
-
-```sh
-python setup.py install 
-```
 
 ## Sample Code
 
@@ -59,6 +55,8 @@ ACCOUNT_URL = "https://YOUR_ACCOUNT_NAME_HERE.exavault.com/api/v2/";
 notifications_api = NotificationsApi()
 notifications_api.api_client.configuration.host = ACCOUNT_URL
 ```
+
+If you'd like to see this done in sample code, please take a look at [our code samples](https://github.com/ExaVault/evapi-python-samples).
 
 ## Author
 
