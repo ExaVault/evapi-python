@@ -23,7 +23,7 @@ else:
 setup(
 
     name='exavault',
-    version='2.0.1',
+    version='2.1.0',
 
     description='Python SDK for interacting with ExaVault API',
     long_description=long_description,
