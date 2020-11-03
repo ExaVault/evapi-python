@@ -36,7 +36,7 @@ class Body10(object):
     attribute_map = {
         'resources': 'resources',
         'parent_resource': 'parentResource',
-        'archive_name': 'archive Name'
+        'archive_name': 'archiveName'
     }
 
     def __init__(self, resources=None, parent_resource=None, archive_name=None):  # noqa: E501

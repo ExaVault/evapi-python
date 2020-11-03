@@ -30,7 +30,7 @@ class AccountResponse(object):
     swagger_types = {
         'response_status': 'int',
         'data': 'Account',
-        'included': 'list[AnyOfAccountResponseIncludedItems]'
+        'included': 'list[User]'
     }
 
     attribute_map = {
@@ -101,7 +101,7 @@ class AccountResponse(object):
         Array can contain objects specified in include param of the get call e.g User object  # noqa: E501
 
         :return: The included of this AccountResponse.  # noqa: E501
-        :rtype: list[AnyOfAccountResponseIncludedItems]
+        :rtype: list[User]
         """
         return self._included
 
@@ -112,7 +112,7 @@ class AccountResponse(object):
         Array can contain objects specified in include param of the get call e.g User object  # noqa: E501
 
         :param included: The included of this AccountResponse.  # noqa: E501
-        :type: list[AnyOfAccountResponseIncludedItems]
+        :type: list[User]
         """
 
         self._included = included

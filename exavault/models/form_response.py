@@ -30,7 +30,7 @@ class FormResponse(object):
     swagger_types = {
         'response_status': 'int',
         'data': 'Form',
-        'included': 'list[AnyOfFormResponseIncludedItems]'
+        'included': 'list[Share]'
     }
 
     attribute_map = {
@@ -102,7 +102,7 @@ class FormResponse(object):
 
 
         :return: The included of this FormResponse.  # noqa: E501
-        :rtype: list[AnyOfFormResponseIncludedItems]
+        :rtype: list[Share]
         """
         return self._included
 
@@ -112,7 +112,7 @@ class FormResponse(object):
 
 
         :param included: The included of this FormResponse.  # noqa: E501
-        :type: list[AnyOfFormResponseIncludedItems]
+        :type: list[Share]
         """
 
         self._included = included
