@@ -215,6 +215,8 @@ class RESTClientObject(object):
         if _preload_content:
             r = RESTResponse(r)
 
+            # EV-CUSTOM - we deleted 4 lines that encode the response as a string because it breaks file transfers
+
             # log response body
             logger.debug("response body: %s", r.data)
 

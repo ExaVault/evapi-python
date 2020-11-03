@@ -28,22 +28,22 @@ class AnyOfAccountResponseIncludedItems(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        # *EV* Added the id and type 
+        # EV-CUSTOM - Added the id and type 
         'id': 'int',
         'type': 'str'
-        # */EV* 
+        # EV-CUSTOM - end of customization 
     }
 
     attribute_map = { 
-        # *EV* Added the id and type 
+        # EV-CUSTOM - Added the id and type 
         'id': 'id',
         'type': 'type'
-        # */EV* 
+        # EV-CUSTOM - end of customization 
     }
 
     def __init__(self, id=None, type=None):  # noqa: E501
         """AnyOfAccountResponseIncludedItems - a model defined in Swagger"""  # noqa: E501
-        # *EV* Added everything in this method 
+        # EV-CUSTOM - Added everything in this method 
         self._id = None
         self._type = None
         if id is not None:
@@ -51,13 +51,13 @@ class AnyOfAccountResponseIncludedItems(object):
         if type is not None:
             self.type = type
         self.discriminator = "type"
-        # */EV*
+        # EV-CUSTOM - end of customization
 
-    # *EV* Added this method to determine what type of included object this is
+    # EV-CUSTOM Added this method to determine what type of included object this is
     def get_real_child_model(self, data):
         """Returns the type of object for the included object"""
         return "User"
-    # */EV*
+    # EV-CUSTOM - end of customization
 
     def to_dict(self):
         """Returns the model properties as a dict"""

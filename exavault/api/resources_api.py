@@ -703,7 +703,9 @@ class ResourcesApi(object):
             body=body_params,
             post_params=form_params,
             files=local_var_files,
+            # EV-CUSTOM - Response type needs to be a byte array
             response_type='bytes',  # noqa: E501
+            # EV-CUSTOM - end of customization
             auth_settings=auth_settings,
             async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
