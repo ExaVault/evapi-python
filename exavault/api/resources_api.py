@@ -601,7 +601,7 @@ class ResourcesApi(object):
         :param str ev_access_token: Access token required to make the API call. (required)
         :param list[str] resources: Path of file or folder to be downloaded, starting from the root. Can also be an array of paths. (required)
         :param str download_name: If zipping multiple files, the name of the zip file to create and download.
-        :param bool polling: Used when downloading multiple files so url will be pulled till zip file is created.
+        :param bool polling: Used when downloading multiple files so url will be polled till zip file is created.
         :param str polling_zip_name: Reference to the previously created zip for polling operation.
         :return: str
                  If the method is called asynchronously,
@@ -628,7 +628,7 @@ class ResourcesApi(object):
         :param str ev_access_token: Access token required to make the API call. (required)
         :param list[str] resources: Path of file or folder to be downloaded, starting from the root. Can also be an array of paths. (required)
         :param str download_name: If zipping multiple files, the name of the zip file to create and download.
-        :param bool polling: Used when downloading multiple files so url will be pulled till zip file is created.
+        :param bool polling: Used when downloading multiple files so url will be polled till zip file is created.
         :param str polling_zip_name: Reference to the previously created zip for polling operation.
         :return: str
                  If the method is called asynchronously,

@@ -75,7 +75,7 @@ class ApiClient(object):
             self.default_headers[header_name] = header_value
         self.cookie = cookie
         # Set default User-Agent.
-        self.user_agent = 'Swagger-Codegen/1.0.0/python'
+        self.user_agent = 'Swagger-Codegen/2.1.2/python'
 
     def __del__(self):
         self.pool.close()
@@ -225,7 +225,7 @@ class ApiClient(object):
         # save response body into a tmp file and return the instance
         if response_type == "file":
             return self.__deserialize_file(response)
-       
+
         # fetch data from response object
         try:
             data = json.loads(response.data)
