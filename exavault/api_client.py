@@ -57,7 +57,9 @@ class ApiClient(object):
         'date': datetime.date,
         'datetime': datetime.datetime,
         'object': object,
+        # EV-CUSTOM - Adding a 'bytes' type to make binary downloads workd
         'bytes': bytes
+        # EV-CUSTOM - end of customization
     }
 
     def __init__(self, configuration=None, header_name=None, header_value=None,
