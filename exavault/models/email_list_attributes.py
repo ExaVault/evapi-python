@@ -29,29 +29,29 @@ class EmailListAttributes(object):
     """
     swagger_types = {
         'name': 'str',
-        'members': 'list[str]',
+        'emails': 'list[str]',
         'created': 'datetime',
         'modified': 'datetime'
     }
 
     attribute_map = {
         'name': 'name',
-        'members': 'members',
+        'emails': 'emails',
         'created': 'created',
         'modified': 'modified'
     }
 
-    def __init__(self, name=None, members=None, created=None, modified=None):  # noqa: E501
+    def __init__(self, name=None, emails=None, created=None, modified=None):  # noqa: E501
         """EmailListAttributes - a model defined in Swagger"""  # noqa: E501
         self._name = None
-        self._members = None
+        self._emails = None
         self._created = None
         self._modified = None
         self.discriminator = None
         if name is not None:
             self.name = name
-        if members is not None:
-            self.members = members
+        if emails is not None:
+            self.emails = emails
         if created is not None:
             self.created = created
         if modified is not None:
@@ -81,27 +81,27 @@ class EmailListAttributes(object):
         self._name = name
 
     @property
-    def members(self):
-        """Gets the members of this EmailListAttributes.  # noqa: E501
+    def emails(self):
+        """Gets the emails of this EmailListAttributes.  # noqa: E501
 
         Recipient emails in the email list  # noqa: E501
 
-        :return: The members of this EmailListAttributes.  # noqa: E501
+        :return: The emails of this EmailListAttributes.  # noqa: E501
         :rtype: list[str]
         """
-        return self._members
+        return self._emails
 
-    @members.setter
-    def members(self, members):
-        """Sets the members of this EmailListAttributes.
+    @emails.setter
+    def emails(self, emails):
+        """Sets the emails of this EmailListAttributes.
 
         Recipient emails in the email list  # noqa: E501
 
-        :param members: The members of this EmailListAttributes.  # noqa: E501
+        :param emails: The emails of this EmailListAttributes.  # noqa: E501
         :type: list[str]
         """
 
-        self._members = members
+        self._emails = emails
 
     @property
     def created(self):

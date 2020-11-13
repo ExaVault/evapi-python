@@ -28,10 +28,10 @@ class ShareRelationships(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'messages': 'list[ShareRelationshipsMessages]',
+        'messages': 'list[ShareRelationshpsMessage]',
         'owner': 'ShareRelationshipsOwner',
-        'resources': 'list[ShareRelationshipsResources]',
-        'notifications': 'list[ShareRelationshipsNotifications]'
+        'resources': 'list[ShareRelationshipsResource]',
+        'notifications': 'list[ShareRelationshipsNotification]'
     }
 
     attribute_map = {
@@ -64,7 +64,7 @@ class ShareRelationships(object):
         null  # noqa: E501
 
         :return: The messages of this ShareRelationships.  # noqa: E501
-        :rtype: list[ShareRelationshipsMessages]
+        :rtype: list[ShareRelationshpsMessage]
         """
         return self._messages
 
@@ -75,7 +75,7 @@ class ShareRelationships(object):
         null  # noqa: E501
 
         :param messages: The messages of this ShareRelationships.  # noqa: E501
-        :type: list[ShareRelationshipsMessages]
+        :type: list[ShareRelationshpsMessage]
         """
 
         self._messages = messages
@@ -107,7 +107,7 @@ class ShareRelationships(object):
 
 
         :return: The resources of this ShareRelationships.  # noqa: E501
-        :rtype: list[ShareRelationshipsResources]
+        :rtype: list[ShareRelationshipsResource]
         """
         return self._resources
 
@@ -117,7 +117,7 @@ class ShareRelationships(object):
 
 
         :param resources: The resources of this ShareRelationships.  # noqa: E501
-        :type: list[ShareRelationshipsResources]
+        :type: list[ShareRelationshipsResource]
         """
 
         self._resources = resources
@@ -129,7 +129,7 @@ class ShareRelationships(object):
         null  # noqa: E501
 
         :return: The notifications of this ShareRelationships.  # noqa: E501
-        :rtype: list[ShareRelationshipsNotifications]
+        :rtype: list[ShareRelationshipsNotification]
         """
         return self._notifications
 
@@ -140,7 +140,7 @@ class ShareRelationships(object):
         null  # noqa: E501
 
         :param notifications: The notifications of this ShareRelationships.  # noqa: E501
-        :type: list[ShareRelationshipsNotifications]
+        :type: list[ShareRelationshipsNotification]
         """
 
         self._notifications = notifications

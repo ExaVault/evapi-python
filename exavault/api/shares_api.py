@@ -44,7 +44,7 @@ class SharesApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param Body16 body:
+        :param AddShareRequestBody body:
         :return: ShareResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -68,7 +68,7 @@ class SharesApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param Body16 body:
+        :param AddShareRequestBody body:
         :return: ShareResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -637,7 +637,7 @@ class SharesApi(object):
         >>> result = thread.get()
 
         :param async_req bool
-        :param Body17 body: (required)
+        :param UpdateShareRequestBody body: (required)
         :param str ev_api_key: API Key (required)
         :param str ev_access_token: Access Token (required)
         :param int id: ID of the share entry (required)
@@ -662,7 +662,7 @@ class SharesApi(object):
         >>> result = thread.get()
 
         :param async_req bool
-        :param Body17 body: (required)
+        :param UpdateShareRequestBody body: (required)
         :param str ev_api_key: API Key (required)
         :param str ev_access_token: Access Token (required)
         :param int id: ID of the share entry (required)

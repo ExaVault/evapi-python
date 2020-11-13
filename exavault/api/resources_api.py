@@ -44,7 +44,7 @@ class ResourcesApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param Body8 body:
+        :param AddFolderRequestBody body:
         :return: ResourceResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -68,7 +68,7 @@ class ResourcesApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param Body8 body:
+        :param AddFolderRequestBody body:
         :return: ResourceResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -155,7 +155,7 @@ class ResourcesApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param Body10 body:
+        :param CompressFilesRequestBody body:
         :return: ResourceResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -179,7 +179,7 @@ class ResourcesApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param Body10 body:
+        :param CompressFilesRequestBody body:
         :return: ResourceResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -266,7 +266,7 @@ class ResourcesApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param Body12 body:
+        :param CopyResourcesRequestBody body:
         :return: ResourceCopyMove
                  If the method is called asynchronously,
                  returns the request thread.
@@ -290,7 +290,7 @@ class ResourcesApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param Body12 body:
+        :param CopyResourcesRequestBody body:
         :return: ResourceCopyMove
                  If the method is called asynchronously,
                  returns the request thread.
@@ -488,7 +488,7 @@ class ResourcesApi(object):
         :param async_req bool
         :param str ev_api_key: API Key (required)
         :param str ev_access_token: Access Token (required)
-        :param Body9 body:
+        :param DeleteResourcesRequestBody body:
         :return: EmptyResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -512,7 +512,7 @@ class ResourcesApi(object):
         :param async_req bool
         :param str ev_api_key: API Key (required)
         :param str ev_access_token: Access Token (required)
-        :param Body9 body:
+        :param DeleteResourcesRequestBody body:
         :return: EmptyResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -590,7 +590,7 @@ class ResourcesApi(object):
     def download(self, ev_api_key, ev_access_token, resources, **kwargs):  # noqa: E501
         """Download a file  # noqa: E501
 
-        Downloads a file. If more than one path is supplied, the files will be zipped before downloading with the downloadName parameter if supplied.   # noqa: E501
+        Downloads a file. If more than one path is supplied, the files will be zipped before downloading with the downloadArchiveName parameter if supplied.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.download(ev_api_key, ev_access_token, resources, async_req=True)
@@ -600,9 +600,9 @@ class ResourcesApi(object):
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param list[str] resources: Path of file or folder to be downloaded, starting from the root. Can also be an array of paths. (required)
-        :param str download_name: If zipping multiple files, the name of the zip file to create and download.
+        :param str download_archive_name: If zipping multiple files, the name of the zip file to create and download.
         :param bool polling: Used when downloading multiple files so url will be polled till zip file is created.
-        :param str polling_zip_name: Reference to the previously created zip for polling operation.
+        :param str polling_archive_name: Reference to the previously created zip for polling operation.
         :return: str
                  If the method is called asynchronously,
                  returns the request thread.
@@ -617,7 +617,7 @@ class ResourcesApi(object):
     def download_with_http_info(self, ev_api_key, ev_access_token, resources, **kwargs):  # noqa: E501
         """Download a file  # noqa: E501
 
-        Downloads a file. If more than one path is supplied, the files will be zipped before downloading with the downloadName parameter if supplied.   # noqa: E501
+        Downloads a file. If more than one path is supplied, the files will be zipped before downloading with the downloadArchiveName parameter if supplied.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.download_with_http_info(ev_api_key, ev_access_token, resources, async_req=True)
@@ -627,15 +627,15 @@ class ResourcesApi(object):
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param list[str] resources: Path of file or folder to be downloaded, starting from the root. Can also be an array of paths. (required)
-        :param str download_name: If zipping multiple files, the name of the zip file to create and download.
+        :param str download_archive_name: If zipping multiple files, the name of the zip file to create and download.
         :param bool polling: Used when downloading multiple files so url will be polled till zip file is created.
-        :param str polling_zip_name: Reference to the previously created zip for polling operation.
+        :param str polling_archive_name: Reference to the previously created zip for polling operation.
         :return: str
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['ev_api_key', 'ev_access_token', 'resources', 'download_name', 'polling', 'polling_zip_name']  # noqa: E501
+        all_params = ['ev_api_key', 'ev_access_token', 'resources', 'download_archive_name', 'polling', 'polling_archive_name']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -671,12 +671,12 @@ class ResourcesApi(object):
         if 'resources' in params:
             query_params.append(('resources[]', params['resources']))  # noqa: E501
             collection_formats['resources[]'] = 'multi'  # noqa: E501
-        if 'download_name' in params:
-            query_params.append(('downloadName', params['download_name']))  # noqa: E501
+        if 'download_archive_name' in params:
+            query_params.append(('downloadArchiveName', params['download_archive_name']))  # noqa: E501
         if 'polling' in params:
             query_params.append(('polling', params['polling']))  # noqa: E501
-        if 'polling_zip_name' in params:
-            query_params.append(('pollingZipName', params['polling_zip_name']))  # noqa: E501
+        if 'polling_archive_name' in params:
+            query_params.append(('pollingArchiveName', params['polling_archive_name']))  # noqa: E501
 
         header_params = {}
         if 'ev_api_key' in params:
@@ -725,7 +725,7 @@ class ResourcesApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param Body11 body:
+        :param ExtractFilesRequestBody body:
         :return: ResourceCollectionResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -749,7 +749,7 @@ class ResourcesApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param Body11 body:
+        :param ExtractFilesRequestBody body:
         :return: ResourceCollectionResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -1463,7 +1463,7 @@ class ResourcesApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param Body13 body:
+        :param MoveResourcesRequestBody body:
         :return: ResourceCopyMove
                  If the method is called asynchronously,
                  returns the request thread.
@@ -1487,7 +1487,7 @@ class ResourcesApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param Body13 body:
+        :param MoveResourcesRequestBody body:
         :return: ResourceCopyMove
                  If the method is called asynchronously,
                  returns the request thread.
@@ -1575,7 +1575,7 @@ class ResourcesApi(object):
         :param str ev_access_token: Access token required to make the API call. (required)
         :param str ev_api_key: API key required to make the API call. (required)
         :param int id: ID number of the resource (required)
-        :param Body7 body:
+        :param UpdateReourceByIdRequestBody body:
         :return: ResourceResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -1600,7 +1600,7 @@ class ResourcesApi(object):
         :param str ev_access_token: Access token required to make the API call. (required)
         :param str ev_api_key: API key required to make the API call. (required)
         :param int id: ID number of the resource (required)
-        :param Body7 body:
+        :param UpdateReourceByIdRequestBody body:
         :return: ResourceResponse
                  If the method is called asynchronously,
                  returns the request thread.

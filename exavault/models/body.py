@@ -28,72 +28,40 @@ class Body(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'name': 'str',
-        'emails': 'list[str]'
+        'file': 'str'
     }
 
     attribute_map = {
-        'name': 'name',
-        'emails': 'emails'
+        'file': 'file'
     }
 
-    def __init__(self, name=None, emails=None):  # noqa: E501
+    def __init__(self, file=None):  # noqa: E501
         """Body - a model defined in Swagger"""  # noqa: E501
-        self._name = None
-        self._emails = None
+        self._file = None
         self.discriminator = None
-        self.name = name
-        self.emails = emails
+        if file is not None:
+            self.file = file
 
     @property
-    def name(self):
-        """Gets the name of this Body.  # noqa: E501
+    def file(self):
+        """Gets the file of this Body.  # noqa: E501
 
-        Name of the email list.   # noqa: E501
 
-        :return: The name of this Body.  # noqa: E501
+        :return: The file of this Body.  # noqa: E501
         :rtype: str
         """
-        return self._name
+        return self._file
 
-    @name.setter
-    def name(self, name):
-        """Sets the name of this Body.
+    @file.setter
+    def file(self, file):
+        """Sets the file of this Body.
 
-        Name of the email list.   # noqa: E501
 
-        :param name: The name of this Body.  # noqa: E501
+        :param file: The file of this Body.  # noqa: E501
         :type: str
         """
-        if name is None:
-            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
-        self._name = name
-
-    @property
-    def emails(self):
-        """Gets the emails of this Body.  # noqa: E501
-
-        Array of email addresses to include in the email list.   # noqa: E501
-
-        :return: The emails of this Body.  # noqa: E501
-        :rtype: list[str]
-        """
-        return self._emails
-
-    @emails.setter
-    def emails(self, emails):
-        """Sets the emails of this Body.
-
-        Array of email addresses to include in the email list.   # noqa: E501
-
-        :param emails: The emails of this Body.  # noqa: E501
-        :type: list[str]
-        """
-        if emails is None:
-            raise ValueError("Invalid value for `emails`, must not be `None`")  # noqa: E501
-
-        self._emails = emails
+        self._file = file
 
     def to_dict(self):
         """Returns the model properties as a dict"""

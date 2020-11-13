@@ -44,7 +44,7 @@ class EmailListsApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param Body body:
+        :param AddEmailListRequestBody body:
         :return: EmailListResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -68,7 +68,7 @@ class EmailListsApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param Body body:
+        :param AddEmailListRequestBody body:
         :return: EmailListResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -372,6 +372,7 @@ class EmailListsApi(object):
     def get_email_lists(self, ev_api_key, ev_access_token, **kwargs):  # noqa: E501
         """Get all email groups  # noqa: E501
 
+        List all email groups for authenticated user  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.get_email_lists(ev_api_key, ev_access_token, async_req=True)
@@ -395,6 +396,7 @@ class EmailListsApi(object):
     def get_email_lists_with_http_info(self, ev_api_key, ev_access_token, **kwargs):  # noqa: E501
         """Get all email groups  # noqa: E501
 
+        List all email groups for authenticated user  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.get_email_lists_with_http_info(ev_api_key, ev_access_token, async_req=True)
@@ -487,7 +489,7 @@ class EmailListsApi(object):
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param int id: ID of the email list to update. (required)
-        :param Body1 body:
+        :param UpdateEmailListRequestBody body:
         :return: EmailListResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -512,7 +514,7 @@ class EmailListsApi(object):
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param int id: ID of the email list to update. (required)
-        :param Body1 body:
+        :param UpdateEmailListRequestBody body:
         :return: EmailListResponse
                  If the method is called asynchronously,
                  returns the request thread.

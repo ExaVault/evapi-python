@@ -45,7 +45,7 @@ class RecipientsApi(object):
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param int share_id: ID of the share to resend invites for. (required)
-        :param Body18 body:
+        :param ResendInvitationsRequestBody body:
         :return: ShareRecipientsResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -70,7 +70,7 @@ class RecipientsApi(object):
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param int share_id: ID of the share to resend invites for. (required)
-        :param Body18 body:
+        :param ResendInvitationsRequestBody body:
         :return: ShareRecipientsResponse
                  If the method is called asynchronously,
                  returns the request thread.
