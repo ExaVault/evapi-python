@@ -51,7 +51,7 @@ class ShareRelationshipsData(object):
     def type(self):
         """Gets the type of this ShareRelationshipsData.  # noqa: E501
 
-        Type is notification.   # noqa: E501
+        Type is message.   # noqa: E501
 
         :return: The type of this ShareRelationshipsData.  # noqa: E501
         :rtype: str
@@ -62,12 +62,12 @@ class ShareRelationshipsData(object):
     def type(self, type):
         """Sets the type of this ShareRelationshipsData.
 
-        Type is notification.   # noqa: E501
+        Type is message.   # noqa: E501
 
         :param type: The type of this ShareRelationshipsData.  # noqa: E501
         :type: str
         """
-        allowed_values = ["notification"]  # noqa: E501
+        allowed_values = ["message"]  # noqa: E501
         if type not in allowed_values:
             raise ValueError(
                 "Invalid value for `type` ({0}), must be one of {1}"  # noqa: E501
@@ -80,7 +80,7 @@ class ShareRelationshipsData(object):
     def id(self):
         """Gets the id of this ShareRelationshipsData.  # noqa: E501
 
-        ID of the notification.   # noqa: E501
+        ID of the message.  # noqa: E501
 
         :return: The id of this ShareRelationshipsData.  # noqa: E501
         :rtype: int
@@ -91,7 +91,7 @@ class ShareRelationshipsData(object):
     def id(self, id):
         """Sets the id of this ShareRelationshipsData.
 
-        ID of the notification.   # noqa: E501
+        ID of the message.  # noqa: E501
 
         :param id: The id of this ShareRelationshipsData.  # noqa: E501
         :type: int

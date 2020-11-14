@@ -42,8 +42,7 @@ class UserAttributes(object):
         'role': 'str',
         'time_zone': 'str',
         'onboarding': 'bool',
-        'first_login': 'bool',
-        'locked': 'bool'
+        'first_login': 'bool'
     }
 
     attribute_map = {
@@ -61,11 +60,10 @@ class UserAttributes(object):
         'role': 'role',
         'time_zone': 'timeZone',
         'onboarding': 'onboarding',
-        'first_login': 'firstLogin',
-        'locked': 'locked'
+        'first_login': 'firstLogin'
     }
 
-    def __init__(self, status=None, expiration=None, created=None, modified=None, access_timestamp=None, account_name=None, username=None, nickname=None, email=None, home_dir=None, permissions=None, role=None, time_zone=None, onboarding=None, first_login=None, locked=None):  # noqa: E501
+    def __init__(self, status=None, expiration=None, created=None, modified=None, access_timestamp=None, account_name=None, username=None, nickname=None, email=None, home_dir=None, permissions=None, role=None, time_zone=None, onboarding=None, first_login=None):  # noqa: E501
         """UserAttributes - a model defined in Swagger"""  # noqa: E501
         self._status = None
         self._expiration = None
@@ -82,7 +80,6 @@ class UserAttributes(object):
         self._time_zone = None
         self._onboarding = None
         self._first_login = None
-        self._locked = None
         self.discriminator = None
         self.status = status
         if expiration is not None:
@@ -103,8 +100,6 @@ class UserAttributes(object):
         self.onboarding = onboarding
         if first_login is not None:
             self.first_login = first_login
-        if locked is not None:
-            self.locked = locked
 
     @property
     def status(self):
@@ -482,29 +477,6 @@ class UserAttributes(object):
         """
 
         self._first_login = first_login
-
-    @property
-    def locked(self):
-        """Gets the locked of this UserAttributes.  # noqa: E501
-
-        `true` if the user is locked and cannot log in.  # noqa: E501
-
-        :return: The locked of this UserAttributes.  # noqa: E501
-        :rtype: bool
-        """
-        return self._locked
-
-    @locked.setter
-    def locked(self, locked):
-        """Sets the locked of this UserAttributes.
-
-        `true` if the user is locked and cannot log in.  # noqa: E501
-
-        :param locked: The locked of this UserAttributes.  # noqa: E501
-        :type: bool
-        """
-
-        self._locked = locked
 
     def to_dict(self):
         """Returns the model properties as a dict"""

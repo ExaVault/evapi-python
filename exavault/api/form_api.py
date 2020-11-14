@@ -505,7 +505,7 @@ class FormApi(object):
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param int id: Form unique ID number. (required)
-        :param UpdateFormByIdRequestBody body:
+        :param Body2 body:
         :return: FormResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -530,7 +530,7 @@ class FormApi(object):
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param int id: Form unique ID number. (required)
-        :param UpdateFormByIdRequestBody body:
+        :param Body2 body:
         :return: FormResponse
                  If the method is called asynchronously,
                  returns the request thread.

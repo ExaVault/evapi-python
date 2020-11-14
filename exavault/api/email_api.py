@@ -44,7 +44,7 @@ class EmailApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param SendReferralEmailRequestBody body:
+        :param Body15 body:
         :return: EmptyResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -68,7 +68,7 @@ class EmailApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param SendReferralEmailRequestBody body:
+        :param Body15 body:
         :return: EmptyResponse
                  If the method is called asynchronously,
                  returns the request thread.

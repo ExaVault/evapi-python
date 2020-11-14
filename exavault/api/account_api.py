@@ -151,7 +151,7 @@ class AccountApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param UpdateAccountRequestBody body: Update Account Settings
+        :param UpdateAccountBody body: Update Account Settings
         :return: AccountResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -175,7 +175,7 @@ class AccountApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param UpdateAccountRequestBody body: Update Account Settings
+        :param UpdateAccountBody body: Update Account Settings
         :return: AccountResponse
                  If the method is called asynchronously,
                  returns the request thread.

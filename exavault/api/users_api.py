@@ -44,7 +44,7 @@ class UsersApi(object):
         :param async_req bool
         :param str ev_api_key: API key required to make the API call (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param AddUserRequestBody body:
+        :param Body5 body:
         :return: UserResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -68,7 +68,7 @@ class UsersApi(object):
         :param async_req bool
         :param str ev_api_key: API key required to make the API call (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param AddUserRequestBody body:
+        :param Body5 body:
         :return: UserResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -529,7 +529,7 @@ class UsersApi(object):
         :param str ev_api_key: API key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param float id: The user's ID. Note that this is our internal ID, and _not the username_. You can obtain it by calling the [GET /users](#operation/listUsers) method. (required)
-        :param UpdateUserRequestBody body:
+        :param Body6 body:
         :return: UserResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -554,7 +554,7 @@ class UsersApi(object):
         :param str ev_api_key: API key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param float id: The user's ID. Note that this is our internal ID, and _not the username_. You can obtain it by calling the [GET /users](#operation/listUsers) method. (required)
-        :param UpdateUserRequestBody body:
+        :param Body6 body:
         :return: UserResponse
                  If the method is called asynchronously,
                  returns the request thread.

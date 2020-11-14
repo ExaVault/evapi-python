@@ -31,7 +31,7 @@ class ShareAttributes(object):
         'name': 'str',
         'has_password': 'bool',
         'public': 'bool',
-        'access_mode': 'list[str]',
+        'access_mode': 'str',
         'access_description': 'str',
         'embed': 'bool',
         'hash': 'str',
@@ -43,7 +43,7 @@ class ShareAttributes(object):
         'require_email': 'bool',
         'file_drop_create_folders': 'bool',
         'paths': 'list[str]',
-        'recipients': 'list[ShareRecipient]',
+        'recipients': 'list[ShareRecipient1]',
         'messages': 'list[ShareMessage]',
         'inherited': 'bool',
         'status': 'int',
@@ -233,7 +233,7 @@ class ShareAttributes(object):
         Access rights for the share.  # noqa: E501
 
         :return: The access_mode of this ShareAttributes.  # noqa: E501
-        :rtype: list[str]
+        :rtype: str
         """
         return self._access_mode
 
@@ -244,14 +244,13 @@ class ShareAttributes(object):
         Access rights for the share.  # noqa: E501
 
         :param access_mode: The access_mode of this ShareAttributes.  # noqa: E501
-        :type: list[str]
+        :type: str
         """
-        allowed_values = ["download", "upload", "modify", "delete"]  # noqa: E501
-        if not set(access_mode).issubset(set(allowed_values)):
+        allowed_values = ["upload", "download", "download_upload", "download_upload_modify_delete"]  # noqa: E501
+        if access_mode not in allowed_values:
             raise ValueError(
-                "Invalid values for `access_mode` [{0}], must be a subset of [{1}]"  # noqa: E501
-                .format(", ".join(map(str, set(access_mode) - set(allowed_values))),  # noqa: E501
-                        ", ".join(map(str, allowed_values)))
+                "Invalid value for `access_mode` ({0}), must be one of {1}"  # noqa: E501
+                .format(access_mode, allowed_values)
             )
 
         self._access_mode = access_mode
@@ -522,7 +521,7 @@ class ShareAttributes(object):
         Array of recipients.  # noqa: E501
 
         :return: The recipients of this ShareAttributes.  # noqa: E501
-        :rtype: list[ShareRecipient]
+        :rtype: list[ShareRecipient1]
         """
         return self._recipients
 
@@ -533,7 +532,7 @@ class ShareAttributes(object):
         Array of recipients.  # noqa: E501
 
         :param recipients: The recipients of this ShareAttributes.  # noqa: E501
-        :type: list[ShareRecipient]
+        :type: list[ShareRecipient1]
         """
 
         self._recipients = recipients
@@ -686,7 +685,7 @@ class ShareAttributes(object):
     def tracking_status(self):
         """Gets the tracking_status of this ShareAttributes.  # noqa: E501
 
-        Checks recipient received status and returns whether it's been recevied (`complete`,) partial recevied (`incomplete`,) or not received yet (`pending`.)  # noqa: E501
+        Checks recipient received status and returns whether it's been recevied (`complete`,) partial recevied (`incomplete`,) or not recevied yet (`pending`.)  # noqa: E501
 
         :return: The tracking_status of this ShareAttributes.  # noqa: E501
         :rtype: str
@@ -697,7 +696,7 @@ class ShareAttributes(object):
     def tracking_status(self, tracking_status):
         """Sets the tracking_status of this ShareAttributes.
 
-        Checks recipient received status and returns whether it's been recevied (`complete`,) partial recevied (`incomplete`,) or not received yet (`pending`.)  # noqa: E501
+        Checks recipient received status and returns whether it's been recevied (`complete`,) partial recevied (`incomplete`,) or not recevied yet (`pending`.)  # noqa: E501
 
         :param tracking_status: The tracking_status of this ShareAttributes.  # noqa: E501
         :type: str
