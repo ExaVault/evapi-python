@@ -35,7 +35,7 @@ class AccountApi(object):
     def get_account(self, ev_api_key, ev_access_token, **kwargs):  # noqa: E501
         """Get account settings  # noqa: E501
 
-        Get setttings for your account, such as current space usage, webhooks settings, welcome email content and IP address restrictions.  # noqa: E501
+        Get settings for your account, such as current space usage, webhooks settings, welcome email content and IP address restrictions.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.get_account(ev_api_key, ev_access_token, async_req=True)
@@ -59,7 +59,7 @@ class AccountApi(object):
     def get_account_with_http_info(self, ev_api_key, ev_access_token, **kwargs):  # noqa: E501
         """Get account settings  # noqa: E501
 
-        Get setttings for your account, such as current space usage, webhooks settings, welcome email content and IP address restrictions.  # noqa: E501
+        Get settings for your account, such as current space usage, webhooks settings, welcome email content and IP address restrictions.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.get_account_with_http_info(ev_api_key, ev_access_token, async_req=True)
@@ -151,7 +151,7 @@ class AccountApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param UpdateAccountBody body: Update Account Settings
+        :param UpdateAccountRequestBody body: Update Account Settings
         :return: AccountResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -175,7 +175,7 @@ class AccountApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param UpdateAccountBody body: Update Account Settings
+        :param UpdateAccountRequestBody body: Update Account Settings
         :return: AccountResponse
                  If the method is called asynchronously,
                  returns the request thread.

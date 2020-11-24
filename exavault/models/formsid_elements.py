@@ -112,7 +112,7 @@ class FormsidElements(object):
     def order(self):
         """Gets the order of this FormsidElements.  # noqa: E501
 
-        The order the fields will be displayed to the receipient. Starts at 0.   # noqa: E501
+        The order the fields will be displayed to the recipient. Starts at 0.   # noqa: E501
 
         :return: The order of this FormsidElements.  # noqa: E501
         :rtype: int
@@ -123,7 +123,7 @@ class FormsidElements(object):
     def order(self, order):
         """Sets the order of this FormsidElements.
 
-        The order the fields will be displayed to the receipient. Starts at 0.   # noqa: E501
+        The order the fields will be displayed to the recipient. Starts at 0.   # noqa: E501
 
         :param order: The order of this FormsidElements.  # noqa: E501
         :type: int

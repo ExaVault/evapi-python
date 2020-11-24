@@ -44,7 +44,7 @@ class FormApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call.  (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param str id: ID of the entry to be deleted data for (required)
+        :param int id: ID of the entry to be deleted data for (required)
         :return: EmptyResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -68,7 +68,7 @@ class FormApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call.  (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param str id: ID of the entry to be deleted data for (required)
+        :param int id: ID of the entry to be deleted data for (required)
         :return: EmptyResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -385,7 +385,7 @@ class FormApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call.  (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param str id: ID of the form to retrieve entries for. (required)
+        :param int id: ID of the form to retrieve entries for. (required)
         :param int limit: Limit of records to be returned (for pagination)
         :param int offset: Current offset of records (for pagination)
         :return: FormEntryResponse
@@ -411,7 +411,7 @@ class FormApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make the API call.  (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param str id: ID of the form to retrieve entries for. (required)
+        :param int id: ID of the form to retrieve entries for. (required)
         :param int limit: Limit of records to be returned (for pagination)
         :param int offset: Current offset of records (for pagination)
         :return: FormEntryResponse
@@ -505,7 +505,7 @@ class FormApi(object):
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param int id: Form unique ID number. (required)
-        :param Body2 body:
+        :param UpdateFormByIdRequestBody body:
         :return: FormResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -530,7 +530,7 @@ class FormApi(object):
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param int id: Form unique ID number. (required)
-        :param Body2 body:
+        :param UpdateFormByIdRequestBody body:
         :return: FormResponse
                  If the method is called asynchronously,
                  returns the request thread.

@@ -44,7 +44,7 @@ class NotificationsApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make API call.  (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param Body4 body:
+        :param AddNotificationRequestBody body:
         :return: NotificationResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -68,7 +68,7 @@ class NotificationsApi(object):
         :param async_req bool
         :param str ev_api_key: API Key required to make API call.  (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param Body4 body:
+        :param AddNotificationRequestBody body:
         :return: NotificationResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -509,7 +509,7 @@ class NotificationsApi(object):
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param int id: ID of the notification. Use [GET /notifications](#operation/listNotifications) if you need to lookup an ID. (required)
-        :param Body3 body:
+        :param UpdateNotificationByIdRequestBody body:
         :return: NotificationResponse
                  If the method is called asynchronously,
                  returns the request thread.
@@ -534,7 +534,7 @@ class NotificationsApi(object):
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param int id: ID of the notification. Use [GET /notifications](#operation/listNotifications) if you need to lookup an ID. (required)
-        :param Body3 body:
+        :param UpdateNotificationByIdRequestBody body:
         :return: NotificationResponse
                  If the method is called asynchronously,
                  returns the request thread.

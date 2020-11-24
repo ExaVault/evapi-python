@@ -28,47 +28,47 @@ class DownloadPolling(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'zip': 'str',
+        'polling_archive_name': 'str',
         'percent': 'int'
     }
 
     attribute_map = {
-        'zip': 'zip',
+        'polling_archive_name': 'pollingArchiveName',
         'percent': 'percent'
     }
 
-    def __init__(self, zip=None, percent=None):  # noqa: E501
+    def __init__(self, polling_archive_name=None, percent=None):  # noqa: E501
         """DownloadPolling - a model defined in Swagger"""  # noqa: E501
-        self._zip = None
+        self._polling_archive_name = None
         self._percent = None
         self.discriminator = None
-        if zip is not None:
-            self.zip = zip
+        if polling_archive_name is not None:
+            self.polling_archive_name = polling_archive_name
         if percent is not None:
             self.percent = percent
 
     @property
-    def zip(self):
-        """Gets the zip of this DownloadPolling.  # noqa: E501
+    def polling_archive_name(self):
+        """Gets the polling_archive_name of this DownloadPolling.  # noqa: E501
 
         Name of the zip file.  # noqa: E501
 
-        :return: The zip of this DownloadPolling.  # noqa: E501
+        :return: The polling_archive_name of this DownloadPolling.  # noqa: E501
         :rtype: str
         """
-        return self._zip
+        return self._polling_archive_name
 
-    @zip.setter
-    def zip(self, zip):
-        """Sets the zip of this DownloadPolling.
+    @polling_archive_name.setter
+    def polling_archive_name(self, polling_archive_name):
+        """Sets the polling_archive_name of this DownloadPolling.
 
         Name of the zip file.  # noqa: E501
 
-        :param zip: The zip of this DownloadPolling.  # noqa: E501
+        :param polling_archive_name: The polling_archive_name of this DownloadPolling.  # noqa: E501
         :type: str
         """
 
-        self._zip = zip
+        self._polling_archive_name = polling_archive_name
 
     @property
     def percent(self):

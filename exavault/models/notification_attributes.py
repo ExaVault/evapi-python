@@ -134,7 +134,7 @@ class NotificationAttributes(object):
     def type(self):
         """Gets the type of this NotificationAttributes.  # noqa: E501
 
-        Type of the resoucre the notification is attached to.   # noqa: E501
+        Type of the resource the notification is attached to.   # noqa: E501
 
         :return: The type of this NotificationAttributes.  # noqa: E501
         :rtype: str
@@ -145,7 +145,7 @@ class NotificationAttributes(object):
     def type(self, type):
         """Sets the type of this NotificationAttributes.
 
-        Type of the resoucre the notification is attached to.   # noqa: E501
+        Type of the resource the notification is attached to.   # noqa: E501
 
         :param type: The type of this NotificationAttributes.  # noqa: E501
         :type: str

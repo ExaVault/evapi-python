@@ -29,6 +29,7 @@ class UserAttributes(object):
     """
     swagger_types = {
         'status': 'int',
+        'locked': 'bool',
         'expiration': 'str',
         'created': 'datetime',
         'modified': 'datetime',
@@ -37,7 +38,7 @@ class UserAttributes(object):
         'username': 'str',
         'nickname': 'str',
         'email': 'str',
-        'home_dir': 'str',
+        'home_path': 'str',
         'permissions': 'UserPermissions',
         'role': 'str',
         'time_zone': 'str',
@@ -47,6 +48,7 @@ class UserAttributes(object):
 
     attribute_map = {
         'status': 'status',
+        'locked': 'locked',
         'expiration': 'expiration',
         'created': 'created',
         'modified': 'modified',
@@ -55,7 +57,7 @@ class UserAttributes(object):
         'username': 'username',
         'nickname': 'nickname',
         'email': 'email',
-        'home_dir': 'homeDir',
+        'home_path': 'homePath',
         'permissions': 'permissions',
         'role': 'role',
         'time_zone': 'timeZone',
@@ -63,9 +65,10 @@ class UserAttributes(object):
         'first_login': 'firstLogin'
     }
 
-    def __init__(self, status=None, expiration=None, created=None, modified=None, access_timestamp=None, account_name=None, username=None, nickname=None, email=None, home_dir=None, permissions=None, role=None, time_zone=None, onboarding=None, first_login=None):  # noqa: E501
+    def __init__(self, status=None, locked=None, expiration=None, created=None, modified=None, access_timestamp=None, account_name=None, username=None, nickname=None, email=None, home_path=None, permissions=None, role=None, time_zone=None, onboarding=None, first_login=None):  # noqa: E501
         """UserAttributes - a model defined in Swagger"""  # noqa: E501
         self._status = None
+        self._locked = None
         self._expiration = None
         self._created = None
         self._modified = None
@@ -74,7 +77,7 @@ class UserAttributes(object):
         self._username = None
         self._nickname = None
         self._email = None
-        self._home_dir = None
+        self._home_path = None
         self._permissions = None
         self._role = None
         self._time_zone = None
@@ -82,6 +85,8 @@ class UserAttributes(object):
         self._first_login = None
         self.discriminator = None
         self.status = status
+        if locked is not None:
+            self.locked = locked
         if expiration is not None:
             self.expiration = expiration
         self.created = created
@@ -93,7 +98,8 @@ class UserAttributes(object):
         self.nickname = nickname
         if email is not None:
             self.email = email
-        self.home_dir = home_dir
+        if home_path is not None:
+            self.home_path = home_path
         self.permissions = permissions
         self.role = role
         self.time_zone = time_zone
@@ -131,6 +137,29 @@ class UserAttributes(object):
             )
 
         self._status = status
+
+    @property
+    def locked(self):
+        """Gets the locked of this UserAttributes.  # noqa: E501
+
+        `true` if the user is locked and cannot log in.  # noqa: E501
+
+        :return: The locked of this UserAttributes.  # noqa: E501
+        :rtype: bool
+        """
+        return self._locked
+
+    @locked.setter
+    def locked(self, locked):
+        """Sets the locked of this UserAttributes.
+
+        `true` if the user is locked and cannot log in.  # noqa: E501
+
+        :param locked: The locked of this UserAttributes.  # noqa: E501
+        :type: bool
+        """
+
+        self._locked = locked
 
     @property
     def expiration(self):
@@ -327,29 +356,27 @@ class UserAttributes(object):
         self._email = email
 
     @property
-    def home_dir(self):
-        """Gets the home_dir of this UserAttributes.  # noqa: E501
+    def home_path(self):
+        """Gets the home_path of this UserAttributes.  # noqa: E501
 
         Path to the user's home folder.  # noqa: E501
 
-        :return: The home_dir of this UserAttributes.  # noqa: E501
+        :return: The home_path of this UserAttributes.  # noqa: E501
         :rtype: str
         """
-        return self._home_dir
+        return self._home_path
 
-    @home_dir.setter
-    def home_dir(self, home_dir):
-        """Sets the home_dir of this UserAttributes.
+    @home_path.setter
+    def home_path(self, home_path):
+        """Sets the home_path of this UserAttributes.
 
         Path to the user's home folder.  # noqa: E501
 
-        :param home_dir: The home_dir of this UserAttributes.  # noqa: E501
+        :param home_path: The home_path of this UserAttributes.  # noqa: E501
         :type: str
         """
-        if home_dir is None:
-            raise ValueError("Invalid value for `home_dir`, must not be `None`")  # noqa: E501
 
-        self._home_dir = home_dir
+        self._home_path = home_path
 
     @property
     def permissions(self):
