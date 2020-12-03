@@ -43,8 +43,6 @@ from exavault.models.callback_settings_values_triggers import CallbackSettingsVa
 from exavault.models.compress_files_request_body import CompressFilesRequestBody
 from exavault.models.copy_resources_request_body import CopyResourcesRequestBody
 from exavault.models.delete_resources_request_body import DeleteResourcesRequestBody
-from exavault.models.download_polling import DownloadPolling
-from exavault.models.download_polling_response import DownloadPollingResponse
 from exavault.models.email_list import EmailList
 from exavault.models.email_list_attributes import EmailListAttributes
 from exavault.models.email_list_collection_response import EmailListCollectionResponse

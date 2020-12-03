@@ -590,7 +590,7 @@ class ResourcesApi(object):
     def download(self, ev_api_key, ev_access_token, resources, **kwargs):  # noqa: E501
         """Download a file  # noqa: E501
 
-        Downloads a file. If more than one path is supplied, the files will be zipped before downloading with the downloadArchiveName parameter if supplied.   # noqa: E501
+        Downloads a file from the server. Whenever more than one file is being downloaded, the file are first zipped into  a single file before the download starts, and the resulting zip file is named to match the `downloadArchiveName` parameter.  **NOTE**: Downloading many files at once  may result in a long delay before the API will return a response. You may need to override default timeout values in your API client, or download files individually.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.download(ev_api_key, ev_access_token, resources, async_req=True)
@@ -600,9 +600,7 @@ class ResourcesApi(object):
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param list[str] resources: Path of file or folder to be downloaded, starting from the root. Can also be an array of paths. (required)
-        :param str download_archive_name: If zipping multiple files, the name of the zip file to create and download.
-        :param bool polling: Used when downloading multiple files so url will be polled till zip file is created.
-        :param str polling_archive_name: Reference to the previously created zip for polling operation.
+        :param str download_archive_name: When downloading multiple files, this will be used as the name of the zip file that is created.
         :return: str
                  If the method is called asynchronously,
                  returns the request thread.
@@ -617,7 +615,7 @@ class ResourcesApi(object):
     def download_with_http_info(self, ev_api_key, ev_access_token, resources, **kwargs):  # noqa: E501
         """Download a file  # noqa: E501
 
-        Downloads a file. If more than one path is supplied, the files will be zipped before downloading with the downloadArchiveName parameter if supplied.   # noqa: E501
+        Downloads a file from the server. Whenever more than one file is being downloaded, the file are first zipped into  a single file before the download starts, and the resulting zip file is named to match the `downloadArchiveName` parameter.  **NOTE**: Downloading many files at once  may result in a long delay before the API will return a response. You may need to override default timeout values in your API client, or download files individually.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.download_with_http_info(ev_api_key, ev_access_token, resources, async_req=True)
@@ -627,15 +625,13 @@ class ResourcesApi(object):
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param list[str] resources: Path of file or folder to be downloaded, starting from the root. Can also be an array of paths. (required)
-        :param str download_archive_name: If zipping multiple files, the name of the zip file to create and download.
-        :param bool polling: Used when downloading multiple files so url will be polled till zip file is created.
-        :param str polling_archive_name: Reference to the previously created zip for polling operation.
+        :param str download_archive_name: When downloading multiple files, this will be used as the name of the zip file that is created.
         :return: str
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['ev_api_key', 'ev_access_token', 'resources', 'download_archive_name', 'polling', 'polling_archive_name']  # noqa: E501
+        all_params = ['ev_api_key', 'ev_access_token', 'resources', 'download_archive_name']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -673,10 +669,6 @@ class ResourcesApi(object):
             collection_formats['resources[]'] = 'multi'  # noqa: E501
         if 'download_archive_name' in params:
             query_params.append(('downloadArchiveName', params['download_archive_name']))  # noqa: E501
-        if 'polling' in params:
-            query_params.append(('polling', params['polling']))  # noqa: E501
-        if 'polling_archive_name' in params:
-            query_params.append(('pollingArchiveName', params['polling_archive_name']))  # noqa: E501
 
         header_params = {}
         if 'ev_api_key' in params:
@@ -690,7 +682,7 @@ class ResourcesApi(object):
         body_params = None
         # HTTP header `Accept`
         header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/octet-stream', 'application/zip', 'application/json'])  # noqa: E501
+            ['application/octet-stream', 'application/zip'])  # noqa: E501
 
         # Authentication setting
         auth_settings = []  # noqa: E501
@@ -1319,7 +1311,7 @@ class ResourcesApi(object):
     def list_resources(self, ev_api_key, ev_access_token, resource, **kwargs):  # noqa: E501
         """Get a list of all resources  # noqa: E501
 
-        Returns a list of files and folders in the account. Use the `resource` query parameter to indicate the folder you wish to search in (which can be /).   **Searching for Files and Folders**  Using the `name` parameter triggers search mode, which will search the entire directory structure under the provided `resource` for files or folders with names matching the provided `name`. This supports wildcard matching such as:  - \\*Report\\* would find any files or folders with \"Report\" in the name. - Data\\_202?-09-30.xlsx would match items such as \"Data\\_2020-09-30.xlsx\", \"DATA\\_2021-09-30.xlsx\", \"data\\_2022-09-30.xlsx\" etc. - sales\\* would find any files or folders starting with the word \"Sales\" - \\*.csv would locate any files ending in \".csv\" - \\* matches everything within the directory tree starting at your given `resource`  The search is not case-sensitive. Searching for Clients\\* or clients\\* or CLIENTS\\*, etc. will provide identical results  You cannot use the `type` parameter if you are using the `name` parameter to run a search.  # noqa: E501
+        Returns a list of files and folders in the account. Use the `resource` query parameter to indicate the folder you wish to search in (which can be /).   **Searching for Files and Folders**  Using the `name` parameter triggers search mode, which will search the entire directory structure under the provided `resource` for files or folders with names matching the provided `name`. This supports wildcard matching such as:  - \\*Report\\* would find any files or folders with \"Report\" in the name. - Data\\_202?-09-30.xlsx would match items such as \"Data\\_2020-09-30.xlsx\", \"DATA\\_2021-09-30.xlsx\", \"data\\_2022-09-30.xlsx\" etc. - sales\\* would find any files or folders starting with the word \"Sales\" - \\*.csv would locate any files ending in \".csv\" - \\* matches everything within the directory tree starting at your given `resource`  The search is not case-sensitive. Searching for Clients\\* or clients\\* or CLIENTS\\*, etc. will provide identical results  If you are using the `name` parameter to run a search, the `type` parameter will be ignored by the server.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.list_resources(ev_api_key, ev_access_token, resource, async_req=True)
@@ -1330,9 +1322,9 @@ class ResourcesApi(object):
         :param str ev_access_token: Access token required to make the API call. (required)
         :param str resource: Resource identifier to get resources for. Can be path/id/name. (required)
         :param str sort: Endpoint support multiple sort fields by allowing array of sort params. Sort fields should be applied in the order specified. The sort order for each sort field is ascending unless it is prefixed with a minus (“-“), in which case it will be descending.
-        :param int offset: Determines which item to start on for pagination. Use zero (0) to start at the beginning of the list.
-        :param int limit: The number of files to limit the result. Cannot be set higher than 100. If you have more than one hundred files in your directory, make multiple calls, incrementing the `offset` parameter, above.
-        :param str type: Limit types of resources returned to \"file\" or \"dir\" only. This is ignored if you are using the name parameter to trigger a search.
+        :param int offset: Determines which item to start on for pagination. Use zero (0) to start at the beginning of the list. e.g, setting `offset=200` would trigger the server to skip the first 200 matching entries when returning the results.
+        :param int limit: The number of files to limit the result. If you have more files in your directory than this limit, make multiple calls, incrementing the `offset` parameter, above.
+        :param str type: Limit types of resources returned to \"file\" or \"dir\" only. This is ignored if you are using the `name` parameter to trigger a search.
         :param str name: Text to match resource names. This allows you to filter the results returned. For example, to locate only zip archive files, you can enter `*zip` and only resources ending in \"zip\" will be included in the list of results.
         :param str include: Comma separated list of relationships to include in response. Possible values are **share**, **notifications**, **directFile**, **parentResource**, **ownerUser**, **ownerAccount**.
         :return: ResourceCollectionResponse
@@ -1349,7 +1341,7 @@ class ResourcesApi(object):
     def list_resources_with_http_info(self, ev_api_key, ev_access_token, resource, **kwargs):  # noqa: E501
         """Get a list of all resources  # noqa: E501
 
-        Returns a list of files and folders in the account. Use the `resource` query parameter to indicate the folder you wish to search in (which can be /).   **Searching for Files and Folders**  Using the `name` parameter triggers search mode, which will search the entire directory structure under the provided `resource` for files or folders with names matching the provided `name`. This supports wildcard matching such as:  - \\*Report\\* would find any files or folders with \"Report\" in the name. - Data\\_202?-09-30.xlsx would match items such as \"Data\\_2020-09-30.xlsx\", \"DATA\\_2021-09-30.xlsx\", \"data\\_2022-09-30.xlsx\" etc. - sales\\* would find any files or folders starting with the word \"Sales\" - \\*.csv would locate any files ending in \".csv\" - \\* matches everything within the directory tree starting at your given `resource`  The search is not case-sensitive. Searching for Clients\\* or clients\\* or CLIENTS\\*, etc. will provide identical results  You cannot use the `type` parameter if you are using the `name` parameter to run a search.  # noqa: E501
+        Returns a list of files and folders in the account. Use the `resource` query parameter to indicate the folder you wish to search in (which can be /).   **Searching for Files and Folders**  Using the `name` parameter triggers search mode, which will search the entire directory structure under the provided `resource` for files or folders with names matching the provided `name`. This supports wildcard matching such as:  - \\*Report\\* would find any files or folders with \"Report\" in the name. - Data\\_202?-09-30.xlsx would match items such as \"Data\\_2020-09-30.xlsx\", \"DATA\\_2021-09-30.xlsx\", \"data\\_2022-09-30.xlsx\" etc. - sales\\* would find any files or folders starting with the word \"Sales\" - \\*.csv would locate any files ending in \".csv\" - \\* matches everything within the directory tree starting at your given `resource`  The search is not case-sensitive. Searching for Clients\\* or clients\\* or CLIENTS\\*, etc. will provide identical results  If you are using the `name` parameter to run a search, the `type` parameter will be ignored by the server.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.list_resources_with_http_info(ev_api_key, ev_access_token, resource, async_req=True)
@@ -1360,9 +1352,9 @@ class ResourcesApi(object):
         :param str ev_access_token: Access token required to make the API call. (required)
         :param str resource: Resource identifier to get resources for. Can be path/id/name. (required)
         :param str sort: Endpoint support multiple sort fields by allowing array of sort params. Sort fields should be applied in the order specified. The sort order for each sort field is ascending unless it is prefixed with a minus (“-“), in which case it will be descending.
-        :param int offset: Determines which item to start on for pagination. Use zero (0) to start at the beginning of the list.
-        :param int limit: The number of files to limit the result. Cannot be set higher than 100. If you have more than one hundred files in your directory, make multiple calls, incrementing the `offset` parameter, above.
-        :param str type: Limit types of resources returned to \"file\" or \"dir\" only. This is ignored if you are using the name parameter to trigger a search.
+        :param int offset: Determines which item to start on for pagination. Use zero (0) to start at the beginning of the list. e.g, setting `offset=200` would trigger the server to skip the first 200 matching entries when returning the results.
+        :param int limit: The number of files to limit the result. If you have more files in your directory than this limit, make multiple calls, incrementing the `offset` parameter, above.
+        :param str type: Limit types of resources returned to \"file\" or \"dir\" only. This is ignored if you are using the `name` parameter to trigger a search.
         :param str name: Text to match resource names. This allows you to filter the results returned. For example, to locate only zip archive files, you can enter `*zip` and only resources ending in \"zip\" will be included in the list of results.
         :param str include: Comma separated list of relationships to include in response. Possible values are **share**, **notifications**, **directFile**, **parentResource**, **ownerUser**, **ownerAccount**.
         :return: ResourceCollectionResponse

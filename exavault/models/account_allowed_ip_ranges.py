@@ -33,8 +33,8 @@ class AccountAllowedIpRanges(object):
     }
 
     attribute_map = {
-        'ip_start': 'ip_start',
-        'ip_end': 'ip_end'
+        'ip_start': 'ipStart',
+        'ip_end': 'ipEnd'
     }
 
     def __init__(self, ip_start=None, ip_end=None):  # noqa: E501

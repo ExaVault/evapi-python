@@ -74,7 +74,7 @@ class MoveResourcesRequestBody(object):
     def parent_resource(self):
         """Gets the parent_resource of this MoveResourcesRequestBody.  # noqa: E501
 
-        Remote destination path to move files/folders to.  # noqa: E501
+        Resource identifier of folder to move files/folders to.  # noqa: E501
 
         :return: The parent_resource of this MoveResourcesRequestBody.  # noqa: E501
         :rtype: str
@@ -85,7 +85,7 @@ class MoveResourcesRequestBody(object):
     def parent_resource(self, parent_resource):
         """Sets the parent_resource of this MoveResourcesRequestBody.
 
-        Remote destination path to move files/folders to.  # noqa: E501
+        Resource identifier of folder to move files/folders to.  # noqa: E501
 
         :param parent_resource: The parent_resource of this MoveResourcesRequestBody.  # noqa: E501
         :type: str

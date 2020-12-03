@@ -56,7 +56,7 @@ class AddFolderRequestBody(object):
     def path(self):
         """Gets the path of this AddFolderRequestBody.  # noqa: E501
 
-        Path to the newly created folder including new ame  # noqa: E501
+        Fully-qualified path to the new folder including folder's name  # noqa: E501
 
         :return: The path of this AddFolderRequestBody.  # noqa: E501
         :rtype: str
@@ -67,7 +67,7 @@ class AddFolderRequestBody(object):
     def path(self, path):
         """Sets the path of this AddFolderRequestBody.
 
-        Path to the newly created folder including new ame  # noqa: E501
+        Fully-qualified path to the new folder including folder's name  # noqa: E501
 
         :param path: The path of this AddFolderRequestBody.  # noqa: E501
         :type: str

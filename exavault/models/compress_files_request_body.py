@@ -80,7 +80,7 @@ class CompressFilesRequestBody(object):
     def parent_resource(self):
         """Gets the parent_resource of this CompressFilesRequestBody.  # noqa: E501
 
-        Full path to folder new archive will be created in. If left blank, \"/\" will be used.  # noqa: E501
+        Resource identifier of the folder where zip archive should be created.  # noqa: E501
 
         :return: The parent_resource of this CompressFilesRequestBody.  # noqa: E501
         :rtype: str
@@ -91,7 +91,7 @@ class CompressFilesRequestBody(object):
     def parent_resource(self, parent_resource):
         """Sets the parent_resource of this CompressFilesRequestBody.
 
-        Full path to folder new archive will be created in. If left blank, \"/\" will be used.  # noqa: E501
+        Resource identifier of the folder where zip archive should be created.  # noqa: E501
 
         :param parent_resource: The parent_resource of this CompressFilesRequestBody.  # noqa: E501
         :type: str
