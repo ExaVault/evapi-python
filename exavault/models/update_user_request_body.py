@@ -34,12 +34,11 @@ class UpdateUserRequestBody(object):
         'email': 'str',
         'password': 'str',
         'role': 'str',
-        'permissions': 'UsersPermissions',
+        'permissions': 'UserPermissions',
         'time_zone': 'str',
         'expiration': 'str',
         'locked': 'bool',
-        'onboarding': 'bool',
-        'current_user_password': 'str'
+        'onboarding': 'bool'
     }
 
     attribute_map = {
@@ -53,11 +52,10 @@ class UpdateUserRequestBody(object):
         'time_zone': 'timeZone',
         'expiration': 'expiration',
         'locked': 'locked',
-        'onboarding': 'onboarding',
-        'current_user_password': 'currentUserPassword'
+        'onboarding': 'onboarding'
     }
 
-    def __init__(self, username=None, nickname=None, home_resource=None, email=None, password=None, role=None, permissions=None, time_zone=None, expiration=None, locked=None, onboarding=None, current_user_password=None):  # noqa: E501
+    def __init__(self, username=None, nickname=None, home_resource=None, email=None, password=None, role=None, permissions=None, time_zone=None, expiration=None, locked=None, onboarding=None):  # noqa: E501
         """UpdateUserRequestBody - a model defined in Swagger"""  # noqa: E501
         self._username = None
         self._nickname = None
@@ -70,7 +68,6 @@ class UpdateUserRequestBody(object):
         self._expiration = None
         self._locked = None
         self._onboarding = None
-        self._current_user_password = None
         self.discriminator = None
         if username is not None:
             self.username = username
@@ -94,8 +91,6 @@ class UpdateUserRequestBody(object):
             self.locked = locked
         if onboarding is not None:
             self.onboarding = onboarding
-        if current_user_password is not None:
-            self.current_user_password = current_user_password
 
     @property
     def username(self):
@@ -247,7 +242,7 @@ class UpdateUserRequestBody(object):
 
 
         :return: The permissions of this UpdateUserRequestBody.  # noqa: E501
-        :rtype: UsersPermissions
+        :rtype: UserPermissions
         """
         return self._permissions
 
@@ -257,7 +252,7 @@ class UpdateUserRequestBody(object):
 
 
         :param permissions: The permissions of this UpdateUserRequestBody.  # noqa: E501
-        :type: UsersPermissions
+        :type: UserPermissions
         """
 
         self._permissions = permissions
@@ -353,29 +348,6 @@ class UpdateUserRequestBody(object):
         """
 
         self._onboarding = onboarding
-
-    @property
-    def current_user_password(self):
-        """Gets the current_user_password of this UpdateUserRequestBody.  # noqa: E501
-
-        The password of the currently authenticated user. Required when updating any user’s email, username or password.  # noqa: E501
-
-        :return: The current_user_password of this UpdateUserRequestBody.  # noqa: E501
-        :rtype: str
-        """
-        return self._current_user_password
-
-    @current_user_password.setter
-    def current_user_password(self, current_user_password):
-        """Sets the current_user_password of this UpdateUserRequestBody.
-
-        The password of the currently authenticated user. Required when updating any user’s email, username or password.  # noqa: E501
-
-        :param current_user_password: The current_user_password of this UpdateUserRequestBody.  # noqa: E501
-        :type: str
-        """
-
-        self._current_user_password = current_user_password
 
     def to_dict(self):
         """Returns the model properties as a dict"""

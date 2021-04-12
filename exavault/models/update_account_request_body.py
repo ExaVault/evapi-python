@@ -28,8 +28,6 @@ class UpdateAccountRequestBody(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'quota_notice_enabled': 'bool',
-        'quota_notice_threshold': 'int',
         'secure_only': 'bool',
         'complex_passwords': 'bool',
         'show_referral_links': 'bool',
@@ -37,15 +35,13 @@ class UpdateAccountRequestBody(object):
         'email_content': 'str',
         'email_subject': 'str',
         'allowed_ip_ranges': 'list[AccountAllowedIpRanges]',
-        'callback_settings': 'CallbackSettingsValues',
         'branding_settings': 'BrandingSettingsValues',
         'account_onboarding': 'bool',
-        'custom_signature': 'str'
+        'custom_signature': 'str',
+        'quota': 'AccountQuotaValues'
     }
 
     attribute_map = {
-        'quota_notice_enabled': 'quotaNoticeEnabled',
-        'quota_notice_threshold': 'quotaNoticeThreshold',
         'secure_only': 'secureOnly',
         'complex_passwords': 'complexPasswords',
         'show_referral_links': 'showReferralLinks',
@@ -53,16 +49,14 @@ class UpdateAccountRequestBody(object):
         'email_content': 'emailContent',
         'email_subject': 'emailSubject',
         'allowed_ip_ranges': 'allowedIpRanges',
-        'callback_settings': 'callbackSettings',
         'branding_settings': 'brandingSettings',
         'account_onboarding': 'accountOnboarding',
-        'custom_signature': 'customSignature'
+        'custom_signature': 'customSignature',
+        'quota': 'quota'
     }
 
-    def __init__(self, quota_notice_enabled=None, quota_notice_threshold=None, secure_only=None, complex_passwords=None, show_referral_links=None, external_domain=None, email_content=None, email_subject=None, allowed_ip_ranges=None, callback_settings=None, branding_settings=None, account_onboarding=None, custom_signature=None):  # noqa: E501
+    def __init__(self, secure_only=None, complex_passwords=None, show_referral_links=None, external_domain=None, email_content=None, email_subject=None, allowed_ip_ranges=None, branding_settings=None, account_onboarding=None, custom_signature=None, quota=None):  # noqa: E501
         """UpdateAccountRequestBody - a model defined in Swagger"""  # noqa: E501
-        self._quota_notice_enabled = None
-        self._quota_notice_threshold = None
         self._secure_only = None
         self._complex_passwords = None
         self._show_referral_links = None
@@ -70,15 +64,11 @@ class UpdateAccountRequestBody(object):
         self._email_content = None
         self._email_subject = None
         self._allowed_ip_ranges = None
-        self._callback_settings = None
         self._branding_settings = None
         self._account_onboarding = None
         self._custom_signature = None
+        self._quota = None
         self.discriminator = None
-        if quota_notice_enabled is not None:
-            self.quota_notice_enabled = quota_notice_enabled
-        if quota_notice_threshold is not None:
-            self.quota_notice_threshold = quota_notice_threshold
         if secure_only is not None:
             self.secure_only = secure_only
         if complex_passwords is not None:
@@ -93,60 +83,14 @@ class UpdateAccountRequestBody(object):
             self.email_subject = email_subject
         if allowed_ip_ranges is not None:
             self.allowed_ip_ranges = allowed_ip_ranges
-        if callback_settings is not None:
-            self.callback_settings = callback_settings
         if branding_settings is not None:
             self.branding_settings = branding_settings
         if account_onboarding is not None:
             self.account_onboarding = account_onboarding
         if custom_signature is not None:
             self.custom_signature = custom_signature
-
-    @property
-    def quota_notice_enabled(self):
-        """Gets the quota_notice_enabled of this UpdateAccountRequestBody.  # noqa: E501
-
-        Whether the system should email the account owner when usage exceeds quotaNoticeThreshold value  # noqa: E501
-
-        :return: The quota_notice_enabled of this UpdateAccountRequestBody.  # noqa: E501
-        :rtype: bool
-        """
-        return self._quota_notice_enabled
-
-    @quota_notice_enabled.setter
-    def quota_notice_enabled(self, quota_notice_enabled):
-        """Sets the quota_notice_enabled of this UpdateAccountRequestBody.
-
-        Whether the system should email the account owner when usage exceeds quotaNoticeThreshold value  # noqa: E501
-
-        :param quota_notice_enabled: The quota_notice_enabled of this UpdateAccountRequestBody.  # noqa: E501
-        :type: bool
-        """
-
-        self._quota_notice_enabled = quota_notice_enabled
-
-    @property
-    def quota_notice_threshold(self):
-        """Gets the quota_notice_threshold of this UpdateAccountRequestBody.  # noqa: E501
-
-        Percent of account usage to trigger quota notices for.  # noqa: E501
-
-        :return: The quota_notice_threshold of this UpdateAccountRequestBody.  # noqa: E501
-        :rtype: int
-        """
-        return self._quota_notice_threshold
-
-    @quota_notice_threshold.setter
-    def quota_notice_threshold(self, quota_notice_threshold):
-        """Sets the quota_notice_threshold of this UpdateAccountRequestBody.
-
-        Percent of account usage to trigger quota notices for.  # noqa: E501
-
-        :param quota_notice_threshold: The quota_notice_threshold of this UpdateAccountRequestBody.  # noqa: E501
-        :type: int
-        """
-
-        self._quota_notice_threshold = quota_notice_threshold
+        if quota is not None:
+            self.quota = quota
 
     @property
     def secure_only(self):
@@ -310,27 +254,6 @@ class UpdateAccountRequestBody(object):
         self._allowed_ip_ranges = allowed_ip_ranges
 
     @property
-    def callback_settings(self):
-        """Gets the callback_settings of this UpdateAccountRequestBody.  # noqa: E501
-
-
-        :return: The callback_settings of this UpdateAccountRequestBody.  # noqa: E501
-        :rtype: CallbackSettingsValues
-        """
-        return self._callback_settings
-
-    @callback_settings.setter
-    def callback_settings(self, callback_settings):
-        """Sets the callback_settings of this UpdateAccountRequestBody.
-
-
-        :param callback_settings: The callback_settings of this UpdateAccountRequestBody.  # noqa: E501
-        :type: CallbackSettingsValues
-        """
-
-        self._callback_settings = callback_settings
-
-    @property
     def branding_settings(self):
         """Gets the branding_settings of this UpdateAccountRequestBody.  # noqa: E501
 
@@ -396,6 +319,27 @@ class UpdateAccountRequestBody(object):
         """
 
         self._custom_signature = custom_signature
+
+    @property
+    def quota(self):
+        """Gets the quota of this UpdateAccountRequestBody.  # noqa: E501
+
+
+        :return: The quota of this UpdateAccountRequestBody.  # noqa: E501
+        :rtype: AccountQuotaValues
+        """
+        return self._quota
+
+    @quota.setter
+    def quota(self, quota):
+        """Sets the quota of this UpdateAccountRequestBody.
+
+
+        :param quota: The quota of this UpdateAccountRequestBody.  # noqa: E501
+        :type: AccountQuotaValues
+        """
+
+        self._quota = quota
 
     def to_dict(self):
         """Returns the model properties as a dict"""

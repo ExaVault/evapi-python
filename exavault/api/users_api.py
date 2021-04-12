@@ -153,7 +153,7 @@ class UsersApi(object):
         >>> result = thread.get()
 
         :param async_req bool
-        :param float id: The user's ID. Note that this is our internal ID, and _not the username_. You can obtain it by calling the [GET /users](#operation/listUsers) method. (required)
+        :param int id: The user's ID. Note that this is our internal ID, and _not the username_. You can obtain it by calling the [GET /users](#operation/listUsers) method. (required)
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :return: EmptyResponse
@@ -177,7 +177,7 @@ class UsersApi(object):
         >>> result = thread.get()
 
         :param async_req bool
-        :param float id: The user's ID. Note that this is our internal ID, and _not the username_. You can obtain it by calling the [GET /users](#operation/listUsers) method. (required)
+        :param int id: The user's ID. Note that this is our internal ID, and _not the username_. You can obtain it by calling the [GET /users](#operation/listUsers) method. (required)
         :param str ev_api_key: API Key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :return: EmptyResponse
@@ -264,7 +264,7 @@ class UsersApi(object):
         >>> result = thread.get()
 
         :param async_req bool
-        :param float id: The user's ID. Note that this is our internal ID, and _not the username_. You can obtain it by calling the [GET /users](#operation/listUsers) method. (required)
+        :param int id: The user's ID. Note that this is our internal ID, and _not the username_. You can obtain it by calling the [GET /users](#operation/listUsers) method. (required)
         :param str ev_api_key: API Key (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param str include: Comma-separated list of relationships to include in response. Possible values include **homeResource** and **ownerAccount**.
@@ -289,7 +289,7 @@ class UsersApi(object):
         >>> result = thread.get()
 
         :param async_req bool
-        :param float id: The user's ID. Note that this is our internal ID, and _not the username_. You can obtain it by calling the [GET /users](#operation/listUsers) method. (required)
+        :param int id: The user's ID. Note that this is our internal ID, and _not the username_. You can obtain it by calling the [GET /users](#operation/listUsers) method. (required)
         :param str ev_api_key: API Key (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param str include: Comma-separated list of relationships to include in response. Possible values include **homeResource** and **ownerAccount**.
@@ -382,11 +382,11 @@ class UsersApi(object):
         :param str ev_api_key: API key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param str username: The username of the user you are looking for. Only entries with the same username as this will be in the list of results. Does not support wildcard searches.
+        :param str home_resource: Resource identifier for user's home directory. Does not support wildcard searches.
         :param str nickname: Nickname to search for. Ignored if `username` is provided. Supports wildcard searches.
         :param str email: Email to search for. Ignored if `username` is provided. Supports wildcard searches
         :param str role: Types of users to include the list. Ignored if `username` is provided. Valid options are **admin**, **master** and **user**
         :param int status: Whether a user is locked. Ignored if `username` is provided. **0** means user is locked, **1** means user is not locked. 
-        :param str home_dir: Path for user's home directory. Ignored if `username` is provided. Supports wildcard searches.
         :param str search: Searches the nickname, email, role and homeDir fields for the provided value. Ignored if `username` is provided. Supports wildcard searches.
         :param int offset: Starting user record in the result set. Can be used for pagination.
         :param str sort: Sort order or matching users. You can sort by multiple columns by separating sort options with a comma; the sort will be applied in the order specified. The sort order for each sort field is ascending unless it is prefixed with a minus (“-“), in which case it will be descending.  Valid sort fields are: **nickname**, **username**, **email**, **homeDir** and **modified**
@@ -416,11 +416,11 @@ class UsersApi(object):
         :param str ev_api_key: API key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
         :param str username: The username of the user you are looking for. Only entries with the same username as this will be in the list of results. Does not support wildcard searches.
+        :param str home_resource: Resource identifier for user's home directory. Does not support wildcard searches.
         :param str nickname: Nickname to search for. Ignored if `username` is provided. Supports wildcard searches.
         :param str email: Email to search for. Ignored if `username` is provided. Supports wildcard searches
         :param str role: Types of users to include the list. Ignored if `username` is provided. Valid options are **admin**, **master** and **user**
         :param int status: Whether a user is locked. Ignored if `username` is provided. **0** means user is locked, **1** means user is not locked. 
-        :param str home_dir: Path for user's home directory. Ignored if `username` is provided. Supports wildcard searches.
         :param str search: Searches the nickname, email, role and homeDir fields for the provided value. Ignored if `username` is provided. Supports wildcard searches.
         :param int offset: Starting user record in the result set. Can be used for pagination.
         :param str sort: Sort order or matching users. You can sort by multiple columns by separating sort options with a comma; the sort will be applied in the order specified. The sort order for each sort field is ascending unless it is prefixed with a minus (“-“), in which case it will be descending.  Valid sort fields are: **nickname**, **username**, **email**, **homeDir** and **modified**
@@ -431,7 +431,7 @@ class UsersApi(object):
                  returns the request thread.
         """
 
-        all_params = ['ev_api_key', 'ev_access_token', 'username', 'nickname', 'email', 'role', 'status', 'home_dir', 'search', 'offset', 'sort', 'limit', 'include']  # noqa: E501
+        all_params = ['ev_api_key', 'ev_access_token', 'username', 'home_resource', 'nickname', 'email', 'role', 'status', 'search', 'offset', 'sort', 'limit', 'include']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -462,6 +462,8 @@ class UsersApi(object):
         query_params = []
         if 'username' in params:
             query_params.append(('username', params['username']))  # noqa: E501
+        if 'home_resource' in params:
+            query_params.append(('homeResource', params['home_resource']))  # noqa: E501
         if 'nickname' in params:
             query_params.append(('nickname', params['nickname']))  # noqa: E501
         if 'email' in params:
@@ -470,8 +472,6 @@ class UsersApi(object):
             query_params.append(('role', params['role']))  # noqa: E501
         if 'status' in params:
             query_params.append(('status', params['status']))  # noqa: E501
-        if 'home_dir' in params:
-            query_params.append(('homeDir', params['home_dir']))  # noqa: E501
         if 'search' in params:
             query_params.append(('search', params['search']))  # noqa: E501
         if 'offset' in params:
@@ -528,7 +528,7 @@ class UsersApi(object):
         :param async_req bool
         :param str ev_api_key: API key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param float id: The user's ID. Note that this is our internal ID, and _not the username_. You can obtain it by calling the [GET /users](#operation/listUsers) method. (required)
+        :param int id: The user's ID. Note that this is our internal ID, and _not the username_. You can obtain it by calling the [GET /users](#operation/listUsers) method. (required)
         :param UpdateUserRequestBody body:
         :return: UserResponse
                  If the method is called asynchronously,
@@ -553,7 +553,7 @@ class UsersApi(object):
         :param async_req bool
         :param str ev_api_key: API key required to make the API call. (required)
         :param str ev_access_token: Access token required to make the API call. (required)
-        :param float id: The user's ID. Note that this is our internal ID, and _not the username_. You can obtain it by calling the [GET /users](#operation/listUsers) method. (required)
+        :param int id: The user's ID. Note that this is our internal ID, and _not the username_. You can obtain it by calling the [GET /users](#operation/listUsers) method. (required)
         :param UpdateUserRequestBody body:
         :return: UserResponse
                  If the method is called asynchronously,

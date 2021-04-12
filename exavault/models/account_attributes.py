@@ -29,7 +29,6 @@ class AccountAttributes(object):
     """
     swagger_types = {
         'account_name': 'str',
-        'username': 'str',
         'max_users': 'int',
         'user_count': 'int',
         'status': 'int',
@@ -41,8 +40,8 @@ class AccountAttributes(object):
         'show_referral_links': 'bool',
         'external_domains': 'list[str]',
         'allowed_ip': 'list[AccountAttributesAllowedIp]',
-        'callback_settings': 'CallbackSettings',
         'branding_settings': 'BrandingSettings',
+        'plan_details': 'PlanDetails',
         'client_id': 'int',
         'welcome_email_content': 'str',
         'welcome_email_subject': 'str',
@@ -54,7 +53,6 @@ class AccountAttributes(object):
 
     attribute_map = {
         'account_name': 'accountName',
-        'username': 'username',
         'max_users': 'maxUsers',
         'user_count': 'userCount',
         'status': 'status',
@@ -66,8 +64,8 @@ class AccountAttributes(object):
         'show_referral_links': 'showReferralLinks',
         'external_domains': 'externalDomains',
         'allowed_ip': 'allowedIp',
-        'callback_settings': 'callbackSettings',
         'branding_settings': 'brandingSettings',
+        'plan_details': 'planDetails',
         'client_id': 'clientId',
         'welcome_email_content': 'welcomeEmailContent',
         'welcome_email_subject': 'welcomeEmailSubject',
@@ -77,10 +75,9 @@ class AccountAttributes(object):
         'modified': 'modified'
     }
 
-    def __init__(self, account_name=None, username=None, max_users=None, user_count=None, status=None, branding=None, custom_domain=None, quota=None, secure_only=None, complex_passwords=None, show_referral_links=None, external_domains=None, allowed_ip=None, callback_settings=None, branding_settings=None, client_id=None, welcome_email_content=None, welcome_email_subject=None, custom_signature=None, account_onboarding=None, created=None, modified=None):  # noqa: E501
+    def __init__(self, account_name=None, max_users=None, user_count=None, status=None, branding=None, custom_domain=None, quota=None, secure_only=None, complex_passwords=None, show_referral_links=None, external_domains=None, allowed_ip=None, branding_settings=None, plan_details=None, client_id=None, welcome_email_content=None, welcome_email_subject=None, custom_signature=None, account_onboarding=None, created=None, modified=None):  # noqa: E501
         """AccountAttributes - a model defined in Swagger"""  # noqa: E501
         self._account_name = None
-        self._username = None
         self._max_users = None
         self._user_count = None
         self._status = None
@@ -92,8 +89,8 @@ class AccountAttributes(object):
         self._show_referral_links = None
         self._external_domains = None
         self._allowed_ip = None
-        self._callback_settings = None
         self._branding_settings = None
+        self._plan_details = None
         self._client_id = None
         self._welcome_email_content = None
         self._welcome_email_subject = None
@@ -104,8 +101,6 @@ class AccountAttributes(object):
         self.discriminator = None
         if account_name is not None:
             self.account_name = account_name
-        if username is not None:
-            self.username = username
         if max_users is not None:
             self.max_users = max_users
         if user_count is not None:
@@ -128,10 +123,10 @@ class AccountAttributes(object):
             self.external_domains = external_domains
         if allowed_ip is not None:
             self.allowed_ip = allowed_ip
-        if callback_settings is not None:
-            self.callback_settings = callback_settings
         if branding_settings is not None:
             self.branding_settings = branding_settings
+        if plan_details is not None:
+            self.plan_details = plan_details
         if client_id is not None:
             self.client_id = client_id
         if welcome_email_content is not None:
@@ -169,29 +164,6 @@ class AccountAttributes(object):
         """
 
         self._account_name = account_name
-
-    @property
-    def username(self):
-        """Gets the username of this AccountAttributes.  # noqa: E501
-
-        Name of account's master user  # noqa: E501
-
-        :return: The username of this AccountAttributes.  # noqa: E501
-        :rtype: str
-        """
-        return self._username
-
-    @username.setter
-    def username(self, username):
-        """Sets the username of this AccountAttributes.
-
-        Name of account's master user  # noqa: E501
-
-        :param username: The username of this AccountAttributes.  # noqa: E501
-        :type: str
-        """
-
-        self._username = username
 
     @property
     def max_users(self):
@@ -451,27 +423,6 @@ class AccountAttributes(object):
         self._allowed_ip = allowed_ip
 
     @property
-    def callback_settings(self):
-        """Gets the callback_settings of this AccountAttributes.  # noqa: E501
-
-
-        :return: The callback_settings of this AccountAttributes.  # noqa: E501
-        :rtype: CallbackSettings
-        """
-        return self._callback_settings
-
-    @callback_settings.setter
-    def callback_settings(self, callback_settings):
-        """Sets the callback_settings of this AccountAttributes.
-
-
-        :param callback_settings: The callback_settings of this AccountAttributes.  # noqa: E501
-        :type: CallbackSettings
-        """
-
-        self._callback_settings = callback_settings
-
-    @property
     def branding_settings(self):
         """Gets the branding_settings of this AccountAttributes.  # noqa: E501
 
@@ -491,6 +442,27 @@ class AccountAttributes(object):
         """
 
         self._branding_settings = branding_settings
+
+    @property
+    def plan_details(self):
+        """Gets the plan_details of this AccountAttributes.  # noqa: E501
+
+
+        :return: The plan_details of this AccountAttributes.  # noqa: E501
+        :rtype: PlanDetails
+        """
+        return self._plan_details
+
+    @plan_details.setter
+    def plan_details(self, plan_details):
+        """Sets the plan_details of this AccountAttributes.
+
+
+        :param plan_details: The plan_details of this AccountAttributes.  # noqa: E501
+        :type: PlanDetails
+        """
+
+        self._plan_details = plan_details
 
     @property
     def client_id(self):

@@ -35,7 +35,7 @@ class ActivityApi(object):
     def get_session_logs(self, ev_api_key, ev_access_token, **kwargs):  # noqa: E501
         """Get activity logs  # noqa: E501
 
-        Returns the detailed activity logs for your account. Optional query paramaters will filter the returned results based on a number of options including usernames, activity types, or date ranges.     **Operation Types** Session activity is logged with an operation type that is different from what is visible through the [activity log interface in the web file manager](/docs/account/10-activity-logs/00-activity-logs). Consult the table below to compare the two:  | File Manager Value | API Value | Notes | |-----|----|---| | Connect | PASS | | | Disconnect | EXIT | | | Upload | STOR | | | Download | RETR | | | Delete | DELE | | | Create Folder | MKD | | | Rename | RNTO | | | Move | MOVE | | | Copy | COPY | | | Compress | COMPR | | | Extract | EXTRACT | | | Shared Folders | SHARE | | | Send Files | SEND | | | Receive Files | RECV | | | _N/A_ | EDIT\\_SEND | Update send. Not shown in file manager | | Update Share | EDIT\\_SHARE| |  | Update Receive | EDIT\\_RECV | | | Delete Send | DELE\\_SEND | | | Delete Receive | DELE\\_RECV | | | Delete Share | DELE\\_SHARE | | | Create Notification | NOTIFY | | | Update Notification | EDIT\\_NTFY| | | Delete Notification | DELE\\_NTFY | | | Create User | USER | | | Update User | EDIT\\_USER | | | Delete User | DELE\\_USER | | | _N/A_ | DFA | Create direct link. Not shown in file manager | | _N/A_ | EDIT\\_DFA | Update direct link options. Not shown in file manager | | _N/A_ | DELE\\_DFA | Deactivate direct link. Not shown in file manager|   # noqa: E501
+        Returns the detailed activity logs for your account. Optional query paramaters will filter the returned results based on a number of options including usernames, activity types, or date ranges.   **NOTE:** Total Results will always return as 0 to avoid quering data you're not using and stay as performant as possible.     **Operation Types** Session activity is logged with an operation type that is different from what is visible through the [activity log interface in the web file manager](/docs/account/10-activity-logs/00-activity-logs). Consult the table below to compare the two:  | File Manager Value | API Value | Notes | |-----|----|---| | Connect | PASS | | | Disconnect | EXIT | | | Upload | STOR | | | Download | RETR | | | Delete | DELE | | | Create Folder | MKD | | | Rename | RNTO | | | Move | MOVE | | | Copy | COPY | | | Compress | COMPR | | | Extract | EXTRACT | | | Shared Folders | SHARE | | | Send Files | SEND | | | Receive Files | RECV | | | _N/A_ | EDIT\\_SEND | Update send. Not shown in file manager | | Update Share | EDIT\\_SHARE| |  | Update Receive | EDIT\\_RECV | | | Delete Send | DELE\\_SEND | | | Delete Receive | DELE\\_RECV | | | Delete Share | DELE\\_SHARE | | | Create Notification | NOTIFY | | | Update Notification | EDIT\\_NTFY| | | Delete Notification | DELE\\_NTFY | | | Create User | USER | | | Update User | EDIT\\_USER | | | Delete User | DELE\\_USER | | | _N/A_ | DFA | Create direct link. Not shown in file manager | | _N/A_ | EDIT\\_DFA | Update direct link options. Not shown in file manager | | _N/A_ | DELE\\_DFA | Deactivate direct link. Not shown in file manager|   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.get_session_logs(ev_api_key, ev_access_token, async_req=True)
@@ -47,7 +47,7 @@ class ActivityApi(object):
         :param datetime start_date: Start date of the filter data range
         :param datetime end_date: End date of the filter data range
         :param str ip_address: Used to filter session logs by ip address.
-        :param str user_name: Username used for filtering a list
+        :param str username: Username used for filtering a list
         :param str path: Path used to filter records
         :param str type: Filter session logs for operation type (see table above for acceptable values)
         :param int offset: Offset of the records list
@@ -67,7 +67,7 @@ class ActivityApi(object):
     def get_session_logs_with_http_info(self, ev_api_key, ev_access_token, **kwargs):  # noqa: E501
         """Get activity logs  # noqa: E501
 
-        Returns the detailed activity logs for your account. Optional query paramaters will filter the returned results based on a number of options including usernames, activity types, or date ranges.     **Operation Types** Session activity is logged with an operation type that is different from what is visible through the [activity log interface in the web file manager](/docs/account/10-activity-logs/00-activity-logs). Consult the table below to compare the two:  | File Manager Value | API Value | Notes | |-----|----|---| | Connect | PASS | | | Disconnect | EXIT | | | Upload | STOR | | | Download | RETR | | | Delete | DELE | | | Create Folder | MKD | | | Rename | RNTO | | | Move | MOVE | | | Copy | COPY | | | Compress | COMPR | | | Extract | EXTRACT | | | Shared Folders | SHARE | | | Send Files | SEND | | | Receive Files | RECV | | | _N/A_ | EDIT\\_SEND | Update send. Not shown in file manager | | Update Share | EDIT\\_SHARE| |  | Update Receive | EDIT\\_RECV | | | Delete Send | DELE\\_SEND | | | Delete Receive | DELE\\_RECV | | | Delete Share | DELE\\_SHARE | | | Create Notification | NOTIFY | | | Update Notification | EDIT\\_NTFY| | | Delete Notification | DELE\\_NTFY | | | Create User | USER | | | Update User | EDIT\\_USER | | | Delete User | DELE\\_USER | | | _N/A_ | DFA | Create direct link. Not shown in file manager | | _N/A_ | EDIT\\_DFA | Update direct link options. Not shown in file manager | | _N/A_ | DELE\\_DFA | Deactivate direct link. Not shown in file manager|   # noqa: E501
+        Returns the detailed activity logs for your account. Optional query paramaters will filter the returned results based on a number of options including usernames, activity types, or date ranges.   **NOTE:** Total Results will always return as 0 to avoid quering data you're not using and stay as performant as possible.     **Operation Types** Session activity is logged with an operation type that is different from what is visible through the [activity log interface in the web file manager](/docs/account/10-activity-logs/00-activity-logs). Consult the table below to compare the two:  | File Manager Value | API Value | Notes | |-----|----|---| | Connect | PASS | | | Disconnect | EXIT | | | Upload | STOR | | | Download | RETR | | | Delete | DELE | | | Create Folder | MKD | | | Rename | RNTO | | | Move | MOVE | | | Copy | COPY | | | Compress | COMPR | | | Extract | EXTRACT | | | Shared Folders | SHARE | | | Send Files | SEND | | | Receive Files | RECV | | | _N/A_ | EDIT\\_SEND | Update send. Not shown in file manager | | Update Share | EDIT\\_SHARE| |  | Update Receive | EDIT\\_RECV | | | Delete Send | DELE\\_SEND | | | Delete Receive | DELE\\_RECV | | | Delete Share | DELE\\_SHARE | | | Create Notification | NOTIFY | | | Update Notification | EDIT\\_NTFY| | | Delete Notification | DELE\\_NTFY | | | Create User | USER | | | Update User | EDIT\\_USER | | | Delete User | DELE\\_USER | | | _N/A_ | DFA | Create direct link. Not shown in file manager | | _N/A_ | EDIT\\_DFA | Update direct link options. Not shown in file manager | | _N/A_ | DELE\\_DFA | Deactivate direct link. Not shown in file manager|   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.get_session_logs_with_http_info(ev_api_key, ev_access_token, async_req=True)
@@ -79,7 +79,7 @@ class ActivityApi(object):
         :param datetime start_date: Start date of the filter data range
         :param datetime end_date: End date of the filter data range
         :param str ip_address: Used to filter session logs by ip address.
-        :param str user_name: Username used for filtering a list
+        :param str username: Username used for filtering a list
         :param str path: Path used to filter records
         :param str type: Filter session logs for operation type (see table above for acceptable values)
         :param int offset: Offset of the records list
@@ -90,7 +90,7 @@ class ActivityApi(object):
                  returns the request thread.
         """
 
-        all_params = ['ev_api_key', 'ev_access_token', 'start_date', 'end_date', 'ip_address', 'user_name', 'path', 'type', 'offset', 'limit', 'sort']  # noqa: E501
+        all_params = ['ev_api_key', 'ev_access_token', 'start_date', 'end_date', 'ip_address', 'username', 'path', 'type', 'offset', 'limit', 'sort']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -125,8 +125,8 @@ class ActivityApi(object):
             query_params.append(('endDate', params['end_date']))  # noqa: E501
         if 'ip_address' in params:
             query_params.append(('ipAddress', params['ip_address']))  # noqa: E501
-        if 'user_name' in params:
-            query_params.append(('userName', params['user_name']))  # noqa: E501
+        if 'username' in params:
+            query_params.append(('username', params['username']))  # noqa: E501
         if 'path' in params:
             query_params.append(('path', params['path']))  # noqa: E501
         if 'type' in params:
@@ -174,7 +174,7 @@ class ActivityApi(object):
     def get_webhook_logs(self, ev_api_key, ev_access_token, **kwargs):  # noqa: E501
         """Get webhook logs  # noqa: E501
 
-        Returns the webhook logs for your account. Optional query paramaters will filter the returned results based on a number of options including path, tpye of event, or status code.   **Event Types**  Webhooks are triggered by enabled event types for your account, which are configured on the [developer settings page](/docs/account/09-settings/06-developer-settings). These are the valid options for event types:  - Upload - Download - Delete File - Delete Folder - Create Folder - Rename - Move - Copy - Compress - Extract - Share Folder - Send Files - Receive Files - Update Share - Update Receive - Delete Send - Delete Receive - Delete Share - Create Notification - Update Notification - Delete Notification - Create User - Update User  - Delete User - Connect - Disconnect  # noqa: E501
+        Returns the webhook logs for your account. Use the available query parameters to filter the listing of activity that is returned.  **NOTE:** Total Results will always return as 0 to avoid querying data you're not using and stay as performant as possible.   **Event Types**  Webhooks are triggered by enabled event types for your account, which are configured on the [developer settings page](/docs/account/09-settings/06-developer-settings). Not all event types may be allowed for your account type. These are the valid options for event types:  - resources.upload - resources.download - resources.delete - resources.createFolder - resources.rename - resources.move - resources.copy - resources.compress - resources.extract - shares.formSubmit   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.get_webhook_logs(ev_api_key, ev_access_token, async_req=True)
@@ -183,14 +183,17 @@ class ActivityApi(object):
         :param async_req bool
         :param str ev_api_key: API Key (required)
         :param str ev_access_token: Access Token (required)
-        :param str event: Filter by triggered event
-        :param int status_code: Filter by webhook response status code
-        :param str path: Path used to filter records
+        :param datetime start_date: Earliest date of entries to include in list
+        :param datetime end_date: Latest date of entries to include in list
+        :param str endpoint_url: Webhook listener endpoint
+        :param str event: Type of activity that triggered the webhook attempt
+        :param int status_code: Response code from the webhook endpoint
+        :param str _resource_path: Path of the resource that triggered the webhook attempt
         :param str username: Filter by triggering username.
-        :param int offset: Records to skip before returning results
+        :param int offset: Records to skip before returning results.
         :param int limit: Limit of the records list
         :param str sort: Comma separated list sort params
-        :return: WebhooksActivityResponse
+        :return: WebhookActivityResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -204,7 +207,7 @@ class ActivityApi(object):
     def get_webhook_logs_with_http_info(self, ev_api_key, ev_access_token, **kwargs):  # noqa: E501
         """Get webhook logs  # noqa: E501
 
-        Returns the webhook logs for your account. Optional query paramaters will filter the returned results based on a number of options including path, tpye of event, or status code.   **Event Types**  Webhooks are triggered by enabled event types for your account, which are configured on the [developer settings page](/docs/account/09-settings/06-developer-settings). These are the valid options for event types:  - Upload - Download - Delete File - Delete Folder - Create Folder - Rename - Move - Copy - Compress - Extract - Share Folder - Send Files - Receive Files - Update Share - Update Receive - Delete Send - Delete Receive - Delete Share - Create Notification - Update Notification - Delete Notification - Create User - Update User  - Delete User - Connect - Disconnect  # noqa: E501
+        Returns the webhook logs for your account. Use the available query parameters to filter the listing of activity that is returned.  **NOTE:** Total Results will always return as 0 to avoid querying data you're not using and stay as performant as possible.   **Event Types**  Webhooks are triggered by enabled event types for your account, which are configured on the [developer settings page](/docs/account/09-settings/06-developer-settings). Not all event types may be allowed for your account type. These are the valid options for event types:  - resources.upload - resources.download - resources.delete - resources.createFolder - resources.rename - resources.move - resources.copy - resources.compress - resources.extract - shares.formSubmit   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.get_webhook_logs_with_http_info(ev_api_key, ev_access_token, async_req=True)
@@ -213,19 +216,22 @@ class ActivityApi(object):
         :param async_req bool
         :param str ev_api_key: API Key (required)
         :param str ev_access_token: Access Token (required)
-        :param str event: Filter by triggered event
-        :param int status_code: Filter by webhook response status code
-        :param str path: Path used to filter records
+        :param datetime start_date: Earliest date of entries to include in list
+        :param datetime end_date: Latest date of entries to include in list
+        :param str endpoint_url: Webhook listener endpoint
+        :param str event: Type of activity that triggered the webhook attempt
+        :param int status_code: Response code from the webhook endpoint
+        :param str _resource_path: Path of the resource that triggered the webhook attempt
         :param str username: Filter by triggering username.
-        :param int offset: Records to skip before returning results
+        :param int offset: Records to skip before returning results.
         :param int limit: Limit of the records list
         :param str sort: Comma separated list sort params
-        :return: WebhooksActivityResponse
+        :return: WebhookActivityResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['ev_api_key', 'ev_access_token', 'event', 'status_code', 'path', 'username', 'offset', 'limit', 'sort']  # noqa: E501
+        all_params = ['ev_api_key', 'ev_access_token', 'start_date', 'end_date', 'endpoint_url', 'event', 'status_code', '_resource_path', 'username', 'offset', 'limit', 'sort']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -254,12 +260,18 @@ class ActivityApi(object):
         path_params = {}
 
         query_params = []
+        if 'start_date' in params:
+            query_params.append(('startDate', params['start_date']))  # noqa: E501
+        if 'end_date' in params:
+            query_params.append(('endDate', params['end_date']))  # noqa: E501
+        if 'endpoint_url' in params:
+            query_params.append(('endpointUrl', params['endpoint_url']))  # noqa: E501
         if 'event' in params:
             query_params.append(('event', params['event']))  # noqa: E501
         if 'status_code' in params:
             query_params.append(('statusCode', params['status_code']))  # noqa: E501
-        if 'path' in params:
-            query_params.append(('path', params['path']))  # noqa: E501
+        if '_resource_path' in params:
+            query_params.append(('resourcePath', params['_resource_path']))  # noqa: E501
         if 'username' in params:
             query_params.append(('username', params['username']))  # noqa: E501
         if 'offset' in params:
@@ -294,7 +306,7 @@ class ActivityApi(object):
             body=body_params,
             post_params=form_params,
             files=local_var_files,
-            response_type='WebhooksActivityResponse',  # noqa: E501
+            response_type='WebhookActivityResponse',  # noqa: E501
             auth_settings=auth_settings,
             async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),

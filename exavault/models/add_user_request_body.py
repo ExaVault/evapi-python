@@ -142,7 +142,7 @@ class AddUserRequestBody(object):
     def home_resource(self):
         """Gets the home_resource of this AddUserRequestBody.  # noqa: E501
 
-        Resource identifier for the user's home folder. See details on [how to specify resources](#section/Identifying-Resources) above.  The user will be locked to this directory and unable to move 'up' in the account. If the folder does not exist in the account, it will be created when the user is created.   This setting is ignored for users with the `role` **admin**.  # noqa: E501
+        Resource identifier for the user's home folder. See details on [how to specify resources](#section/Identifying-Resources) above.  The user will be locked to this directory and unable to move 'up' in the account. If the folder does not exist in the account, it will be created when the user is created.   Users with the `role` **admin** should have their homeResource set to '/'  # noqa: E501
 
         :return: The home_resource of this AddUserRequestBody.  # noqa: E501
         :rtype: str
@@ -153,7 +153,7 @@ class AddUserRequestBody(object):
     def home_resource(self, home_resource):
         """Sets the home_resource of this AddUserRequestBody.
 
-        Resource identifier for the user's home folder. See details on [how to specify resources](#section/Identifying-Resources) above.  The user will be locked to this directory and unable to move 'up' in the account. If the folder does not exist in the account, it will be created when the user is created.   This setting is ignored for users with the `role` **admin**.  # noqa: E501
+        Resource identifier for the user's home folder. See details on [how to specify resources](#section/Identifying-Resources) above.  The user will be locked to this directory and unable to move 'up' in the account. If the folder does not exist in the account, it will be created when the user is created.   Users with the `role` **admin** should have their homeResource set to '/'  # noqa: E501
 
         :param home_resource: The home_resource of this AddUserRequestBody.  # noqa: E501
         :type: str
@@ -217,7 +217,7 @@ class AddUserRequestBody(object):
     def role(self):
         """Gets the role of this AddUserRequestBody.  # noqa: E501
 
-        The type of user to create. Note that admin users cannot have a `homeResource` other than '/', and will have full permissions, but you must provide at least \"download,upload,list,delete\" in the `permissions` parameter.  # noqa: E501
+        The type of user to create, either **user** or **admin**.  # noqa: E501
 
         :return: The role of this AddUserRequestBody.  # noqa: E501
         :rtype: str
@@ -228,7 +228,7 @@ class AddUserRequestBody(object):
     def role(self, role):
         """Sets the role of this AddUserRequestBody.
 
-        The type of user to create. Note that admin users cannot have a `homeResource` other than '/', and will have full permissions, but you must provide at least \"download,upload,list,delete\" in the `permissions` parameter.  # noqa: E501
+        The type of user to create, either **user** or **admin**.  # noqa: E501
 
         :param role: The role of this AddUserRequestBody.  # noqa: E501
         :type: str

@@ -95,7 +95,7 @@ class UpdateNotificationByIdRequestBody(object):
     def usernames(self):
         """Gets the usernames of this UpdateNotificationByIdRequestBody.  # noqa: E501
 
-        Determines which users' actions should trigger the notification.   Rather than listing  individual users, you can also use 3 special options:  - **notice\\_user\\_all** for activity by any user or share recipient - **notice\\_user\\_all\\_users** for activity only by user accounts - **notice\\_user\\_all\\_recipient** for activity only by share recipients  # noqa: E501
+        Determines which users' actions should trigger the notification.   Rather than listing  individual users, you can also use 3 special options:  - **notice\\_user\\_all** for activity by any user or share recipient - **notice\\_user\\_all\\_users** for activity only by user accounts - **notice\\_user\\_all\\_recipients** for activity only by share recipients  # noqa: E501
 
         :return: The usernames of this UpdateNotificationByIdRequestBody.  # noqa: E501
         :rtype: list[str]
@@ -106,7 +106,7 @@ class UpdateNotificationByIdRequestBody(object):
     def usernames(self, usernames):
         """Sets the usernames of this UpdateNotificationByIdRequestBody.
 
-        Determines which users' actions should trigger the notification.   Rather than listing  individual users, you can also use 3 special options:  - **notice\\_user\\_all** for activity by any user or share recipient - **notice\\_user\\_all\\_users** for activity only by user accounts - **notice\\_user\\_all\\_recipient** for activity only by share recipients  # noqa: E501
+        Determines which users' actions should trigger the notification.   Rather than listing  individual users, you can also use 3 special options:  - **notice\\_user\\_all** for activity by any user or share recipient - **notice\\_user\\_all\\_users** for activity only by user accounts - **notice\\_user\\_all\\_recipients** for activity only by share recipients  # noqa: E501
 
         :param usernames: The usernames of this UpdateNotificationByIdRequestBody.  # noqa: E501
         :type: list[str]

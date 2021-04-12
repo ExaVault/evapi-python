@@ -32,7 +32,10 @@ class BrandingSettings(object):
         'custom_email': 'str',
         'logo': 'str',
         'logo_ext': 'str',
-        'theme': 'str'
+        'theme': 'str',
+        'verified_domain': 'str',
+        'verified_domain_id': 'str',
+        'verified_domain_valid': 'bool'
     }
 
     attribute_map = {
@@ -40,16 +43,22 @@ class BrandingSettings(object):
         'custom_email': 'customEmail',
         'logo': 'logo',
         'logo_ext': 'logoExt',
-        'theme': 'theme'
+        'theme': 'theme',
+        'verified_domain': 'verifiedDomain',
+        'verified_domain_id': 'verifiedDomainId',
+        'verified_domain_valid': 'verifiedDomainValid'
     }
 
-    def __init__(self, company_name=None, custom_email=None, logo=None, logo_ext=None, theme=None):  # noqa: E501
+    def __init__(self, company_name=None, custom_email=None, logo=None, logo_ext=None, theme=None, verified_domain=None, verified_domain_id=None, verified_domain_valid=None):  # noqa: E501
         """BrandingSettings - a model defined in Swagger"""  # noqa: E501
         self._company_name = None
         self._custom_email = None
         self._logo = None
         self._logo_ext = None
         self._theme = None
+        self._verified_domain = None
+        self._verified_domain_id = None
+        self._verified_domain_valid = None
         self.discriminator = None
         if company_name is not None:
             self.company_name = company_name
@@ -61,6 +70,12 @@ class BrandingSettings(object):
             self.logo_ext = logo_ext
         if theme is not None:
             self.theme = theme
+        if verified_domain is not None:
+            self.verified_domain = verified_domain
+        if verified_domain_id is not None:
+            self.verified_domain_id = verified_domain_id
+        if verified_domain_valid is not None:
+            self.verified_domain_valid = verified_domain_valid
 
     @property
     def company_name(self):
@@ -176,6 +191,69 @@ class BrandingSettings(object):
         """
 
         self._theme = theme
+
+    @property
+    def verified_domain(self):
+        """Gets the verified_domain of this BrandingSettings.  # noqa: E501
+
+
+        :return: The verified_domain of this BrandingSettings.  # noqa: E501
+        :rtype: str
+        """
+        return self._verified_domain
+
+    @verified_domain.setter
+    def verified_domain(self, verified_domain):
+        """Sets the verified_domain of this BrandingSettings.
+
+
+        :param verified_domain: The verified_domain of this BrandingSettings.  # noqa: E501
+        :type: str
+        """
+
+        self._verified_domain = verified_domain
+
+    @property
+    def verified_domain_id(self):
+        """Gets the verified_domain_id of this BrandingSettings.  # noqa: E501
+
+
+        :return: The verified_domain_id of this BrandingSettings.  # noqa: E501
+        :rtype: str
+        """
+        return self._verified_domain_id
+
+    @verified_domain_id.setter
+    def verified_domain_id(self, verified_domain_id):
+        """Sets the verified_domain_id of this BrandingSettings.
+
+
+        :param verified_domain_id: The verified_domain_id of this BrandingSettings.  # noqa: E501
+        :type: str
+        """
+
+        self._verified_domain_id = verified_domain_id
+
+    @property
+    def verified_domain_valid(self):
+        """Gets the verified_domain_valid of this BrandingSettings.  # noqa: E501
+
+
+        :return: The verified_domain_valid of this BrandingSettings.  # noqa: E501
+        :rtype: bool
+        """
+        return self._verified_domain_valid
+
+    @verified_domain_valid.setter
+    def verified_domain_valid(self, verified_domain_valid):
+        """Sets the verified_domain_valid of this BrandingSettings.
+
+
+        :param verified_domain_valid: The verified_domain_valid of this BrandingSettings.  # noqa: E501
+        :type: bool
+        """
+
+        self._verified_domain_valid = verified_domain_valid
 
     def to_dict(self):
         """Returns the model properties as a dict"""

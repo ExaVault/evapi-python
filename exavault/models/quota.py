@@ -31,22 +31,37 @@ class Quota(object):
         'disk_limit': 'int',
         'disk_used': 'int',
         'notice_enabled': 'bool',
-        'notice_threshold': 'int'
+        'notice_threshold': 'int',
+        'bandwidth_limit': 'int',
+        'bandwidth_used': 'int',
+        'transactions_limit': 'int',
+        'transactions_notice_enabled': 'bool',
+        'transactions_notice_threshold': 'int'
     }
 
     attribute_map = {
         'disk_limit': 'diskLimit',
         'disk_used': 'diskUsed',
         'notice_enabled': 'noticeEnabled',
-        'notice_threshold': 'noticeThreshold'
+        'notice_threshold': 'noticeThreshold',
+        'bandwidth_limit': 'bandwidthLimit',
+        'bandwidth_used': 'bandwidthUsed',
+        'transactions_limit': 'transactionsLimit',
+        'transactions_notice_enabled': 'transactionsNoticeEnabled',
+        'transactions_notice_threshold': 'transactionsNoticeThreshold'
     }
 
-    def __init__(self, disk_limit=None, disk_used=None, notice_enabled=None, notice_threshold=None):  # noqa: E501
+    def __init__(self, disk_limit=None, disk_used=None, notice_enabled=None, notice_threshold=None, bandwidth_limit=None, bandwidth_used=None, transactions_limit=None, transactions_notice_enabled=None, transactions_notice_threshold=None):  # noqa: E501
         """Quota - a model defined in Swagger"""  # noqa: E501
         self._disk_limit = None
         self._disk_used = None
         self._notice_enabled = None
         self._notice_threshold = None
+        self._bandwidth_limit = None
+        self._bandwidth_used = None
+        self._transactions_limit = None
+        self._transactions_notice_enabled = None
+        self._transactions_notice_threshold = None
         self.discriminator = None
         if disk_limit is not None:
             self.disk_limit = disk_limit
@@ -56,6 +71,16 @@ class Quota(object):
             self.notice_enabled = notice_enabled
         if notice_threshold is not None:
             self.notice_threshold = notice_threshold
+        if bandwidth_limit is not None:
+            self.bandwidth_limit = bandwidth_limit
+        if bandwidth_used is not None:
+            self.bandwidth_used = bandwidth_used
+        if transactions_limit is not None:
+            self.transactions_limit = transactions_limit
+        if transactions_notice_enabled is not None:
+            self.transactions_notice_enabled = transactions_notice_enabled
+        if transactions_notice_threshold is not None:
+            self.transactions_notice_threshold = transactions_notice_threshold
 
     @property
     def disk_limit(self):
@@ -148,6 +173,121 @@ class Quota(object):
         """
 
         self._notice_threshold = notice_threshold
+
+    @property
+    def bandwidth_limit(self):
+        """Gets the bandwidth_limit of this Quota.  # noqa: E501
+
+        Total number of bytes that can be transferred per month.  # noqa: E501
+
+        :return: The bandwidth_limit of this Quota.  # noqa: E501
+        :rtype: int
+        """
+        return self._bandwidth_limit
+
+    @bandwidth_limit.setter
+    def bandwidth_limit(self, bandwidth_limit):
+        """Sets the bandwidth_limit of this Quota.
+
+        Total number of bytes that can be transferred per month.  # noqa: E501
+
+        :param bandwidth_limit: The bandwidth_limit of this Quota.  # noqa: E501
+        :type: int
+        """
+
+        self._bandwidth_limit = bandwidth_limit
+
+    @property
+    def bandwidth_used(self):
+        """Gets the bandwidth_used of this Quota.  # noqa: E501
+
+        Number of bytes transferred this month.  # noqa: E501
+
+        :return: The bandwidth_used of this Quota.  # noqa: E501
+        :rtype: int
+        """
+        return self._bandwidth_used
+
+    @bandwidth_used.setter
+    def bandwidth_used(self, bandwidth_used):
+        """Sets the bandwidth_used of this Quota.
+
+        Number of bytes transferred this month.  # noqa: E501
+
+        :param bandwidth_used: The bandwidth_used of this Quota.  # noqa: E501
+        :type: int
+        """
+
+        self._bandwidth_used = bandwidth_used
+
+    @property
+    def transactions_limit(self):
+        """Gets the transactions_limit of this Quota.  # noqa: E501
+
+        Total number of transactions allowed in a 24-hour period.  # noqa: E501
+
+        :return: The transactions_limit of this Quota.  # noqa: E501
+        :rtype: int
+        """
+        return self._transactions_limit
+
+    @transactions_limit.setter
+    def transactions_limit(self, transactions_limit):
+        """Sets the transactions_limit of this Quota.
+
+        Total number of transactions allowed in a 24-hour period.  # noqa: E501
+
+        :param transactions_limit: The transactions_limit of this Quota.  # noqa: E501
+        :type: int
+        """
+
+        self._transactions_limit = transactions_limit
+
+    @property
+    def transactions_notice_enabled(self):
+        """Gets the transactions_notice_enabled of this Quota.  # noqa: E501
+
+        Whether an email should be sent to the account owner up to once per day if transaction usage exceeds `transactionsNoticeThreshold` value.  # noqa: E501
+
+        :return: The transactions_notice_enabled of this Quota.  # noqa: E501
+        :rtype: bool
+        """
+        return self._transactions_notice_enabled
+
+    @transactions_notice_enabled.setter
+    def transactions_notice_enabled(self, transactions_notice_enabled):
+        """Sets the transactions_notice_enabled of this Quota.
+
+        Whether an email should be sent to the account owner up to once per day if transaction usage exceeds `transactionsNoticeThreshold` value.  # noqa: E501
+
+        :param transactions_notice_enabled: The transactions_notice_enabled of this Quota.  # noqa: E501
+        :type: bool
+        """
+
+        self._transactions_notice_enabled = transactions_notice_enabled
+
+    @property
+    def transactions_notice_threshold(self):
+        """Gets the transactions_notice_threshold of this Quota.  # noqa: E501
+
+        Percent of daily transactions limit that will trigger an email if activity exceeds it.  # noqa: E501
+
+        :return: The transactions_notice_threshold of this Quota.  # noqa: E501
+        :rtype: int
+        """
+        return self._transactions_notice_threshold
+
+    @transactions_notice_threshold.setter
+    def transactions_notice_threshold(self, transactions_notice_threshold):
+        """Sets the transactions_notice_threshold of this Quota.
+
+        Percent of daily transactions limit that will trigger an email if activity exceeds it.  # noqa: E501
+
+        :param transactions_notice_threshold: The transactions_notice_threshold of this Quota.  # noqa: E501
+        :type: int
+        """
+
+        self._transactions_notice_threshold = transactions_notice_threshold
 
     def to_dict(self):
         """Returns the model properties as a dict"""

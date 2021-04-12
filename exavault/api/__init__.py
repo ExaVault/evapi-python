@@ -11,5 +11,7 @@ from exavault.api.form_api import FormApi
 from exavault.api.notifications_api import NotificationsApi
 from exavault.api.recipients_api import RecipientsApi
 from exavault.api.resources_api import ResourcesApi
+from exavault.api.ssh_keys_api import SSHKeysApi
 from exavault.api.shares_api import SharesApi
 from exavault.api.users_api import UsersApi
+from exavault.api.webhooks_api import WebhooksApi

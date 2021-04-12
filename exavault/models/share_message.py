@@ -29,28 +29,48 @@ class ShareMessage(object):
     """
     swagger_types = {
         'id': 'int',
-        'type': 'str',
-        'attributes': 'ShareMessageAttributes'
+        'user_id': 'int',
+        'share_id': 'int',
+        'subject': 'str',
+        'body': 'str',
+        'created': 'datetime',
+        'modified': 'datetime'
     }
 
     attribute_map = {
         'id': 'id',
-        'type': 'type',
-        'attributes': 'attributes'
+        'user_id': 'userId',
+        'share_id': 'shareId',
+        'subject': 'subject',
+        'body': 'body',
+        'created': 'created',
+        'modified': 'modified'
     }
 
-    def __init__(self, id=None, type=None, attributes=None):  # noqa: E501
+    def __init__(self, id=None, user_id=None, share_id=None, subject=None, body=None, created=None, modified=None):  # noqa: E501
         """ShareMessage - a model defined in Swagger"""  # noqa: E501
         self._id = None
-        self._type = None
-        self._attributes = None
+        self._user_id = None
+        self._share_id = None
+        self._subject = None
+        self._body = None
+        self._created = None
+        self._modified = None
         self.discriminator = None
         if id is not None:
             self.id = id
-        if type is not None:
-            self.type = type
-        if attributes is not None:
-            self.attributes = attributes
+        if user_id is not None:
+            self.user_id = user_id
+        if share_id is not None:
+            self.share_id = share_id
+        if subject is not None:
+            self.subject = subject
+        if body is not None:
+            self.body = body
+        if created is not None:
+            self.created = created
+        if modified is not None:
+            self.modified = modified
 
     @property
     def id(self):
@@ -76,54 +96,142 @@ class ShareMessage(object):
         self._id = id
 
     @property
-    def type(self):
-        """Gets the type of this ShareMessage.  # noqa: E501
+    def user_id(self):
+        """Gets the user_id of this ShareMessage.  # noqa: E501
 
-        Resource type  # noqa: E501
+        User ID who generated share invite  # noqa: E501
 
-        :return: The type of this ShareMessage.  # noqa: E501
-        :rtype: str
+        :return: The user_id of this ShareMessage.  # noqa: E501
+        :rtype: int
         """
-        return self._type
+        return self._user_id
 
-    @type.setter
-    def type(self, type):
-        """Sets the type of this ShareMessage.
+    @user_id.setter
+    def user_id(self, user_id):
+        """Sets the user_id of this ShareMessage.
 
-        Resource type  # noqa: E501
+        User ID who generated share invite  # noqa: E501
 
-        :param type: The type of this ShareMessage.  # noqa: E501
-        :type: str
+        :param user_id: The user_id of this ShareMessage.  # noqa: E501
+        :type: int
         """
-        allowed_values = ["message"]  # noqa: E501
-        if type not in allowed_values:
-            raise ValueError(
-                "Invalid value for `type` ({0}), must be one of {1}"  # noqa: E501
-                .format(type, allowed_values)
-            )
 
-        self._type = type
+        self._user_id = user_id
 
     @property
-    def attributes(self):
-        """Gets the attributes of this ShareMessage.  # noqa: E501
+    def share_id(self):
+        """Gets the share_id of this ShareMessage.  # noqa: E501
 
+        ID of associated share  # noqa: E501
 
-        :return: The attributes of this ShareMessage.  # noqa: E501
-        :rtype: ShareMessageAttributes
+        :return: The share_id of this ShareMessage.  # noqa: E501
+        :rtype: int
         """
-        return self._attributes
+        return self._share_id
 
-    @attributes.setter
-    def attributes(self, attributes):
-        """Sets the attributes of this ShareMessage.
+    @share_id.setter
+    def share_id(self, share_id):
+        """Sets the share_id of this ShareMessage.
 
+        ID of associated share  # noqa: E501
 
-        :param attributes: The attributes of this ShareMessage.  # noqa: E501
-        :type: ShareMessageAttributes
+        :param share_id: The share_id of this ShareMessage.  # noqa: E501
+        :type: int
         """
 
-        self._attributes = attributes
+        self._share_id = share_id
+
+    @property
+    def subject(self):
+        """Gets the subject of this ShareMessage.  # noqa: E501
+
+        Share invitation message subject.  # noqa: E501
+
+        :return: The subject of this ShareMessage.  # noqa: E501
+        :rtype: str
+        """
+        return self._subject
+
+    @subject.setter
+    def subject(self, subject):
+        """Sets the subject of this ShareMessage.
+
+        Share invitation message subject.  # noqa: E501
+
+        :param subject: The subject of this ShareMessage.  # noqa: E501
+        :type: str
+        """
+
+        self._subject = subject
+
+    @property
+    def body(self):
+        """Gets the body of this ShareMessage.  # noqa: E501
+
+        Share invitation message text.  # noqa: E501
+
+        :return: The body of this ShareMessage.  # noqa: E501
+        :rtype: str
+        """
+        return self._body
+
+    @body.setter
+    def body(self, body):
+        """Sets the body of this ShareMessage.
+
+        Share invitation message text.  # noqa: E501
+
+        :param body: The body of this ShareMessage.  # noqa: E501
+        :type: str
+        """
+
+        self._body = body
+
+    @property
+    def created(self):
+        """Gets the created of this ShareMessage.  # noqa: E501
+
+        Timestamp of message creation.  # noqa: E501
+
+        :return: The created of this ShareMessage.  # noqa: E501
+        :rtype: datetime
+        """
+        return self._created
+
+    @created.setter
+    def created(self, created):
+        """Sets the created of this ShareMessage.
+
+        Timestamp of message creation.  # noqa: E501
+
+        :param created: The created of this ShareMessage.  # noqa: E501
+        :type: datetime
+        """
+
+        self._created = created
+
+    @property
+    def modified(self):
+        """Gets the modified of this ShareMessage.  # noqa: E501
+
+        Timestamp of message modification.  # noqa: E501
+
+        :return: The modified of this ShareMessage.  # noqa: E501
+        :rtype: datetime
+        """
+        return self._modified
+
+    @modified.setter
+    def modified(self, modified):
+        """Sets the modified of this ShareMessage.
+
+        Timestamp of message modification.  # noqa: E501
+
+        :param modified: The modified of this ShareMessage.  # noqa: E501
+        :type: datetime
+        """
+
+        self._modified = modified
 
     def to_dict(self):
         """Returns the model properties as a dict"""
