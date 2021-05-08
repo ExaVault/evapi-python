@@ -13,11 +13,15 @@
 from __future__ import absolute_import
 
 import re  # noqa: F401
+import os
+import tempfile
 
 # python 2 and python 3 compatibility library
 import six
 
 from exavault.api_client import ApiClient
+from exavault.configuration import Configuration
+
 
 
 class ResourcesApi(object):
@@ -606,11 +610,29 @@ class ResourcesApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
+        # EV-CUSTOM - We are setting the _preload_content to False so we can do chunked downloads of large files
+        kwargs['_preload_content'] = False
         if kwargs.get('async_req'):
             return self.download_with_http_info(ev_api_key, ev_access_token, resources, **kwargs)  # noqa: E501
         else:
-            (data) = self.download_with_http_info(ev_api_key, ev_access_token, resources, **kwargs)  # noqa: E501
-            return data
+            # EV-CUSTOM: Everything in this else block is customized
+            response = self.download_with_http_info(ev_api_key, ev_access_token, resources, **kwargs)  # noqa: E501
+            # if the response is an error, raise the error
+            if response.status != 200:
+                raise RuntimeError("Error downloading.")
+            
+            # Write the file to the temporary folder configured for our client
+            fd, path = tempfile.mkstemp(dir=self.api_client.configuration.temp_folder_path)
+            os.close(fd)
+            os.remove(path)
+            filename = re.search(r'filename\*=UTF-8\'\'(.*)', response.headers['Content-Disposition']).group(1)
+            path = os.path.join(os.path.dirname(path), filename)
+            with open(path, "wb") as f:
+                for chunk in response.stream(1024):
+                    f.write(chunk)
+            response.release_conn()
+            return path
+
 
     def download_with_http_info(self, ev_api_key, ev_access_token, resources, **kwargs):  # noqa: E501
         """Download a file  # noqa: E501
@@ -695,9 +717,7 @@ class ResourcesApi(object):
             body=body_params,
             post_params=form_params,
             files=local_var_files,
-            # EV-CUSTOM - Response type needs to be a byte array
-            response_type='bytes',  # noqa: E501
-            # EV-CUSTOM - end of customization
+            response_type='str',  # noqa: E501
             auth_settings=auth_settings,
             async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
